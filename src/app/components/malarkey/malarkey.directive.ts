@@ -36,12 +36,6 @@ function linkFunc(scope: IProjectsScope, el: JQuery, attr: any, vm: MalarkeyCont
     typist.type(value).pause().delete();
   });
 
-  watcher = scope.$watch('vm.contributors', function(current: IContributor, original: IContributor) {
-    angular.forEach(vm.contributors, function(contributor: IContributor) {
-      typist.type(contributor.login).pause().delete();
-    });
-  });
-
   scope.$on('$destroy', function () {
     watcher();
   });
