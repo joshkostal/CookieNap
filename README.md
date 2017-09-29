@@ -1,2 +1,3 @@
 # CookieNap
-CSE 361 Project. "Craigslist for textbooks"
+CSE 361 Project.
+"Craigslist for textbooks"
