@@ -6,7 +6,7 @@ namespace Server.Models
     {
         public int Price { get; set; }
 
-        public enum ConditionTypes { Great, Good, Poor}
+        public enum ConditionTypes { Great, Good, Okay, Poor}
 
         public ConditionTypes Condition { get; set; }
 
