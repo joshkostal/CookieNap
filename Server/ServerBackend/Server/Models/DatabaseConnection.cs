@@ -6,9 +6,9 @@ namespace Server.Models
 {
     public class DatabaseConnection
     {
-        private string databaseName = "cse.unl.edu";
-        private string userName = "user-name";
-        private string password = "fill-in-password";
+        private string databaseName = "cse.unl.edu"; //is this right? the database is actually called 'bhage' but it's on the cse server
+        private string userName = "bhage"; //cse sql username
+        private string password = "qmQ8jq"; //cse sql password
         private MySqlConnection connection = null;
 
         public DatabaseConnection()
