@@ -81,5 +81,39 @@ namespace Server.Models
             }
         }
         //find more at https://www.codeproject.com/Articles/43438/Connect-C-to-MySQL
+
+        public string RetrievePassword(string username)
+        {
+            string query = string.Format("SELECT HASHEDPASSWORD FROM PASSWORD WHERE USERNAME='{0}'", username);         //This is probably not right
+
+            if(this.OpenConnection)
+            {
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+
+                cmd.Prepare();
+                MySqlDataReader dr = cmd.ExecuteReader();
+                string password = dr["hashedpassword"];
+
+                dr.Close();
+                this.CloseConnection();
+            }
+            return password;
+        }
+
+        public void StorePassword(string username, string password)
+        {
+            string query = string.Format("INSERT INTO PASSWORD (hashedPassword) VALUE '{0}'", password);
+            //write query to connect row to the right user
+
+            if(this.OpenConnection)
+            {
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+
+                cmd.Prepare();
+                cmd.ExecuteNonQuery();
+
+                this.CloseConnection();
+            }
+        }
     }
 }

@@ -5,8 +5,12 @@
     "\\Server\\ServerBackend",
     "\\Server\\ServerBackend\\Server",
     "\\Server\\ServerBackend\\Server\\Controllers",
-    "\\Server\\ServerBackend\\Server\\Models"
+    "\\Server\\ServerBackend\\Server\\obj",
+    "\\Server\\ServerBackend\\Server\\obj\\Debug",
+    "\\Server\\ServerBackend\\Server\\obj\\Debug\\netcoreapp2.0",
+    "\\Server\\ServerBackend\\Server\\obj\\Release",
+    "\\Server\\ServerBackend\\Server\\obj\\Release\\netcoreapp2.0"
   ],
-  "SelectedNode": "\\Server\\ServerBackend\\Server\\Models\\User.cs",
+  "SelectedNode": "\\Server\\ServerBackend\\ServerBackend.sln",
   "PreviewInSolutionExplorer": false
 }
