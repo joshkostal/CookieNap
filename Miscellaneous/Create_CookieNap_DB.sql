@@ -5,21 +5,21 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Schema CookieNap_DB
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Schema CookieNap_DB
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
-USE `mydb` ;
+CREATE SCHEMA IF NOT EXISTS `CookieNap_DB` DEFAULT CHARACTER SET utf8 ;
+USE `CookieNap_DB` ;
 
 -- -----------------------------------------------------
--- Table `mydb`.`User`
+-- Table `CookieNap_DB`.`User`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`User` ;
+DROP TABLE IF EXISTS `CookieNap_DB`.`User` ;
 
-CREATE TABLE IF NOT EXISTS `mydb`.`User` (
+CREATE TABLE IF NOT EXISTS `CookieNap_DB`.`User` (
   `UserId` INT NOT NULL,
   `FirstName` VARCHAR(45) NULL,
   `LastName` VARCHAR(45) NULL,
@@ -32,11 +32,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Listing`
+-- Table `CookieNap_DB`.`Listing`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`Listing` ;
+DROP TABLE IF EXISTS `CookieNap_DB`.`Listing` ;
 
-CREATE TABLE IF NOT EXISTS `mydb`.`Listing` (
+CREATE TABLE IF NOT EXISTS `CookieNap_DB`.`Listing` (
   `ListingId` INT NOT NULL,
   `Price` DOUBLE NULL,
   `BookISBN` VARCHAR(45) NULL,
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Listing` (
   INDEX `fk_Listing_User_idx` (`User_UserId` ASC),
   CONSTRAINT `fk_Listing_User`
     FOREIGN KEY (`User_UserId`)
-    REFERENCES `mydb`.`User` (`UserId`)
+    REFERENCES `CookieNap_DB`.`User` (`UserId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
