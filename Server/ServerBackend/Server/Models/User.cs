@@ -4,13 +4,13 @@ namespace Server.Models
 {
     public class User
     {
-        public User CreateUser(string Username, string FirstName, string LastName, string PrimaryEmail, string SecondaryEmail, Password UserPassword)
+        public User(string Username, string FirstName, string LastName, string HuskerEmail, string CommunicationEmail, Password UserPassword)
         {
             Username = Username;
             FirstName = FirstName;
             LastName = LastName;
-            PrimaryEmail = PrimaryEmail;
-            SecondaryEmail = SecondaryEmail;
+            HuskerEmail = HuskerEmail;
+            CommunicationEmail = CommunicationEmail;
             UserPassword = UserPassword;
         }
         public string UserName { get; set; }
@@ -19,9 +19,9 @@ namespace Server.Models
 
         public string LastName { get; set; }
 
-        public string PrimaryEmail { get; set; }
+        public string HuskerEmail { get; set; }
 
-        public string SecondaryEmail { get; set; }
+        public string CommunicationEmail { get; set; }
 
         public Password UserPassword { get; set; }
 

@@ -4,7 +4,7 @@ namespace Server.Models
 {
     public class Listing
     {
-        public Listing CreateListing(int price, ConditionTypes condition, DateTime lastDateEdited, string ISBN, ListingTypes listingType)
+        public Listing(int price, ConditionTypes condition, DateTime lastDateEdited, string ISBN, ListingTypes listingType)
         {
             Price = price;
             Condition = condition;
