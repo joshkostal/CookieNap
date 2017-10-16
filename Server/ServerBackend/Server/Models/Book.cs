@@ -5,9 +5,9 @@ namespace Server.Models
 {
     public class Book
     {
-        public Book(string ISBN, List<Listing> listingsWithBook)
+        public Book(string isbn, List<Listing> listingsWithBook)
         {
-            ISBN = ISBN;
+            ISBN = isbn;
             ListingsWithBook = listingsWithBook;
         }
 

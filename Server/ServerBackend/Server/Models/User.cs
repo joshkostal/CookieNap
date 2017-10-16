@@ -4,7 +4,7 @@ namespace Server.Models
 {
     public class User
     {
-        public User(string Username, string FirstName, string LastName, string HuskerEmail, string CommunicationEmail, Password UserPassword)
+        public User(string Username, string FirstName, string LastName, string HuskerEmail, string CommunicationEmail, Password UserPassword, List<Listing> ListingsForUser)
         {
             Username = Username;
             FirstName = FirstName;
@@ -12,6 +12,7 @@ namespace Server.Models
             HuskerEmail = HuskerEmail;
             CommunicationEmail = CommunicationEmail;
             UserPassword = UserPassword;
+            ListingsForUser = ListingsForUser;
         }
         public string UserName { get; set; }
 
@@ -25,12 +26,12 @@ namespace Server.Models
 
         public Password UserPassword { get; set; }
 
+        public List<Listing> ListingsForUser { get; set; }
+
         public class Password
         {
             public string HashedPassword { get; set; }
             
-            public string Salt { get; set; }
-
             public bool VerifyPassword(string inputtedUsername, string inputtedPassword)
             {
                 DatabaseConnection dbc = new DatabaseConnection();
