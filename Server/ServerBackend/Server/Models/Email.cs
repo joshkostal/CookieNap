@@ -9,14 +9,14 @@ namespace Server.Models
     {
         private string emailAccount = "CookieNapServices@gmail.com";
         private string password = "c00kienap";
-        private string smtpClient = "smtp.google.com"
+        private string smtpClient = "smtp.google.com";
 
         public string SendRegistrationEmail(User recipient)
         {
-            MailMessage mail = new MailMessage();
+            MailMessage mail = new MailMessage();         //Confirm this is a valid Husker email
 
             mail.From = new MailAddress(emailAccount);
-            mail.To.Add(recipient.CommunicationEmail);
+            mail.To.Add(recipient.HuskerEmail);
             mail.Subject = "Cookie Nap Account Registration";
 
             string confirmationCode = Guid.NewGuid().ToString("n").Substring(0, 8);

@@ -1,4 +1,5 @@
 using System;
+using Server.Models;
 
 namespace Server.Models
 {
@@ -30,6 +31,11 @@ namespace Server.Models
 
         public class Password
         {
+            public Password(string hashedPassword)
+            {
+                HashedPassword = hashedPassword;
+            }
+
             public string HashedPassword { get; set; }
             
             public bool VerifyPassword(string inputtedUsername, string inputtedPassword)
