@@ -15,16 +15,23 @@ namespace Server.Models
             UserPassword = UserPassword;
             ListingsForUser = ListingsForUser;
         }
+        [Required]
         public string UserName { get; set; }
 
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
 
+        [Required]
+        [RegularExpression("^[a-zA-Z0-9]+@huskers.unl.edu$", ErrorMessage = "This is not a Husker email")]
         public string HuskerEmail { get; set; }
 
-        public string CommunicationEmail { get; set; }
+        [Required]
+        [DataType(DataType.EmailAddress)]
+        [EmailAddress]
+        public string CommunicationEmail { get; set; }  //Can use DataAnnotationsExtensions if we are using .Net 4.5
 
+        [Required]
         public Password UserPassword { get; set; }
 
         public List<Listing> ListingsForUser { get; set; }

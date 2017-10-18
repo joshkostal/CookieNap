@@ -10,7 +10,7 @@ namespace Server.Models
             ISBN = isbn;
             ListingsWithBook = listingsWithBook;
         }
-
+        [Required]
         public string ISBN { get; set; }
 
         public List<Listing> ListingsWithBook { get; set; }

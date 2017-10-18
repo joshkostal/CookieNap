@@ -17,16 +17,21 @@ namespace Server.Models
         public enum ConditionTypes { Great, Good, Okay, Poor }
         public enum ListingTypes { Sell, Buy }
 
+        [Required]
         public int Price { get; set; }
 
+        [Required]
         public ConditionTypes Condition { get; set; }
 
         public DateTime LastDateEdited { get; set; }
 
+        [Required]
         public Book BookListed { get; set; }
 
+        //[Required]
         public ListingTypes ListingType { get; set; }
 
+        [Required]
         public User ListingCreator { get; set; }
     }
 }
