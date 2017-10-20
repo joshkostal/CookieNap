@@ -7,9 +7,9 @@ namespace Server.Models
 {
     public class DatabaseConnection
     {
-        private string databaseName = "bhage";
-        private string userName = "bhage";
-        private string password = "qmQ8jq";
+        private string databaseName = "cse.unl.edu";
+        private string userName = "user-name";
+        private string password = "fill-in-password";
         private MySqlConnection connection = null;
 
         public DatabaseConnection()
@@ -24,7 +24,7 @@ namespace Server.Models
 
         public void Initialize()
         {
-            string connstring = string.Format("Server=cse.unl.edu; database={0}; UID={1}; password={2}", databaseName, userName, password);
+            string connstring = string.Format("Server=localhost; database={0}; UID={1}; password={2}", databaseName, userName, password);
             connection = new MySqlConnection(connstring);
         }
 
