@@ -56,13 +56,17 @@ namespace Server.Models
             mail.To.Add(recipient.CommunicationEmail);
             mail.Subject = "Reset Your Cookie Nap Password";
 
-            mail.Body = "You have requested to have your password reset. <a href='url'>Please click here to reset the password.</a>";   //enter correct url when ready
+            string url = "";    //fill in
+
+            mail.Body = string.Format("You have requested to have your password reset. <a href='{0}'>Please click here to reset the password.</a>", url);
             mail.IsBodyHtml = true;
 
             SmtpClient smtp = new SmtpClient(smtpClient, 587);
             smtp.Credentials = new NetworkCredential(emailAccount, password);
             smtp.EnableSsl = true;
             smtp.Send(mail);
+
+            return url;
         }
     }
 }

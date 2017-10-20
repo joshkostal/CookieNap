@@ -82,6 +82,16 @@ namespace Server.Models
         }
         //find more at https://www.codeproject.com/Articles/43438/Connect-C-to-MySQL
 
+        public void DeleteListing(Listing listing)
+        {
+
+        }
+
+        public void DeleteUser(User user)
+        {
+
+        }
+
         public string RetrievePassword(string username)
         {
             string query = string.Format("SELECT HASHEDPASSWORD FROM PASSWORD WHERE USERNAME='{0}'", username);         //This is probably not right
