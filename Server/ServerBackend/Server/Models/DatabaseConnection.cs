@@ -6,9 +6,9 @@ namespace Server.Models
 {
     public class DatabaseConnection
     {
-        private string databaseName = "cse.unl.edu";
-        private string userName = "user-name";
-        private string password = "fill-in-password";
+        private string databaseName = "bhage";
+        private string userName = "bhage";
+        private string password = "qmQ8jq";
         private MySqlConnection connection = null;
 
         public DatabaseConnection()
@@ -23,7 +23,7 @@ namespace Server.Models
 
         public void Initialize()
         {
-            string connstring = string.Format("Server=localhost; database={0}; UID={1}; password={2}", databaseName, userName, password);
+            string connstring = string.Format("Server=cse.unl.edu; database={0}; UID={1}; password={2}", databaseName, userName, password);
             connection = new MySqlConnection(connstring);
         }
 
@@ -39,9 +39,11 @@ namespace Server.Models
             return true;
         }
 
-        public void SampleInsert(string value1, string value2)
+        public void InsertUser(User user)
         {
-            string query = string.Format("INSERT INTO table-name (col1, col2) VALUES ('{0}', '{1}')", value1, value2);
+            //We need to protect against SQL injection!! I don't think this method does that.
+            //Is this syntax right?
+            string query = string.Format("INSERT INTO User (FirstName, LastName, UserName, PrimaryEmailAddress, SecondaryEmailAddress, HashedPassword) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')", user.FirstName.get, user.LastName.get, user.UserName.get, user.CommunicationEmail.get, user.HuskerEmail.get, user.UserPassword.get);
             if(this.OpenConnection)
             {
                 MySqlCommand cmd = new MySqlCommand(query, connection);
