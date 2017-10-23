@@ -71,11 +71,21 @@ namespace Server.Models
 
         public void DeleteUserByUsername(string userName) //deletes by a certain username. Can be modified to delete by other fields
         {
-            string query = string.Format("DELETE FROM User WHERE UserName='{0}'", userName);
             if(this.OpenConnection)
             {
+                string query1 = string.Format("SELECT UserId FROM User WHERE UserName='{0}'", userName);
                 MySqlCommand cmd = new MySqlCommand(query, connection);
+                cmd.Prepare();
+                MySqlDataReader dr = cmd.ExecuteReader();
+                string userID = dr[0];
 
+                string query2 = string.Format("DELETE FROM Listing WHERE Listing.User_UserId='{0}'", userID);
+                cmd = new MySqlCommand(query2, connection);
+                cmd.Prepare();
+                cmd.ExecuteNonQuery();
+
+                string query3 = string.Format("DELETE FROM User WHERE UserName='{0}'", userName);
+                cmd = new MySqlCommand(query3, connection);
                 cmd.Prepare();
                 cmd.ExecuteNonQuery();
 
@@ -88,7 +98,6 @@ namespace Server.Models
             deleteUserByUsername(user.UserName);
         }
 
-        //TODO: How can we get back the ListingId that the inserted listing gets assigned? This needs to get set to listing.ListingID to better track individual listings, otherwise no way to track individually
         public Listing InsertListing(Listing listing)
         {
             //Convert listing type to boolean for the database
@@ -105,6 +114,8 @@ namespace Server.Models
 
                 cmd.Prepare();
                 cmd.ExecuteNonQuery();
+                listing.ListingID = cmd.LastInsertedID;
+                listing.LastDateEdited = DateTime.Today;
 
                 this.CloseConnection();
             }
@@ -113,7 +124,7 @@ namespace Server.Models
 
         //TODO: Do we need an Update Listing function?
         //Yes, I think we should allow users to update the price
-        public void UpdateBookPrice(Listing listing)
+        public Listing UpdateBookPrice(Listing listing)
         {
             string query = string.Format("UPDATE Listing SET Price='{0}' WHERE ListingID='{1}'", listing.Price, listing.ListingID);
             if (this.OpenConnection)
@@ -125,6 +136,8 @@ namespace Server.Models
 
                 this.CloseConnection();
             }
+            listing.LastDateEdited = DateTime.Today;
+            return listing;
         }
 
         public void DeleteListingByID(Listing listing) //deletes by a certain username. Can be modified to delete by other fields
@@ -144,6 +157,20 @@ namespace Server.Models
         public void DeleteListingByDate(DateTime date) //deletes by a certain username. Can be modified to delete by other fields
         {
             string query = string.Format("DELETE FROM Listing WHERE Listing.LastEditedDate='{0}'", date);
+            if (this.OpenConnection)
+            {
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+
+                cmd.Prepare();
+                cmd.ExecuteNonQuery();
+
+                this.CloseConnection();
+            }
+        }
+
+        public void DeleteListingsPastDeletionDate()
+        {
+            string query = "DELETE FROM Listing WHERE Listing.LastEditedDate >= DATE_SUB(CURDATE(), INTERVAL 45 DAY)";
             if (this.OpenConnection)
             {
                 MySqlCommand cmd = new MySqlCommand(query, connection);
@@ -220,17 +247,17 @@ namespace Server.Models
                 cmd.Prepare();
                 MySqlDataReader dr = cmd.ExecuteReader();
 
-                query = string.Format("SELECT Price, BookISBN, Condition, IsSelling FROM Listing WHERE ListingId='{0}'", listingID);
+                string listingID = dr[0];
+                query = string.Format("SELECT Price, BookISBN, Condition, IsSelling FROM Listing WHERE Listing.User_UserID='{0}'", listingID);
 
-                while(dr.Read())
+                cmd = new MySqlCommand(query, connection);
+
+                cmd.Prepare();
+                MySqlDataReader rdr = cmd.ExecuteReader();
+
+                while(rdr.Read())
                 {
-                    string listingID = dr.ToString();
                     Listing listing = new Listing();
-
-                    cmd = new MySqlCommand(query, connection);
-
-                    cmd.Prepare();
-                    MySqlDataReader rdr = cmd.ExecuteReader();
 
                     listing.Price = rdr[0];
                     listing.BookListed = Book.QueryISBN(rdr[1]);
@@ -240,6 +267,7 @@ namespace Server.Models
                     user.ListingsForUser.Add(listing);
                 }
                 dr.Close();
+                rdr.Close();
                 this.CloseConnection();
             }
             return user;

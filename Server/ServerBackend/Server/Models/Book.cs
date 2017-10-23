@@ -23,7 +23,11 @@ namespace Server.Models
 
         public Book QueryISBN(string isbn)
         {
+            Book book = new Book();
+            book.ISBN = isbn;
             //Fill in
+
+            return book;
         }
     }
 }
