@@ -34,6 +34,6 @@ namespace Server.Models
         [Required]
         public User ListingCreator { get; set; }
 
-        public int ListingID {get; set; }
+        public int ListingID { get; set; }
     }
 }

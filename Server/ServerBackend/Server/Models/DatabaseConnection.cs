@@ -1,6 +1,7 @@
 using MySql.Data;
 using MySql.Data.MySqlClient;
 using System;
+using System.Collections.Generic;
 
 namespace Server.Models
 {
@@ -155,6 +156,31 @@ namespace Server.Models
         }
 
         //TODO: Needs to be checked
+        public List<Book> FindBooksListed()
+        {
+            List<Book> booksListed = new List<Book>();
+            string query = "SELECT DISTINCT BookISBN FROM Listing";
+
+            if(this.OpenConnection)
+            {
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+
+                cmd.Prepare();
+                MySqlDataReader dr = cmd.ExecuteReader();
+
+                while(dr.Read())
+                {
+                    Book book = new Book();
+                    book = book.QueryISBN(dr[0]);
+                    booksListed.Add(book);
+                }
+                dr.Close();
+                this.CloseConnection();
+            }
+            return booksListed;
+        }
+
+        //TODO: Needs to be checked
         public Book SetListingsForBook(Book book)
         {
             string query = string.Format("SELECT Price, Condition, IsSelling FROM Listing WHERE BookISBN='{0}'", book.ISBN);
@@ -166,10 +192,9 @@ namespace Server.Models
                 cmd.Prepare();
                 MySqlDataReader dr = cmd.ExecuteReader();
 
-                Listing listing = new Listing();
-
                 while(dr.Read())
                 {
+                    Listing listing = new Listing();
                     listing.Price = dr[0];
                     listing.Condition = dr[1];
                     listing.ListingType = dr[2] == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy;
@@ -195,13 +220,12 @@ namespace Server.Models
                 cmd.Prepare();
                 MySqlDataReader dr = cmd.ExecuteReader();
 
-                string listingID = null;
-                Listing listing = new Listing();
                 query = string.Format("SELECT Price, BookISBN, Condition, IsSelling FROM Listing WHERE ListingId='{0}'", listingID);
 
                 while(dr.Read())
                 {
-                    listingID = dr.ToString();
+                    string listingID = dr.ToString();
+                    Listing listing = new Listing();
 
                     cmd = new MySqlCommand(query, connection);
 
@@ -258,8 +282,7 @@ namespace Server.Models
 
         public bool CheckUniqueUsername(string username)
         {
-            bool usernameFound = null;
-
+            bool usernameFound = true;
             string query = string.Format("SELECT COUNT(*) FROM USER WHERE User.Username='{0}'", username);
 
             if(this.OpenConnection)
@@ -271,11 +294,32 @@ namespace Server.Models
                 if (result != null)
                 {
                     int usernamesFound = Convert.ToInt32(result);
-                    usernameFound = usernamesFound > 0 ? true : false;
+                    usernameFound = usernamesFound == 0 ? false : true;
                 }
                 this.CloseConnection();
             }
-            return usernameFound;
+            return !usernameFound;
+        }
+
+        public bool CheckUniqueHuskerEmail(string huskerEmail)
+        {
+            bool emailFound = true;
+            string query = string.Format("SELECT COUNT(*) FROM USER WHERE User.PrimaryEmailAddress='{0}'", huskerEmail);
+
+            if(this.OpenConnection)
+            {
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+
+                cmd.Prepare();
+                object result = cmd.ExecuteScalar();
+                if (result != null)
+                {
+                    int emailsFound = Convert.ToInt32(result);
+                    emailFound = emailsFound == 0 ? false : true;
+                }
+                this.CloseConnection();
+            }
+            return !emailFound;
         }
     }
 }
