@@ -55,7 +55,7 @@ namespace Server.Models
             }
         }
 
-        public void UpdateEmails(string primaryEmail, string secondaryEmail, string userName) //Should we use the user id or username? --probably doesn't matter, username will be unique
+        public void UpdateEmails(string primaryEmail, string secondaryEmail, string userName) //Should we use the user id or username? --probably doesn't matter, both will be unique
         {
             string query = string.Format("UPDATE User SET PrimaryEmailAddress='{0}', SecondaryEmailAddress='{1}' WHERE UserName='{2}'", primaryEmail, secondaryEmail, userName);
             if(this.OpenConnection)
@@ -69,7 +69,7 @@ namespace Server.Models
             }
         }
 
-        public void deleteUserByUsername(string userName) //deletes by a certain username. Can be modified to delete by other fields
+        public void DeleteUserByUsername(string userName) //deletes by a certain username. Can be modified to delete by other fields
         {
             string query = string.Format("DELETE FROM User WHERE UserName='{0}'", userName);
             if(this.OpenConnection)
@@ -98,7 +98,7 @@ namespace Server.Models
                 isSelling = 1;
             }
 
-            string query = string.Format("INSERT INTO Listing (Price, BookISBN, Condition, IsSelling, User_UserId) VALUES ('{0}', '{1}', '{2}', '{3}', 'SELECT UserId FROM USER WHERE User.UserName = {4}')", listing.price, listing.bookListed.ISBN, listing.Condition, isSelling, listing.ListingCreator.Username);
+            string query = string.Format("INSERT INTO Listing (Price, BookISBN, Condition, IsSelling, User_UserId) VALUES ('{0}', '{1}', '{2}', '{3}', 'SELECT UserId FROM USER WHERE User.UserName = {4}')", listing.price, listing.bookListed.ISBN, listing.Condition.ToString(), isSelling, listing.ListingCreator.Username);
             if (this.OpenConnection)
             {
                 MySqlCommand cmd = new MySqlCommand(query, connection);
@@ -112,7 +112,7 @@ namespace Server.Models
         }
 
         //TODO: Do we need an Update Listing function?
-        //Yes, I think we should users to update the price
+        //Yes, I think we should allow users to update the price
         public void UpdateBookPrice(Listing listing)
         {
             string query = string.Format("UPDATE Listing SET Price='{0}' WHERE ListingID='{1}'", listing.Price, listing.ListingID);
@@ -127,9 +127,9 @@ namespace Server.Models
             }
         }
 
-        public void deleteSpecificListing(Listing listing) //deletes by a certain username. Can be modified to delete by other fields
+        public void DeleteListingByID(Listing listing) //deletes by a certain username. Can be modified to delete by other fields
         {
-            string query = string.Format("DELETE FROM Listing WHERE Listing.UserID='{0}' AND Listing.BookISBN = '{1}'", listing.listingCreator.UserName, listing.bookListed.ISBN);
+            string query = string.Format("DELETE FROM Listing WHERE Listing.ListingId='{0}'", listing.ListingID);
             if (this.OpenConnection)
             {
                 MySqlCommand cmd = new MySqlCommand(query, connection);
@@ -141,7 +141,7 @@ namespace Server.Models
             }
         }
 
-        public void deleteListingByDate(DateTime date) //deletes by a certain username. Can be modified to delete by other fields
+        public void DeleteListingByDate(DateTime date) //deletes by a certain username. Can be modified to delete by other fields
         {
             string query = string.Format("DELETE FROM Listing WHERE Listing.LastEditedDate='{0}'", date);
             if (this.OpenConnection)
@@ -196,7 +196,7 @@ namespace Server.Models
                 {
                     Listing listing = new Listing();
                     listing.Price = dr[0];
-                    listing.Condition = dr[1];
+                    listing.Condition = Listing.ConditionTypes(dr[1]);
                     listing.ListingType = dr[2] == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy;
                     listing.BookListed = book;
 
@@ -234,7 +234,7 @@ namespace Server.Models
 
                     listing.Price = rdr[0];
                     listing.BookListed = Book.QueryISBN(rdr[1]);
-                    listing.Condition = rdr[2];
+                    listing.Condition = Listing.ConditionTypes(rdr[2]);
                     listing.ListingType = rdr[3] == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy;
 
                     user.ListingsForUser.Add(listing);
@@ -267,7 +267,7 @@ namespace Server.Models
         //TODO: Make sure this query is right
         public void StorePassword(string username, string password)
         {
-            string query = string.Format("INSERT INTO USER (hashedPassword) VALUE '{0}' WHERE User.Username='{1}'", password, username);
+            string query = string.Format("Update USER SET HashedPassword = VALUE '{0}' WHERE User.Username='{1}'", password, username);
 
             if(this.OpenConnection)
             {
