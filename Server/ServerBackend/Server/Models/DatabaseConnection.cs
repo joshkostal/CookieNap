@@ -42,8 +42,7 @@ namespace Server.Models
         public void InsertUser(User user)
         {
             //We need to protect against SQL injection!! I don't think this method does that.
-            //Is this syntax right?
-            string query = string.Format("INSERT INTO User (FirstName, LastName, UserName, PrimaryEmailAddress, SecondaryEmailAddress, HashedPassword) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')", user.FirstName.get, user.LastName.get, user.UserName.get, user.CommunicationEmail.get, user.HuskerEmail.get, user.UserPassword.get);
+            string query = string.Format("INSERT INTO User (FirstName, LastName, UserName, PrimaryEmailAddress, SecondaryEmailAddress, HashedPassword) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')", user.FirstName, user.LastName, user.UserName, user.CommunicationEmail, user.HuskerEmail, user.UserPassword);
             if(this.OpenConnection)
             {
                 MySqlCommand cmd = new MySqlCommand(query, connection);
@@ -55,9 +54,9 @@ namespace Server.Models
             }
         }
 
-        public void SampleUpdate(string value1, string value2, string value3)
+        public void UpdateEmails(string primaryEmail, string secondaryEmail, string userName) //Should we use the user id or username?
         {
-            string query = string.Format("UPDATE table-name SET col1='{0}', col2='{1}' WHERE col3='{2}'", value1, value2, value3);
+            string query = string.Format("UPDATE User SET PrimaryEmailAddress='{0}', SecondaryEmailAddress='{1}' WHERE UserName='{2}'", primaryEmail, secondaryEmail, userName);
             if(this.OpenConnection)
             {
                 MySqlCommand cmd = new MySqlCommand(query, connection);
@@ -69,9 +68,9 @@ namespace Server.Models
             }
         }
 
-        public void SampleDelete(string value1)
+        public void deleteUserByUsername(string userName) //deletes by a certain username. Can be modified to delete by other fields
         {
-            string query = string.Format("DELETE FROM table-name WHERE col1='{0}'", value1);
+            string query = string.Format("DELETE FROM User WHERE UserName='{0}'", userName);
             if(this.OpenConnection)
             {
                 MySqlCommand cmd = new MySqlCommand(query, connection);
@@ -84,19 +83,66 @@ namespace Server.Models
         }
         //find more at https://www.codeproject.com/Articles/43438/Connect-C-to-MySQL
 
-        public void DeleteListing(Listing listing)
+        public void InsertListing(Listing listing)
         {
+            //Convert listing type to boolean for the database
+            int isSelling = 0;
+            if(listing.ListingType == "Sell")
+            {
+                isSelling = 1;
+            }
 
+            string query = string.Format("INSERT INTO Listing (Price, BookISBN, Condition, IsSelling, User_UserId) VALUES ('{0}', '{1}', '{2}', '{3}', 'SELECT UserId FROM USER WHERE User.UserName = {4}')", listing.price, listing.bookListed.ISBN, listing.Condition, isSelling, listing.ListingCreator.Username);
+            if (this.OpenConnection)
+            {
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+
+                cmd.Prepare();
+                cmd.ExecuteNonQuery();
+
+                this.CloseConnection();
+            }
+        }
+
+        //TODO: Do we need an Update Listing function?
+
+        public void deleteSpecificListing(Listing listing) //deletes by a certain username. Can be modified to delete by other fields
+        {
+            string query = string.Format("DELETE FROM Listing WHERE Listing.UserID='{0}' AND Listing.BookISBN = '{1}'", listing.listingCreator.UserName, listing.bookListed.ISBN);
+            if (this.OpenConnection)
+            {
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+
+                cmd.Prepare();
+                cmd.ExecuteNonQuery();
+
+                this.CloseConnection();
+            }
+        }
+        //find more at https://www.codeproject.com/Articles/43438/Connect-C-to-MySQL
+
+        public void deleteListingByDate(DateTime date) //deletes by a certain username. Can be modified to delete by other fields
+        {
+            string query = string.Format("DELETE FROM Listing WHERE Listing.LastEditedDate='{0}'", date);
+            if (this.OpenConnection)
+            {
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+
+                cmd.Prepare();
+                cmd.ExecuteNonQuery();
+
+                this.CloseConnection();
+            }
         }
 
         public void DeleteUser(User user)
         {
-
+            deleteUserByUsername(user.UserName);
         }
 
         public string RetrievePassword(string username)
         {
-            string query = string.Format("SELECT HASHEDPASSWORD FROM PASSWORD WHERE USERNAME='{0}'", username);         //This is probably not right
+            string query = string.Format("SELECT HASHEDPASSWORD FROM User WHERE USERNAME='{0}'", username);         //This is probably not right
 
             if(this.OpenConnection)
             {
