@@ -1,10 +1,11 @@
 using System;
+using Server.Models;
 
 namespace Server.Models
 {
     public class User
     {
-        public User(string Username, string FirstName, string LastName, string HuskerEmail, string CommunicationEmail, Password UserPassword)
+        public User(string Username, string FirstName, string LastName, string HuskerEmail, string CommunicationEmail, Password UserPassword, List<Listing> ListingsForUser)
         {
             Username = Username;
             FirstName = FirstName;
@@ -12,25 +13,38 @@ namespace Server.Models
             HuskerEmail = HuskerEmail;
             CommunicationEmail = CommunicationEmail;
             UserPassword = UserPassword;
+            ListingsForUser = ListingsForUser;
         }
+        [Required]
         public string UserName { get; set; }
 
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
 
+        [Required]
+        [RegularExpression("^[a-zA-Z0-9]+@huskers.unl.edu$", ErrorMessage = "This is not a Husker email")]
         public string HuskerEmail { get; set; }
 
-        public string CommunicationEmail { get; set; }
+        [Required]
+        [DataType(DataType.EmailAddress)]
+        [EmailAddress]
+        public string CommunicationEmail { get; set; }  //Can use DataAnnotationsExtensions if we are using .Net 4.5
 
+        [Required]
         public Password UserPassword { get; set; }
+
+        public List<Listing> ListingsForUser { get; set; }
 
         public class Password
         {
+            public Password(string hashedPassword)
+            {
+                HashedPassword = hashedPassword;
+            }
+
             public string HashedPassword { get; set; }
             
-            public string Salt { get; set; }
-
             public bool VerifyPassword(string inputtedUsername, string inputtedPassword)
             {
                 DatabaseConnection dbc = new DatabaseConnection();

@@ -5,17 +5,23 @@ namespace Server.Models
 {
     public class Book
     {
-        public Book(string ISBN, List<Listing> listingsWithBook)
+        public Book(string isbn, List<Listing> listingsWithBook)
         {
-            ISBN = ISBN;
+            ISBN = isbn;
             ListingsWithBook = listingsWithBook;
         }
-
+        [Required]
         public string ISBN { get; set; }
+
+        public string Author { get; set; }
+
+        public string Title { get; set; }
+
+        public string ThumbnailURL { get; set; }
 
         public List<Listing> ListingsWithBook { get; set; }
 
-        public IDictionary<string, string> QueryISBN(string isbn)
+        public Book QueryISBN(string isbn)
         {
             //Fill in
         }
