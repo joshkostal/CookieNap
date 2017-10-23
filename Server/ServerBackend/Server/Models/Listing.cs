@@ -18,7 +18,7 @@ namespace Server.Models
         public enum ListingTypes { Sell, Buy }
 
         [Required]
-        public int Price { get; set; }
+        public double Price { get; set; }
 
         [Required]
         public ConditionTypes Condition { get; set; }
@@ -33,5 +33,7 @@ namespace Server.Models
 
         [Required]
         public User ListingCreator { get; set; }
+
+        public int ListingID {get; set; }
     }
 }

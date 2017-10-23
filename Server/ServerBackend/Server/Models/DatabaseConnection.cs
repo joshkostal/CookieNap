@@ -54,7 +54,7 @@ namespace Server.Models
             }
         }
 
-        public void UpdateEmails(string primaryEmail, string secondaryEmail, string userName) //Should we use the user id or username?
+        public void UpdateEmails(string primaryEmail, string secondaryEmail, string userName) //Should we use the user id or username? --probably doesn't matter, username will be unique
         {
             string query = string.Format("UPDATE User SET PrimaryEmailAddress='{0}', SecondaryEmailAddress='{1}' WHERE UserName='{2}'", primaryEmail, secondaryEmail, userName);
             if(this.OpenConnection)
@@ -81,9 +81,14 @@ namespace Server.Models
                 this.CloseConnection();
             }
         }
-        //find more at https://www.codeproject.com/Articles/43438/Connect-C-to-MySQL
+        
+        public void DeleteUser(User user)
+        {
+            deleteUserByUsername(user.UserName);
+        }
 
-        public void InsertListing(Listing listing)
+        //TODO: How can we get back the ListingId that the inserted listing gets assigned? This needs to get set to listing.ListingID to better track individual listings, otherwise no way to track individually
+        public Listing InsertListing(Listing listing)
         {
             //Convert listing type to boolean for the database
             int isSelling = 0;
@@ -102,9 +107,24 @@ namespace Server.Models
 
                 this.CloseConnection();
             }
+            return listing;
         }
 
         //TODO: Do we need an Update Listing function?
+        //Yes, I think we should users to update the price
+        public void UpdateBookPrice(Listing listing)
+        {
+            string query = string.Format("UPDATE Listing SET Price='{0}' WHERE ListingID='{1}'", listing.Price, listing.ListingID);
+            if (this.OpenConnection)
+            {
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+
+                cmd.Prepare();
+                cmd.ExecuteNonQuery();
+
+                this.CloseConnection();
+            }
+        }
 
         public void deleteSpecificListing(Listing listing) //deletes by a certain username. Can be modified to delete by other fields
         {
@@ -119,7 +139,6 @@ namespace Server.Models
                 this.CloseConnection();
             }
         }
-        //find more at https://www.codeproject.com/Articles/43438/Connect-C-to-MySQL
 
         public void deleteListingByDate(DateTime date) //deletes by a certain username. Can be modified to delete by other fields
         {
@@ -135,11 +154,7 @@ namespace Server.Models
             }
         }
 
-        public void DeleteUser(User user)
-        {
-            deleteUserByUsername(user.UserName);
-        }
-
+        //TODO: Needs to be finished
         public Book SetListingsForBook(Book book)
         {
             string query = string.Format("SELECT HASHEDPASSWORD FROM PASSWORD WHERE USERNAME='{0}'", username);         //This is definitely not right
@@ -159,6 +174,7 @@ namespace Server.Models
             return book;
         }
 
+        //TODO: Needs to be finished
         public User SetListingsForUser(User user)
         {
             string query = string.Format("SELECT HASHEDPASSWORD FROM PASSWORD WHERE USERNAME='{0}'", username);         //This is definitely not right
@@ -178,9 +194,10 @@ namespace Server.Models
             return user;
         }
 
+        //TODO: Make sure this is right
         public string RetrievePassword(string username)
         {
-            string query = string.Format("SELECT HASHEDPASSWORD FROM User WHERE USERNAME='{0}'", username);         //This is probably not right
+            string query = string.Format("SELECT Hashedpassword FROM USER WHERE User.Username='{0}'", username);
 
             if(this.OpenConnection)
             {
@@ -196,10 +213,10 @@ namespace Server.Models
             return password;
         }
 
+        //TODO: Make sure this query is right
         public void StorePassword(string username, string password)
         {
-            string query = string.Format("INSERT INTO PASSWORD (hashedPassword) VALUE '{0}'", password);
-            //write query to connect row to the right user
+            string query = string.Format("INSERT INTO USER (hashedPassword) VALUE '{0}' WHERE User.Username='{1}'", password, username);
 
             if(this.OpenConnection)
             {
@@ -210,6 +227,28 @@ namespace Server.Models
 
                 this.CloseConnection();
             }
+        }
+
+        public bool CheckUniqueUsername(string username)
+        {
+            bool usernameFound = null;
+
+            string query = string.Format("SELECT COUNT(*) FROM USER WHERE User.Username='{0}'", username);
+
+            if(this.OpenConnection)
+            {
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+
+                cmd.Prepare();
+                object result = cmd.ExecuteScalar();
+                if (result != null)
+                {
+                    int usernamesFound = Convert.ToInt32(result);
+                    usernameFound = usernamesFound > 0 ? true : false;
+                }
+                this.CloseConnection();
+            }
+            return usernameFound;
         }
     }
 }
