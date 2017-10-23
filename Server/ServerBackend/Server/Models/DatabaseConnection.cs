@@ -92,7 +92,7 @@ namespace Server.Models
         {
             //Convert listing type to boolean for the database
             int isSelling = 0;
-            if(listing.ListingType == "Sell")
+            if(listing.ListingType == Listing.ListingTypes.Sell)
             {
                 isSelling = 1;
             }
@@ -154,10 +154,10 @@ namespace Server.Models
             }
         }
 
-        //TODO: Needs to be finished
+        //TODO: Needs to be checked
         public Book SetListingsForBook(Book book)
         {
-            string query = string.Format("SELECT HASHEDPASSWORD FROM PASSWORD WHERE USERNAME='{0}'", username);         //This is definitely not right
+            string query = string.Format("SELECT Price, Condition, IsSelling FROM Listing WHERE BookISBN='{0}'", book.ISBN);
 
             if(this.OpenConnection)
             {
@@ -165,19 +165,28 @@ namespace Server.Models
 
                 cmd.Prepare();
                 MySqlDataReader dr = cmd.ExecuteReader();
-                string password = dr["hashedpassword"];
 
+                Listing listing = new Listing();
+
+                while(dr.Read())
+                {
+                    listing.Price = dr[0];
+                    listing.Condition = dr[1];
+                    listing.ListingType = dr[2] == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy;
+                    listing.BookListed = book;
+
+                    user.ListingsForUser.Add(listing);
+                }
                 dr.Close();
                 this.CloseConnection();
             }
-            //book.ListingsWithBook = ;
-            return book;
+            return user;
         }
 
-        //TODO: Needs to be finished
+        //TODO: Needs to be checked
         public User SetListingsForUser(User user)
         {
-            string query = string.Format("SELECT HASHEDPASSWORD FROM PASSWORD WHERE USERNAME='{0}'", username);         //This is definitely not right
+            string query = string.Format("SELECT UserId FROM User WHERE User.username='{0}'", user.UserName);
 
             if(this.OpenConnection)
             {
@@ -185,19 +194,37 @@ namespace Server.Models
 
                 cmd.Prepare();
                 MySqlDataReader dr = cmd.ExecuteReader();
-                string password = dr["hashedpassword"];
 
+                string listingID = null;
+                Listing listing = new Listing();
+                query = string.Format("SELECT Price, BookISBN, Condition, IsSelling FROM Listing WHERE ListingId='{0}'", listingID);
+
+                while(dr.Read())
+                {
+                    listingID = dr.ToString();
+
+                    cmd = new MySqlCommand(query, connection);
+
+                    cmd.Prepare();
+                    MySqlDataReader rdr = cmd.ExecuteReader();
+
+                    listing.Price = rdr[0];
+                    listing.BookListed = Book.QueryISBN(rdr[1]);
+                    listing.Condition = rdr[2];
+                    listing.ListingType = rdr[3] == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy;
+
+                    user.ListingsForUser.Add(listing);
+                }
                 dr.Close();
                 this.CloseConnection();
             }
-            //user.ListingsForUser = ;
             return user;
         }
 
         //TODO: Make sure this is right
         public string RetrievePassword(string username)
         {
-            string query = string.Format("SELECT Hashedpassword FROM USER WHERE User.Username='{0}'", username);
+            string query = string.Format("SELECT Hashedpassword FROM User WHERE User.Username='{0}'", username);
 
             if(this.OpenConnection)
             {
@@ -205,7 +232,7 @@ namespace Server.Models
 
                 cmd.Prepare();
                 MySqlDataReader dr = cmd.ExecuteReader();
-                string password = dr["hashedpassword"];
+                string password = dr[0];
 
                 dr.Close();
                 this.CloseConnection();

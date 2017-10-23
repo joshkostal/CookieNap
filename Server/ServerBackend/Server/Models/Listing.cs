@@ -28,7 +28,7 @@ namespace Server.Models
         [Required]
         public Book BookListed { get; set; }
 
-        //[Required]
+        [Required]
         public ListingTypes ListingType { get; set; }
 
         [Required]

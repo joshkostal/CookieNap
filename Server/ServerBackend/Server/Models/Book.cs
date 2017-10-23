@@ -13,6 +13,12 @@ namespace Server.Models
         [Required]
         public string ISBN { get; set; }
 
+        public string Author { get; set; }
+
+        public string Title { get; set; }
+
+        public string ThumbnailURL { get; set; }
+
         public List<Listing> ListingsWithBook { get; set; }
 
         public Book QueryISBN(string isbn)
