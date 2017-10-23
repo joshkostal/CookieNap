@@ -19,16 +19,18 @@ namespace Server.Models
             mail.To.Add(recipient.HuskerEmail);
             mail.Subject = "Cookie Nap Account Registration";
 
-            string confirmationCode = Guid.NewGuid().ToString("n").Substring(0, 8);
-            mail.Body = string.Format("Welcome to Cookie Nap! Here is your confirmation code: {0}", confirmationCode);    //When creating an account, go to window to enter this code after click 'register'
-            mail.IsBodyHtml = false;
+            string randomChars = Guid.NewGuid().ToString("n").Substring(0, 8);
+            string url = string.Format("www.cookienap.com/reset/{0}", randomChars);    //will need to change url after deployment to real url
+            
+            mail.Body = string.Format("Welcome to Cookie Nap! <a href='{0}'>Please click here to complete your account registration.</a>", url);
+            mail.IsBodyHtml = true;
 
             SmtpClient smtp = new SmtpClient(smtpClient, 587);
             smtp.Credentials = new NetworkCredential(emailAccount, password);
             smtp.EnableSsl = true;
             smtp.Send(mail);
 
-            return confirmationCode;
+            return url;
         }
 
         public void UserRequestedInfoEmail(User recipient, Listing listing)
@@ -56,7 +58,8 @@ namespace Server.Models
             mail.To.Add(recipient.CommunicationEmail);
             mail.Subject = "Reset Your Cookie Nap Password";
 
-            string url = "";    //fill in
+            string randomChars = Guid.NewGuid().ToString("n").Substring(0, 8);
+            string url = string.Format("www.cookienap.com/reset/{0}", randomChars);    //will need to change url after deployment to real url
 
             mail.Body = string.Format("You have requested to have your password reset. <a href='{0}'>Please click here to reset the password.</a>", url);
             mail.IsBodyHtml = true;
