@@ -140,6 +140,44 @@ namespace Server.Models
             deleteUserByUsername(user.UserName);
         }
 
+        public Book SetListingsForBook(Book book)
+        {
+            string query = string.Format("SELECT HASHEDPASSWORD FROM PASSWORD WHERE USERNAME='{0}'", username);         //This is definitely not right
+
+            if(this.OpenConnection)
+            {
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+
+                cmd.Prepare();
+                MySqlDataReader dr = cmd.ExecuteReader();
+                string password = dr["hashedpassword"];
+
+                dr.Close();
+                this.CloseConnection();
+            }
+            //book.ListingsWithBook = ;
+            return book;
+        }
+
+        public User SetListingsForUser(User user)
+        {
+            string query = string.Format("SELECT HASHEDPASSWORD FROM PASSWORD WHERE USERNAME='{0}'", username);         //This is definitely not right
+
+            if(this.OpenConnection)
+            {
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+
+                cmd.Prepare();
+                MySqlDataReader dr = cmd.ExecuteReader();
+                string password = dr["hashedpassword"];
+
+                dr.Close();
+                this.CloseConnection();
+            }
+            //user.ListingsForUser = ;
+            return user;
+        }
+
         public string RetrievePassword(string username)
         {
             string query = string.Format("SELECT HASHEDPASSWORD FROM User WHERE USERNAME='{0}'", username);         //This is probably not right

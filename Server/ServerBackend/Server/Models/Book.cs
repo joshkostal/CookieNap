@@ -15,7 +15,7 @@ namespace Server.Models
 
         public List<Listing> ListingsWithBook { get; set; }
 
-        public IDictionary<string, string> QueryISBN(string isbn)
+        public Book QueryISBN(string isbn)
         {
             //Fill in
         }
