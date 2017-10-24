@@ -1,4 +1,3 @@
-using MySql.Data;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -55,7 +54,7 @@ namespace Server.Models
             }
         }
 
-        public void UpdateEmails(string primaryEmail, string secondaryEmail, string userName) //Should we use the user id or username? --probably doesn't matter, both will be unique
+        public void UpdateEmails(string primaryEmail, string secondaryEmail, string userName)
         {
             string query = string.Format("UPDATE User SET PrimaryEmailAddress='{0}', SecondaryEmailAddress='{1}' WHERE UserName='{2}'", primaryEmail, secondaryEmail, userName);
             if(this.OpenConnection())
@@ -138,7 +137,7 @@ namespace Server.Models
             return listing;
         }
 
-        public void DeleteListingByID(Listing listing) //deletes by a certain username. Can be modified to delete by other fields
+        public void DeleteListingByID(Listing listing)
         {
             string query = string.Format("DELETE FROM Listing WHERE Listing.ListingId='{0}'", listing.ListingID);
             if (this.OpenConnection())
@@ -152,7 +151,7 @@ namespace Server.Models
             }
         }
 
-        public void DeleteListingByDate(DateTime date) //deletes by a certain username. Can be modified to delete by other fields
+        public void DeleteListingByDate(DateTime date)
         {
             string query = string.Format("DELETE FROM Listing WHERE Listing.LastEditedDate='{0}'", date);
             if (this.OpenConnection())
