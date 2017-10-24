@@ -1,19 +1,21 @@
 using System;
-using Server.Models;
+using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
+using System.Security.Cryptography;
 
 namespace Server.Models
 {
     public class User
     {
-        public User(string Username, string FirstName, string LastName, string HuskerEmail, string CommunicationEmail, Password UserPassword, List<Listing> ListingsForUser)
+        public User(string username, string firstName, string lastName, string huskerEmail, string communicationEmail, Password userPassword, List<Listing> listingsForUser)
         {
-            Username = Username;
-            FirstName = FirstName;
-            LastName = LastName;
-            HuskerEmail = HuskerEmail;
-            CommunicationEmail = CommunicationEmail;
-            UserPassword = UserPassword;
-            ListingsForUser = ListingsForUser;
+            UserName = username;
+            FirstName = firstName;
+            LastName = lastName;
+            HuskerEmail = huskerEmail;
+            CommunicationEmail = communicationEmail;
+            UserPassword = userPassword;
+            ListingsForUser = listingsForUser;
         }
         [Required]
         public string UserName { get; set; }
@@ -82,7 +84,7 @@ namespace Server.Models
                 new RNGCryptoServiceProvider().GetBytes(salt = new byte[16]);
 
                 var hash = new Rfc2898DeriveBytes(inputtedPassword, salt, 10000);
-                byte hashedPassword = hash.GetBytes(20);
+                byte[] hashedPassword = hash.GetBytes(20);
 
                 var hashedAndSaltedPassword = new byte[36];
 
