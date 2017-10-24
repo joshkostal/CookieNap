@@ -43,12 +43,20 @@ namespace Server.Models
         public void InsertUser(User user)
         {
             //We need to protect against SQL injection!! I don't think this method does that.
-            string query = string.Format("INSERT INTO User (FirstName, LastName, UserName, PrimaryEmailAddress, SecondaryEmailAddress, HashedPassword) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')", user.FirstName, user.LastName, user.UserName, user.CommunicationEmail, user.HuskerEmail, user.UserPassword);
+            string query = string.Format("INSERT INTO User (FirstName, LastName, UserName, PrimaryEmailAddress, SecondaryEmailAddress, HashedPassword) VALUES (@Firstname, @Lastname, @Username, @PrimaryEmail, @SecondaryEmail, @HashedPassword)");
             if(this.OpenConnection)
             {
                 MySqlCommand cmd = new MySqlCommand(query, connection);
 
                 cmd.Prepare();
+                cmd.Parameters.AddWithValue("@Firstname", user.FirstName);
+                cmd.Parameters.AddWithValue("@Lastname", user.LastName);
+                cmd.Parameters.AddWithValue("@Username", user.UserName);
+                cmd.Parameters.AddWithValue("@PrimaryEmail", user.CommunicationEmail);
+                cmd.Parameters.AddWithValue("@SecondaryEmail", user.HuskerEmail);
+                cmd.Parameters.AddWithValue("@HashedPassword", user.UserPassword);
+                //TODO: did i do this right?
+
                 cmd.ExecuteNonQuery();
 
                 this.CloseConnection();
