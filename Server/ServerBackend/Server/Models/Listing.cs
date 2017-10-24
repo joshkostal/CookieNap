@@ -5,12 +5,13 @@ namespace Server.Models
 {
     public class Listing
     {
-        public Listing(int price, ConditionTypes condition, Book bookListed, ListingTypes listingType)
+        public Listing(int price, ConditionTypes condition, Book bookListed, ListingTypes listingType, User listingCreator)
         {
             Price = price;
             Condition = condition;
             BookListed = bookListed;
             ListingType = listingType;
+            ListingCreator = listingCreator;
         }
         public enum ConditionTypes { Great, Good, Okay, Poor }
         public enum ListingTypes { Sell, Buy }

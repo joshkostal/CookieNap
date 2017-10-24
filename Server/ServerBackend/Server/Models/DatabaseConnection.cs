@@ -1,6 +1,7 @@
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using static Server.Models.User;
 
 namespace Server.Models
 {
@@ -137,9 +138,9 @@ namespace Server.Models
             return listing;
         }
 
-        public void DeleteListingByID(Listing listing)
+        public void DeleteListingByID(int id)
         {
-            string query = string.Format("DELETE FROM Listing WHERE Listing.ListingId='{0}'", listing.ListingID);
+            string query = string.Format("DELETE FROM Listing WHERE Listing.ListingId={0}", id);
             if (this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand(query, connection);
@@ -177,6 +178,75 @@ namespace Server.Models
 
                 this.CloseConnection();
             }
+        }
+
+        public Listing GetListing(int listingID)
+        {
+            Listing listing = null;
+
+            string query = string.Format("SELECT Price, Condition, IsSelling, BookISBN, ListingId, User_UserId FROM Listing WHERE Listing.ListingId={0}", listingID);
+
+            if (this.OpenConnection())
+            {
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+
+                cmd.Prepare();
+                MySqlDataReader dr = cmd.ExecuteReader();
+
+                query = string.Format("SELECT FirstName, LastName, UserName, PrimaryEmailAddress, SecondaryEmailAddress, HashedPassword FROM User WHERE UserId={0}", (int)dr[5]);
+                cmd = new MySqlCommand(query, connection);
+
+                cmd.Prepare();
+                MySqlDataReader rdr = cmd.ExecuteReader();
+                Password password = new Password((string)rdr[5]);
+                User user = new User((string)rdr[2], (string)rdr[0], (string)rdr[1], (string)rdr[3], (string)rdr[4], password);
+
+                Book book = new Book((string)dr[3]);
+                book.QueryISBN((string)dr[3]);
+                listing = new Listing((int)dr[0], (Listing.ConditionTypes)(dr[1]), book, (int)dr[2] == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, user);
+                listing.ListingID = (int)dr[4];
+
+                dr.Close();
+                this.CloseConnection();
+            }
+
+            return listing;
+        }
+
+        public List<Listing> GetAllListings()
+        {
+            List<Listing> listings = new List<Listing>();
+
+            string query = string.Format("SELECT Price, Condition, IsSelling, BookISBN, ListingId, User_UserId FROM Listing");
+
+            if (this.OpenConnection())
+            {
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+
+                cmd.Prepare();
+                MySqlDataReader dr = cmd.ExecuteReader();
+
+                while (dr.Read())
+                {
+                    query = string.Format("SELECT FirstName, LastName, UserName, PrimaryEmailAddress, SecondaryEmailAddress, HashedPassword FROM User WHERE UserId={0}", (int)dr[5]);
+                    cmd = new MySqlCommand(query, connection);
+
+                    cmd.Prepare();
+                    MySqlDataReader rdr = cmd.ExecuteReader();
+                    Password password = new Password((string)rdr[5]);
+                    User user = new User((string)rdr[2], (string)rdr[0], (string)rdr[1], (string)rdr[3], (string)rdr[4], password);
+
+                    Book book = new Book((string)dr[3]);
+                    book.QueryISBN((string)dr[3]);
+                    Listing listing = new Listing((int)dr[0], (Listing.ConditionTypes)(dr[1]), book, (int)dr[2] == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, user);
+                    listing.ListingID = (int)dr[4];
+                    listings.Add(listing);
+                }
+                dr.Close();
+                this.CloseConnection();
+            }
+
+            return listings;
         }
 
         //TODO: Needs to be checked
@@ -218,7 +288,15 @@ namespace Server.Models
 
                 while(dr.Read())
                 {
-                    Listing listing = new Listing((int)dr[0], (Listing.ConditionTypes)(dr[1]), book, (int)dr[2] == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy);
+                    query = "SELECT FirstName, LastName, UserName, PrimaryEmailAddress, SecondaryEmailAddress, HashedPassword FROM User";
+                    cmd = new MySqlCommand(query, connection);
+
+                    cmd.Prepare();
+                    MySqlDataReader rdr = cmd.ExecuteReader();
+                    Password password = new Password((string)rdr[5]);
+                    User user = new User((string)rdr[2], (string)rdr[0], (string)rdr[1], (string)rdr[3], (string)rdr[4], password);
+
+                    Listing listing = new Listing((int)dr[0], (Listing.ConditionTypes)(dr[1]), book, (int)dr[2] == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, user);
                     book.ListingsWithBook.Add(listing);
                 }
                 dr.Close();
@@ -251,7 +329,7 @@ namespace Server.Models
                 {
                     Book book = new Book((string)rdr[1]);
                     book = book.QueryISBN((string)rdr[1]);
-                    Listing listing = new Listing((int)rdr[0], (Listing.ConditionTypes)(rdr[2]), book, (int)rdr[3] == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy);
+                    Listing listing = new Listing((int)rdr[0], (Listing.ConditionTypes)(rdr[2]), book, (int)rdr[3] == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, user);
                     user.ListingsForUser.Add(listing);
                 }
                 dr.Close();

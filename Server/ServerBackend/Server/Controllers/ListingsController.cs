@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Server.Models;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Controllers
 {
     public class ListingsController : Controller
     {
         private readonly ServerContext _context;
+        DatabaseConnection _dbc = new DatabaseConnection();
 
         public ListingsController(ServerContext context)
         {
@@ -19,21 +17,16 @@ namespace Server.Controllers
         }
 
         // GET: Listings
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Listing.ToListAsync());
+            List<Listing> listings = _dbc.GetAllListings();
+            return View(listings);
         }
 
         // GET: Listings/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var listing = await _context.Listing
-                .SingleOrDefaultAsync(m => m.ListingID == id);
+            var listing = _dbc.GetListing(id);
             if (listing == null)
             {
                 return NotFound();
@@ -49,30 +42,22 @@ namespace Server.Controllers
         }
 
         // POST: Listings/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Price,Condition,LastDateEdited,ListingType,ListingID")] Listing listing)
+        public IActionResult Create([Bind("Price,Condition,LastDateEdited,ListingType,ListingID,ListingCreator")] Listing listing)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(listing);
-                await _context.SaveChangesAsync();
+                _dbc.InsertListing(listing);
                 return RedirectToAction(nameof(Index));
             }
             return View(listing);
         }
 
         // GET: Listings/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var listing = await _context.Listing.SingleOrDefaultAsync(m => m.ListingID == id);
+            var listing = _dbc.GetListing(id);
             if (listing == null)
             {
                 return NotFound();
@@ -81,11 +66,9 @@ namespace Server.Controllers
         }
 
         // POST: Listings/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Price,Condition,LastDateEdited,ListingType,ListingID")] Listing listing)
+        public IActionResult Edit(int id, [Bind("Price,Condition,LastDateEdited,ListingType,ListingID")] Listing listing)
         {
             if (id != listing.ListingID)
             {
@@ -96,8 +79,7 @@ namespace Server.Controllers
             {
                 try
                 {
-                    _context.Update(listing);
-                    await _context.SaveChangesAsync();
+                    _dbc.UpdateBookPrice(listing);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -116,15 +98,9 @@ namespace Server.Controllers
         }
 
         // GET: Listings/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var listing = await _context.Listing
-                .SingleOrDefaultAsync(m => m.ListingID == id);
+            var listing = _dbc.GetListing(id);
             if (listing == null)
             {
                 return NotFound();
@@ -136,11 +112,9 @@ namespace Server.Controllers
         // POST: Listings/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
-            var listing = await _context.Listing.SingleOrDefaultAsync(m => m.ListingID == id);
-            _context.Listing.Remove(listing);
-            await _context.SaveChangesAsync();
+            _dbc.DeleteListingByID(id);
             return RedirectToAction(nameof(Index));
         }
 

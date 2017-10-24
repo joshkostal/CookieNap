@@ -7,7 +7,7 @@ namespace Server.Models
 {
     public class User
     {
-        public User(string username, string firstName, string lastName, string huskerEmail, string communicationEmail, Password userPassword, List<Listing> listingsForUser)
+        public User(string username, string firstName, string lastName, string huskerEmail, string communicationEmail, Password userPassword)
         {
             UserName = username;
             FirstName = firstName;
@@ -15,7 +15,6 @@ namespace Server.Models
             HuskerEmail = huskerEmail;
             CommunicationEmail = communicationEmail;
             UserPassword = userPassword;
-            ListingsForUser = listingsForUser;
         }
         [Key]
         [Required]
