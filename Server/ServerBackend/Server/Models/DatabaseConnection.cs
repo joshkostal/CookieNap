@@ -122,8 +122,6 @@ namespace Server.Models
             return listing;
         }
 
-        //TODO: Do we need an Update Listing function?
-        //Yes, I think we should allow users to update the price
         public Listing UpdateBookPrice(Listing listing)
         {
             string query = string.Format("UPDATE Listing SET Price='{0}' WHERE ListingID='{1}'", listing.Price, listing.ListingID);

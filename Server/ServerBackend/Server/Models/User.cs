@@ -17,6 +17,7 @@ namespace Server.Models
             UserPassword = userPassword;
             ListingsForUser = listingsForUser;
         }
+        [Key]
         [Required]
         public string UserName { get; set; }
 
@@ -44,7 +45,7 @@ namespace Server.Models
             {
                 HashedPassword = hashedPassword;
             }
-
+            [Key]
             public string HashedPassword { get; set; }
             
             public bool VerifyPassword(string inputtedUsername, string inputtedPassword)

@@ -12,6 +12,7 @@ namespace Server.Models
         {
             ISBN = isbn;
         }
+        [Key]
         [Required]
         public string ISBN { get; set; }
 

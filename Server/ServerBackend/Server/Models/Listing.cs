@@ -32,6 +32,7 @@ namespace Server.Models
         [Required]
         public User ListingCreator { get; set; }
 
+        [Key]
         public int ListingID { get; set; }
     }
 }
