@@ -43,6 +43,7 @@ namespace Server.Models
         public void InsertUser(User user)
         {
             //We need to protect against SQL injection!! I don't think this method does that.
+            //test query: INSERT INTO User (FirstName, LastName, UserName, PrimaryEmailAddress, SecondaryEmailAddress, HashedPassword) VALUES ('Test', 'Testerson', 'testguy3', 'fakeemail@huskers.unl.edu', 'anotherfake@gmail.com', 'bloop')
             string query = string.Format("INSERT INTO User (FirstName, LastName, UserName, PrimaryEmailAddress, SecondaryEmailAddress, HashedPassword) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')", user.FirstName, user.LastName, user.UserName, user.CommunicationEmail, user.HuskerEmail, user.UserPassword);
             if(this.OpenConnection())
             {
@@ -359,7 +360,7 @@ namespace Server.Models
         //TODO: Make sure this is right
         public string RetrievePassword(string username)
         {
-            string query = string.Format("SELECT Hashedpassword FROM User WHERE User.Username='{0}'", username);
+            string query = string.Format("SELECT HashedPassword FROM User WHERE User.UserName='{0}'", username);
 
             if(this.OpenConnection())
             {
@@ -378,7 +379,7 @@ namespace Server.Models
         //TODO: Make sure this query is right
         public void StorePassword(string username, string password)
         {
-            string query = string.Format("Update USER SET HashedPassword = VALUE '{0}' WHERE User.Username='{1}'", password, username);
+            string query = string.Format("Update USER SET HashedPassword = VALUE '{0}' WHERE User.UserName='{1}'", password, username);
 
             if(this.OpenConnection())
             {
@@ -394,7 +395,7 @@ namespace Server.Models
         public bool CheckUniqueUsername(string username)
         {
             bool usernameFound = true;
-            string query = string.Format("SELECT COUNT(*) FROM USER WHERE User.Username='{0}'", username);
+            string query = string.Format("SELECT COUNT(*) FROM USER WHERE User.UserName='{0}'", username);
 
             if(this.OpenConnection())
             {
