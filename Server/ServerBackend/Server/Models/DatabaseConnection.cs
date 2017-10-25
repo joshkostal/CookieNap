@@ -55,6 +55,29 @@ namespace Server.Models
             }
         }
 
+        public User GetUser(int id)
+        {
+            User user = null;
+
+            string query = string.Format("SELECT FirstName, LastName, UserName, PrimaryEmailAddress, SecondaryEmailAddress, HashedPassword FROM User WHERE UserId={0}", id);
+
+            if (this.OpenConnection())
+            {
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+
+                cmd.Prepare();
+                MySqlDataReader dr = cmd.ExecuteReader();
+
+                Password password = new Password((string)dr[5]);
+                user = new User((string)dr[2], (string)dr[0], (string)dr[1], (string)dr[3], (string)dr[4], password);
+
+                dr.Close();
+                this.CloseConnection();
+            }
+
+            return user;
+        }
+
         public void UpdateEmails(string primaryEmail, string secondaryEmail, string userName)
         {
             string query = string.Format("UPDATE User SET PrimaryEmailAddress='{0}', SecondaryEmailAddress='{1}' WHERE UserName='{2}'", primaryEmail, secondaryEmail, userName);
@@ -69,23 +92,17 @@ namespace Server.Models
             }
         }
 
-        public void DeleteUserByUsername(string userName) //deletes by a certain username. Can be modified to delete by other fields
+        public void DeleteUserById(int id) //deletes by a certain id. Can be modified to delete by other fields
         {
             if(this.OpenConnection())
             {
-                string query1 = string.Format("SELECT UserId FROM User WHERE UserName='{0}'", userName);
+                string query1 = string.Format("DELETE FROM Listing WHERE Listing.User_UserId={0}", id);
                 MySqlCommand cmd = new MySqlCommand(query1, connection);
-                cmd.Prepare();
-                MySqlDataReader dr = cmd.ExecuteReader();
-                string userID = (string)dr[0];
-
-                string query2 = string.Format("DELETE FROM Listing WHERE Listing.User_UserId='{0}'", userID);
-                cmd = new MySqlCommand(query2, connection);
                 cmd.Prepare();
                 cmd.ExecuteNonQuery();
 
-                string query3 = string.Format("DELETE FROM User WHERE UserName='{0}'", userName);
-                cmd = new MySqlCommand(query3, connection);
+                string query2 = string.Format("DELETE FROM User WHERE UserId={0}", id);
+                cmd = new MySqlCommand(query2, connection);
                 cmd.Prepare();
                 cmd.ExecuteNonQuery();
 
@@ -95,7 +112,7 @@ namespace Server.Models
         
         public void DeleteUser(User user)
         {
-            DeleteUserByUsername(user.UserName);
+            DeleteUserById(user.UserID);
         }
 
         public Listing InsertListing(Listing listing)

@@ -33,6 +33,8 @@ namespace Server.Models
         [EmailAddress]
         public string CommunicationEmail { get; set; }  //Can use DataAnnotationsExtensions if we are using .Net 4.5
 
+        public int UserID { get; set; }
+
         [Required]
         public Password UserPassword { get; set; }
 

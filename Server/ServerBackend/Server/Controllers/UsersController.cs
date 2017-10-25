@@ -1,23 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Server.Models;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Server.Controllers
 {
     public class UsersController : Controller
     {
         private readonly ServerContext _context;
+        private DatabaseConnection _dbc = new DatabaseConnection();
 
         public UsersController(ServerContext context)
         {
             _context = context;
         }
 
+        //TODO: Do we need this?
         // GET: Users
         public async Task<IActionResult> Index()
         {
@@ -25,15 +24,9 @@ namespace Server.Controllers
         }
 
         // GET: Users/Details/5
-        public async Task<IActionResult> Details(string id)
+        public IActionResult Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var user = await _context.User
-                .SingleOrDefaultAsync(m => m.UserName == id);
+            User user = _dbc.GetUser(id);
             if (user == null)
             {
                 return NotFound();
@@ -49,30 +42,22 @@ namespace Server.Controllers
         }
 
         // POST: Users/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserName,FirstName,LastName,HuskerEmail,CommunicationEmail")] User user)
+        public IActionResult Create([Bind("UserName,FirstName,LastName,HuskerEmail,CommunicationEmail")] User user)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(user);
-                await _context.SaveChangesAsync();
+                _dbc.InsertUser(user);
                 return RedirectToAction(nameof(Index));
             }
             return View(user);
         }
 
         // GET: Users/Edit/5
-        public async Task<IActionResult> Edit(string id)
+        public IActionResult Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var user = await _context.User.SingleOrDefaultAsync(m => m.UserName == id);
+            var user = _dbc.GetUser(id);
             if (user == null)
             {
                 return NotFound();
@@ -81,27 +66,19 @@ namespace Server.Controllers
         }
 
         // POST: Users/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("UserName,FirstName,LastName,HuskerEmail,CommunicationEmail")] User user)
+        public IActionResult Edit(string id, [Bind("UserName,FirstName,LastName,HuskerEmail,CommunicationEmail")] User user)
         {
-            if (id != user.UserName)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(user);
-                    await _context.SaveChangesAsync();
+                    _dbc.UpdateEmails(user.HuskerEmail, user.CommunicationEmail, user.UserName);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UserExists(user.UserName))
+                    if (!UserExists(user.UserID))
                     {
                         return NotFound();
                     }
@@ -116,15 +93,9 @@ namespace Server.Controllers
         }
 
         // GET: Users/Delete/5
-        public async Task<IActionResult> Delete(string id)
+        public IActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var user = await _context.User
-                .SingleOrDefaultAsync(m => m.UserName == id);
+            var user = _dbc.GetUser(id);
             if (user == null)
             {
                 return NotFound();
@@ -136,17 +107,15 @@ namespace Server.Controllers
         // POST: Users/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public IActionResult DeleteConfirmed(int id)
         {
-            var user = await _context.User.SingleOrDefaultAsync(m => m.UserName == id);
-            _context.User.Remove(user);
-            await _context.SaveChangesAsync();
+            _dbc.DeleteUserById(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UserExists(string id)
+        private bool UserExists(int id)
         {
-            return _context.User.Any(e => e.UserName == id);
+            return _context.User.Any(e => e.UserID == id);
         }
     }
 }
