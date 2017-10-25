@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Server.Models;
 using System.Linq;
 using System.Threading.Tasks;
+using static Server.Models.User;
 
 namespace Server.Controllers
 {
@@ -44,7 +45,7 @@ namespace Server.Controllers
         // POST: Users/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("UserName,FirstName,LastName,HuskerEmail,CommunicationEmail")] User user)
+        public IActionResult Create([Bind("UserName,FirstName,LastName,HuskerEmail,CommunicationEmail,Password")] User user)
         {
             if (ModelState.IsValid)
             {
@@ -116,6 +117,12 @@ namespace Server.Controllers
         private bool UserExists(int id)
         {
             return _context.User.Any(e => e.UserID == id);
+        }
+
+        // GET: Users/Login
+        public IActionResult Login()
+        {
+            return View();
         }
     }
 }

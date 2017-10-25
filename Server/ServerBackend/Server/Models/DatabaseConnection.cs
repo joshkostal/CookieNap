@@ -43,8 +43,8 @@ namespace Server.Models
         public void InsertUser(User user)
         {
             //We need to protect against SQL injection!! I don't think this method does that.
-            //test query: INSERT INTO User (FirstName, LastName, UserName, PrimaryEmailAddress, SecondaryEmailAddress, HashedPassword) VALUES ('Test', 'Testerson', 'testguy3', 'fakeemail@huskers.unl.edu', 'anotherfake@gmail.com', 'bloop')
-            string query = string.Format("INSERT INTO User (FirstName, LastName, UserName, PrimaryEmailAddress, SecondaryEmailAddress, HashedPassword) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')", user.FirstName, user.LastName, user.UserName, user.CommunicationEmail, user.HuskerEmail, user.UserPassword);
+            //test query: INSERT INTO User (FirstName, LastName, UserName, PrimaryEmailAddress, SecondaryEmailAddress) VALUES ('Test', 'Testerson', 'testguy3', 'fakeemail@huskers.unl.edu', 'anotherfake@gmail.com')
+            string query = string.Format("INSERT INTO User (FirstName, LastName, UserName, PrimaryEmailAddress, SecondaryEmailAddress) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}')", user.FirstName, user.LastName, user.UserName, user.CommunicationEmail, user.HuskerEmail);
             if(this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand(query, connection);
@@ -54,6 +54,7 @@ namespace Server.Models
 
                 this.CloseConnection();
             }
+            user.UserPassword.StorePassword(user.UserName, user.UserPassword.HashedPassword);
         }
 
         public User GetUser(int id)

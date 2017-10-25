@@ -80,12 +80,12 @@ namespace Server.Models
                 }
             }
 
-            public void StorePassword(string inputtedUsername, string inputtedPassword)
+            public void StorePassword(string username, string password)
             {
                 byte[] salt;
                 new RNGCryptoServiceProvider().GetBytes(salt = new byte[16]);
 
-                var hash = new Rfc2898DeriveBytes(inputtedPassword, salt, 10000);
+                var hash = new Rfc2898DeriveBytes(password, salt, 10000);
                 byte[] hashedPassword = hash.GetBytes(20);
 
                 var hashedAndSaltedPassword = new byte[36];
@@ -97,7 +97,7 @@ namespace Server.Models
 
                 DatabaseConnection dbc = new DatabaseConnection();
                 dbc.Initialize();
-                dbc.StorePassword(inputtedUsername, storedPassword);
+                dbc.StorePassword(username, storedPassword);
             }
         }
     }
