@@ -2,24 +2,23 @@
 using Microsoft.EntityFrameworkCore;
 using Server.Models;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Server.Controllers
 {
     public class ListingsController : Controller
     {
-        private readonly ServerContext _context;
-        DatabaseConnection _dbc = new DatabaseConnection();
-
-        public ListingsController(ServerContext context)
-        {
-            _context = context;
-        }
+        private DatabaseConnection _dbc = new DatabaseConnection();
 
         // GET: Listings
         public IActionResult Index()
         {
             List<Listing> listings = _dbc.GetAllListings();
+            return View(listings);
+        }
+
+        public IActionResult Search(string isbn)
+        {
+            List<Listing> listings = _dbc.SetListingsForBook(isbn);
             return View(listings);
         }
 
@@ -120,7 +119,7 @@ namespace Server.Controllers
 
         private bool ListingExists(int id)
         {
-            return _context.Listing.Any(e => e.ListingID == id);
+            return _dbc.GetListing(id) == null ? false : true;
         }
     }
 }

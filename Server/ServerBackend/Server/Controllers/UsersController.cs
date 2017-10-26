@@ -1,28 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Server.Models;
-using System.Linq;
-using System.Threading.Tasks;
-using static Server.Models.User;
 
 namespace Server.Controllers
 {
     public class UsersController : Controller
     {
-        private readonly ServerContext _context;
         private DatabaseConnection _dbc = new DatabaseConnection();
-
-        public UsersController(ServerContext context)
-        {
-            _context = context;
-        }
-
-        //TODO: Do we need this?
-        // GET: Users
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.User.ToListAsync());
-        }
 
         // GET: Users/Details/5
         public IActionResult Details(int id)
@@ -50,7 +34,7 @@ namespace Server.Controllers
             if (ModelState.IsValid)
             {
                 _dbc.InsertUser(user);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(ListingsController.Index));
             }
             return View(user);
         }
@@ -88,7 +72,7 @@ namespace Server.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(ListingsController.Index));
             }
             return View(user);
         }
@@ -111,12 +95,12 @@ namespace Server.Controllers
         public IActionResult DeleteConfirmed(int id)
         {
             _dbc.DeleteUserById(id);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(ListingsController.Index));
         }
 
         private bool UserExists(int id)
         {
-            return _context.User.Any(e => e.UserID == id);
+            return _dbc.GetUser(id) == null ? false : true;
         }
 
         // GET: Users/Login

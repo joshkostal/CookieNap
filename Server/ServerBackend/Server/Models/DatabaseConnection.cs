@@ -221,7 +221,7 @@ namespace Server.Models
                 User user = new User((string)rdr[2], (string)rdr[0], (string)rdr[1], (string)rdr[3], (string)rdr[4], password);
 
                 Book book = new Book((string)dr[3]);
-                book.QueryISBN((string)dr[3]);
+                book.QueryISBN();
                 listing = new Listing((int)dr[0], (Listing.ConditionTypes)(dr[1]), book, (int)dr[2] == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, user);
                 listing.ListingID = (int)dr[4];
 
@@ -256,7 +256,7 @@ namespace Server.Models
                     User user = new User((string)rdr[2], (string)rdr[0], (string)rdr[1], (string)rdr[3], (string)rdr[4], password);
 
                     Book book = new Book((string)dr[3]);
-                    book.QueryISBN((string)dr[3]);
+                    book.QueryISBN();
                     Listing listing = new Listing((int)dr[0], (Listing.ConditionTypes)(dr[1]), book, (int)dr[2] == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, user);
                     listing.ListingID = (int)dr[4];
                     listings.Add(listing);
@@ -284,7 +284,7 @@ namespace Server.Models
                 while(dr.Read())
                 {
                     Book book = new Book((string)dr[0]);
-                    book = book.QueryISBN((string)dr[0]);
+                    book = book.QueryISBN();
                     booksListed.Add(book);
                 }
                 dr.Close();
@@ -294,9 +294,10 @@ namespace Server.Models
         }
 
         //TODO: Needs to be checked
-        public Book SetListingsForBook(Book book)
+        public List<Listing> SetListingsForBook(string isbn)
         {
-            string query = string.Format("SELECT Price, Condition, IsSelling FROM Listing WHERE BookISBN='{0}'", book.ISBN);
+            List<Listing> listings = new List<Listing>();
+            string query = string.Format("SELECT Price, Condition, IsSelling FROM Listing WHERE BookISBN='{0}'", isbn);
 
             if(this.OpenConnection())
             {
@@ -315,13 +316,16 @@ namespace Server.Models
                     Password password = new Password((string)rdr[5]);
                     User user = new User((string)rdr[2], (string)rdr[0], (string)rdr[1], (string)rdr[3], (string)rdr[4], password);
 
+                    Book book = new Book(isbn);
+                    book = book.QueryISBN();
+
                     Listing listing = new Listing((int)dr[0], (Listing.ConditionTypes)(dr[1]), book, (int)dr[2] == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, user);
-                    book.ListingsWithBook.Add(listing);
+                    listings.Add(listing);
                 }
                 dr.Close();
                 this.CloseConnection();
             }
-            return book;
+            return listings;
         }
 
         //TODO: Needs to be checked
@@ -347,7 +351,7 @@ namespace Server.Models
                 while(rdr.Read())
                 {
                     Book book = new Book((string)rdr[1]);
-                    book = book.QueryISBN((string)rdr[1]);
+                    book = book.QueryISBN();
                     Listing listing = new Listing((int)rdr[0], (Listing.ConditionTypes)(rdr[2]), book, (int)rdr[3] == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, user);
                     user.ListingsForUser.Add(listing);
                 }

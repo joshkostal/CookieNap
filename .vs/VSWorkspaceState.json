@@ -1,7 +1,11 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Server"
+    "\\Server",
+    "\\Server\\ServerBackend",
+    "\\Server\\ServerBackend\\Server",
+    "\\Server\\ServerBackend\\Server\\Models"
   ],
+  "SelectedNode": "\\Server\\ServerBackend\\ServerBackend.sln",
   "PreviewInSolutionExplorer": false
 }

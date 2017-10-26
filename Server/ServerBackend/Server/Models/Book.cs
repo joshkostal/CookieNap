@@ -24,7 +24,7 @@ namespace Server.Models
 
         public List<Listing> ListingsWithBook { get; set; }
 
-        public Book QueryISBN(string isbn)
+        public Book QueryISBN()
         {
             Book book = null;
             string url = string.Format("https://books.google.com/ebooks?q=isbn:{0}&key=AIzaSyA0_9-gOBdZSR6Cw5n9cJdBEY_kAsbPmTs");
@@ -36,7 +36,7 @@ namespace Server.Models
             using (var sr = new StreamReader(httpWebRequest.GetRequestStream()))
             {
                 book = JsonConvert.DeserializeObject<Book>(sr.ReadToEnd());
-                book.ISBN = isbn;
+                book.ISBN = this.ISBN;
             }
             return book;
         }
