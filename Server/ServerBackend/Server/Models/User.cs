@@ -16,6 +16,15 @@ namespace Server.Models
             CommunicationEmail = communicationEmail;
             UserPassword = userPassword;
         }
+        public User(string username, string firstName, string lastName, string huskerEmail, string communicationEmail)
+        {
+            UserName = username;
+            FirstName = firstName;
+            LastName = lastName;
+            HuskerEmail = huskerEmail;
+            CommunicationEmail = communicationEmail;
+        }
+
         [Key]
         [Required]
         public string UserName { get; set; }
@@ -25,7 +34,7 @@ namespace Server.Models
         public string LastName { get; set; }
 
         [Required]
-        [RegularExpression("^[a-zA-Z0-9]+@huskers.unl.edu$", ErrorMessage = "This is not a Husker email")]
+        [RegularExpression(@"^[a-zA-Z]+\.{1}[a-zA-Z]+@huskers.unl.edu$", ErrorMessage = "This is not a Husker email")]
         public string HuskerEmail { get; set; }
 
         [Required]

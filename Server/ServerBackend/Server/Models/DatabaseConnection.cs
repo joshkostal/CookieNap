@@ -43,12 +43,12 @@ namespace Server.Models
         public void InsertUser(User user)
         {
             //test query: INSERT INTO User (FirstName, LastName, UserName, PrimaryEmailAddress, SecondaryEmailAddress) VALUES ('Test', 'Testerson', 'testguy3', 'fakeemail@huskers.unl.edu', 'anotherfake@gmail.com')
-            //string query = string.Format("INSERT INTO User (FirstName, LastName, UserName, PrimaryEmailAddress, SecondaryEmailAddress, HashedPassword) VALUES (@Firstname, @Lastname, @Username, @PrimaryEmail, @SecondaryEmail, @HashedPassword)");
-            if (this.OpenConnection)
+            //string query = string.Format("INSERT INTO User (FirstName, LastName, UserName, PrimaryEmailAddress, SecondaryEmailAddress) VALUES (@Firstname, @Lastname, @Username, @PrimaryEmail, @SecondaryEmail)");
+            if (this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand();
 
-                cmd.CommandText = "INSERT INTO User (FirstName, LastName, UserName, PrimaryEmailAddress, SecondaryEmailAddress, HashedPassword) VALUES (@Firstname, @Lastname, @Username, @PrimaryEmail, @SecondaryEmail, @HashedPassword)";
+                cmd.CommandText = "INSERT INTO User (FirstName, LastName, UserName, PrimaryEmailAddress, SecondaryEmailAddress) VALUES (@Firstname, @Lastname, @Username, @PrimaryEmail, @SecondaryEmail)";
 
                 cmd.Prepare();
 
@@ -57,7 +57,6 @@ namespace Server.Models
                 cmd.Parameters.AddWithValue("@Username", user.UserName);
                 cmd.Parameters.AddWithValue("@PrimaryEmail", user.CommunicationEmail);
                 cmd.Parameters.AddWithValue("@SecondaryEmail", user.HuskerEmail);
-                cmd.Parameters.AddWithValue("@HashedPassword", user.UserPassword);
 
                 cmd.ExecuteNonQuery();
 
