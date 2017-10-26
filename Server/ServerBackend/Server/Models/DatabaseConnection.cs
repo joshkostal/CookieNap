@@ -42,14 +42,23 @@ namespace Server.Models
 
         public void InsertUser(User user)
         {
-            //We need to protect against SQL injection!! I don't think this method does that.
             //test query: INSERT INTO User (FirstName, LastName, UserName, PrimaryEmailAddress, SecondaryEmailAddress) VALUES ('Test', 'Testerson', 'testguy3', 'fakeemail@huskers.unl.edu', 'anotherfake@gmail.com')
-            string query = string.Format("INSERT INTO User (FirstName, LastName, UserName, PrimaryEmailAddress, SecondaryEmailAddress) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}')", user.FirstName, user.LastName, user.UserName, user.CommunicationEmail, user.HuskerEmail);
-            if(this.OpenConnection())
+            //string query = string.Format("INSERT INTO User (FirstName, LastName, UserName, PrimaryEmailAddress, SecondaryEmailAddress, HashedPassword) VALUES (@Firstname, @Lastname, @Username, @PrimaryEmail, @SecondaryEmail, @HashedPassword)");
+            if (this.OpenConnection)
             {
-                MySqlCommand cmd = new MySqlCommand(query, connection);
+                MySqlCommand cmd = new MySqlCommand();
+
+                cmd.CommandText = "INSERT INTO User (FirstName, LastName, UserName, PrimaryEmailAddress, SecondaryEmailAddress, HashedPassword) VALUES (@Firstname, @Lastname, @Username, @PrimaryEmail, @SecondaryEmail, @HashedPassword)";
 
                 cmd.Prepare();
+
+                cmd.Parameters.AddWithValue("@Firstname", user.FirstName);
+                cmd.Parameters.AddWithValue("@Lastname", user.LastName);
+                cmd.Parameters.AddWithValue("@Username", user.UserName);
+                cmd.Parameters.AddWithValue("@PrimaryEmail", user.CommunicationEmail);
+                cmd.Parameters.AddWithValue("@SecondaryEmail", user.HuskerEmail);
+                cmd.Parameters.AddWithValue("@HashedPassword", user.UserPassword);
+
                 cmd.ExecuteNonQuery();
 
                 this.CloseConnection();
@@ -82,16 +91,23 @@ namespace Server.Models
 
         public void UpdateEmails(string primaryEmail, string secondaryEmail, string userName)
         {
-            string query = string.Format("UPDATE User SET PrimaryEmailAddress='{0}', SecondaryEmailAddress='{1}' WHERE UserName='{2}'", primaryEmail, secondaryEmail, userName);
-            if(this.OpenConnection())
+            if (this.OpenConnection())
             {
-                MySqlCommand cmd = new MySqlCommand(query, connection);
+                MySqlCommand cmd = new MySqlCommand();
+
+                cmd.CommandText = "UPDATE User SET PrimaryEmailAddress=@PrimaryEmail, SecondaryEmailAddress=@SecondaryEmail WHERE UserName=@Username";
 
                 cmd.Prepare();
+                
+                cmd.Parameters.AddWithValue("@Username", userName);
+                cmd.Parameters.AddWithValue("@PrimaryEmail", primaryEmail);
+                cmd.Parameters.AddWithValue("@SecondaryEmail", secondaryEmail);
+
                 cmd.ExecuteNonQuery();
 
                 this.CloseConnection();
             }
+
         }
 
         public void DeleteUserById(int id) //deletes by a certain id. Can be modified to delete by other fields
@@ -125,34 +141,49 @@ namespace Server.Models
             {
                 isSelling = 1;
             }
-
-            string query = string.Format("INSERT INTO Listing (Price, BookISBN, Condition, IsSelling, User_UserId) VALUES ('{0}', '{1}', '{2}', '{3}', 'SELECT UserId FROM USER WHERE User.UserName = {4}')", listing.Price, listing.BookListed.ISBN, listing.Condition.ToString(), isSelling, listing.ListingCreator.UserName);
+            
             if (this.OpenConnection())
             {
-                MySqlCommand cmd = new MySqlCommand(query, connection);
+                MySqlCommand cmd = new MySqlCommand();
+
+                cmd.CommandText = "INSERT INTO Listing (Price, BookISBN, Condition, IsSelling, User_UserId) VALUES (@Price, @ISBN, @Condition, @isSelling, 'SELECT UserId FROM USER WHERE User.UserName = @Username')";
 
                 cmd.Prepare();
+
+                cmd.Parameters.AddWithValue("@Price", listing.Price);
+                cmd.Parameters.AddWithValue("@ISBN", listing.BookListed.ISBN);
+                cmd.Parameters.AddWithValue("@Condition", listing.Condition.ToString());
+                cmd.Parameters.AddWithValue("@isSelling", isSelling);
+                cmd.Parameters.AddWithValue("@Username", listing.ListingCreator.UserName);
+
                 cmd.ExecuteNonQuery();
                 listing.ListingID = (int)cmd.LastInsertedId;
                 listing.LastDateEdited = DateTime.Today;
 
                 this.CloseConnection();
             }
+
             return listing;
         }
 
         public Listing UpdateBookPrice(Listing listing)
         {
-            string query = string.Format("UPDATE Listing SET Price='{0}' WHERE ListingID='{1}'", listing.Price, listing.ListingID);
-            if (this.OpenConnection())
+           if (this.OpenConnection())
             {
-                MySqlCommand cmd = new MySqlCommand(query, connection);
+                MySqlCommand cmd = new MySqlCommand();
+
+                cmd.CommandText = "UPDATE Listing SET Price=@Price WHERE ListingID=@ListingID";
 
                 cmd.Prepare();
+
+                cmd.Parameters.AddWithValue("@Price", listing.Price);
+                cmd.Parameters.AddWithValue("@ListingID", listing.ListingID);
+
                 cmd.ExecuteNonQuery();
 
                 this.CloseConnection();
             }
+
             listing.LastDateEdited = DateTime.Today;
             return listing;
         }
@@ -267,8 +298,7 @@ namespace Server.Models
 
             return listings;
         }
-
-        //TODO: Needs to be checked
+        
         public List<Book> FindBooksListed()
         {
             List<Book> booksListed = new List<Book>();
@@ -328,7 +358,6 @@ namespace Server.Models
             return listings;
         }
 
-        //TODO: Needs to be checked
         public User SetListingsForUser(User user)
         {
             string query = string.Format("SELECT UserId FROM User WHERE User.username='{0}'", user.UserName);
@@ -361,8 +390,8 @@ namespace Server.Models
             }
             return user;
         }
-
-        //TODO: Make sure this is right
+        
+        //TODO: Check this one for SQL Injection- not sure how to do it in SELECT statements yet
         public string RetrievePassword(string username)
         {
             string query = string.Format("SELECT HashedPassword FROM User WHERE User.UserName='{0}'", username);
@@ -378,25 +407,45 @@ namespace Server.Models
                 dr.Close();
                 this.CloseConnection();
             }
+
+           /* if (this.OpenConnection())
+            {
+                MySqlCommand cmd = new MySqlCommand();
+
+                cmd.CommandText = "SELECT HashedPassword FROM User WHERE User.UserName=@Username";
+
+                cmd.Prepare();
+
+                cmd.Parameters.AddWithValue("@Username", username);
+
+                cmd.ExecuteNonQuery();
+
+                this.CloseConnection();
+            }*/
+
             return password;
         }
 
-        //TODO: Make sure this query is right
         public void StorePassword(string username, string password)
         {
-            string query = string.Format("Update USER SET HashedPassword = VALUE '{0}' WHERE User.UserName='{1}'", password, username);
-
-            if(this.OpenConnection())
+           if (this.OpenConnection())
             {
-                MySqlCommand cmd = new MySqlCommand(query, connection);
+                MySqlCommand cmd = new MySqlCommand();
+
+                cmd.CommandText = "Update USER SET HashedPassword = VALUE @password WHERE User.UserName=@Username";
 
                 cmd.Prepare();
+
+                cmd.Parameters.AddWithValue("@Username", username);
+                cmd.Parameters.AddWithValue("@password", password);
+
                 cmd.ExecuteNonQuery();
 
                 this.CloseConnection();
             }
         }
 
+        //TODO: Prevent SQL injection with the select statement
         public bool CheckUniqueUsername(string username)
         {
             bool usernameFound = true;
