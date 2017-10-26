@@ -1,15 +1,14 @@
 using System;
-using Server.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace Server.Models
 {
     public class Listing
     {
-        public Listing(int price, ConditionTypes condition, DateTime lastDateEdited, Book bookListed, ListingTypes listingType, User listingCreator)
+        public Listing(int price, ConditionTypes condition, Book bookListed, ListingTypes listingType, User listingCreator)
         {
             Price = price;
             Condition = condition;
-            LastDateEdited = lastDateEdited;
             BookListed = bookListed;
             ListingType = listingType;
             ListingCreator = listingCreator;
@@ -34,6 +33,7 @@ namespace Server.Models
         [Required]
         public User ListingCreator { get; set; }
 
+        [Key]
         public int ListingID { get; set; }
     }
 }

@@ -1,20 +1,22 @@
 using System;
-using Server.Models;
+using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
+using System.Security.Cryptography;
 
 namespace Server.Models
 {
     public class User
     {
-        public User(string Username, string FirstName, string LastName, string HuskerEmail, string CommunicationEmail, Password UserPassword, List<Listing> ListingsForUser)
+        public User(string username, string firstName, string lastName, string huskerEmail, string communicationEmail, Password userPassword)
         {
-            Username = Username;
-            FirstName = FirstName;
-            LastName = LastName;
-            HuskerEmail = HuskerEmail;
-            CommunicationEmail = CommunicationEmail;
-            UserPassword = UserPassword;
-            ListingsForUser = ListingsForUser;
+            UserName = username;
+            FirstName = firstName;
+            LastName = lastName;
+            HuskerEmail = huskerEmail;
+            CommunicationEmail = communicationEmail;
+            UserPassword = userPassword;
         }
+        [Key]
         [Required]
         public string UserName { get; set; }
 
@@ -31,6 +33,8 @@ namespace Server.Models
         [EmailAddress]
         public string CommunicationEmail { get; set; }  //Can use DataAnnotationsExtensions if we are using .Net 4.5
 
+        public int UserID { get; set; }
+
         [Required]
         public Password UserPassword { get; set; }
 
@@ -42,7 +46,7 @@ namespace Server.Models
             {
                 HashedPassword = hashedPassword;
             }
-
+            [Key]
             public string HashedPassword { get; set; }
             
             public bool VerifyPassword(string inputtedUsername, string inputtedPassword)
@@ -76,13 +80,13 @@ namespace Server.Models
                 }
             }
 
-            public void StorePassword(string inputtedUsername, string inputtedPassword)
+            public void StorePassword(string username, string password)
             {
                 byte[] salt;
                 new RNGCryptoServiceProvider().GetBytes(salt = new byte[16]);
 
-                var hash = new Rfc2898DeriveBytes(inputtedPassword, salt, 10000);
-                byte hashedPassword = hash.GetBytes(20);
+                var hash = new Rfc2898DeriveBytes(password, salt, 10000);
+                byte[] hashedPassword = hash.GetBytes(20);
 
                 var hashedAndSaltedPassword = new byte[36];
 
@@ -93,7 +97,7 @@ namespace Server.Models
 
                 DatabaseConnection dbc = new DatabaseConnection();
                 dbc.Initialize();
-                dbc.StorePassword(inputtedUsername, storedPassword);
+                dbc.StorePassword(username, storedPassword);
             }
         }
     }
