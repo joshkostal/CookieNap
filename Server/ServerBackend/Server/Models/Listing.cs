@@ -5,7 +5,7 @@ namespace Server.Models
 {
     public class Listing
     {
-        public Listing(int price, ConditionTypes condition, Book bookListed, ListingTypes listingType, User listingCreator)
+        public Listing(double price, ConditionTypes condition, Book bookListed, ListingTypes listingType, User listingCreator)
         {
             Price = price;
             Condition = condition;
