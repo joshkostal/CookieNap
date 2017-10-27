@@ -151,7 +151,7 @@ namespace Server.Models
             {
                 MySqlCommand cmd = new MySqlCommand();
 
-                cmd.CommandText = string.Format("INSERT INTO Listing (Price, BookISBN, Condition, IsSelling, User_UserId) VALUES (@Price, @ISBN, @Condition, @isSelling, '{0}')",listing.ListingCreator.UserID);
+                cmd.CommandText = string.Format("INSERT INTO Listing (Price, BookISBN, Listing.Condition, IsSelling, User_UserId) VALUES (@Price, @ISBN, @Condition, @isSelling, '{0}')",listing.ListingCreator.UserID);
 
                 cmd.Prepare();
 
