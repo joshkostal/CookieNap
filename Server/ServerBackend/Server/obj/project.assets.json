@@ -13517,11 +13517,11 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "C:\\Users\\Josh\\Source\\Repos\\CookieNap\\Server\\ServerBackend\\Server\\Server.csproj",
+      "projectUniqueName": "C:\\Users\\Josh\\source\\repos\\CookieNap\\Server\\ServerBackend\\Server\\Server.csproj",
       "projectName": "Server",
-      "projectPath": "C:\\Users\\Josh\\Source\\Repos\\CookieNap\\Server\\ServerBackend\\Server\\Server.csproj",
+      "projectPath": "C:\\Users\\Josh\\source\\repos\\CookieNap\\Server\\ServerBackend\\Server\\Server.csproj",
       "packagesPath": "C:\\Users\\Josh\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Josh\\Source\\Repos\\CookieNap\\Server\\ServerBackend\\Server\\obj\\",
+      "outputPath": "C:\\Users\\Josh\\source\\repos\\CookieNap\\Server\\ServerBackend\\Server\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

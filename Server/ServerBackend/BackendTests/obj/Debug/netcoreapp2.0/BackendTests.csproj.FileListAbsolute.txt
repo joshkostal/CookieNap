@@ -1,0 +1,16 @@
+C:\Users\Josh\source\repos\CookieNap\Server\ServerBackend\BackendTests\bin\Debug\netcoreapp2.0\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+C:\Users\Josh\source\repos\CookieNap\Server\ServerBackend\BackendTests\bin\Debug\netcoreapp2.0\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+C:\Users\Josh\source\repos\CookieNap\Server\ServerBackend\BackendTests\bin\Debug\netcoreapp2.0\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+C:\Users\Josh\source\repos\CookieNap\Server\ServerBackend\BackendTests\bin\Debug\netcoreapp2.0\BackendTests.deps.json
+C:\Users\Josh\source\repos\CookieNap\Server\ServerBackend\BackendTests\bin\Debug\netcoreapp2.0\BackendTests.runtimeconfig.json
+C:\Users\Josh\source\repos\CookieNap\Server\ServerBackend\BackendTests\bin\Debug\netcoreapp2.0\BackendTests.runtimeconfig.dev.json
+C:\Users\Josh\source\repos\CookieNap\Server\ServerBackend\BackendTests\bin\Debug\netcoreapp2.0\BackendTests.dll
+C:\Users\Josh\source\repos\CookieNap\Server\ServerBackend\BackendTests\bin\Debug\netcoreapp2.0\BackendTests.pdb
+C:\Users\Josh\source\repos\CookieNap\Server\ServerBackend\BackendTests\obj\Debug\netcoreapp2.0\BackendTests.csprojResolveAssemblyReference.cache
+C:\Users\Josh\source\repos\CookieNap\Server\ServerBackend\BackendTests\obj\Debug\netcoreapp2.0\BackendTests.csproj.CoreCompileInputs.cache
+C:\Users\Josh\source\repos\CookieNap\Server\ServerBackend\BackendTests\obj\Debug\netcoreapp2.0\BackendTests.AssemblyInfoInputs.cache
+C:\Users\Josh\source\repos\CookieNap\Server\ServerBackend\BackendTests\obj\Debug\netcoreapp2.0\BackendTests.AssemblyInfo.cs
+C:\Users\Josh\source\repos\CookieNap\Server\ServerBackend\BackendTests\obj\Debug\netcoreapp2.0\BackendTests.dll
+C:\Users\Josh\source\repos\CookieNap\Server\ServerBackend\BackendTests\obj\Debug\netcoreapp2.0\BackendTests.pdb
+C:\Users\Josh\source\repos\CookieNap\Server\ServerBackend\BackendTests\bin\Debug\netcoreapp2.0\Server.dll
+C:\Users\Josh\source\repos\CookieNap\Server\ServerBackend\BackendTests\bin\Debug\netcoreapp2.0\Server.pdb
