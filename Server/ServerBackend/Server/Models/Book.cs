@@ -49,8 +49,6 @@ namespace Server.Models
                 var json = sr.ToString();
                 JObject data = JObject.Parse(json);
 
-                string name = (string)o["Name"];
-
                 book = new Book(this.ISBN, (string)data["authors"], (string)data["title"], (string)data["thumbnail"]);
             }
             return book;
