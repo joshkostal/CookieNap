@@ -103,8 +103,9 @@ namespace Server.Controllers
             return _dbc.GetUser(id) == null ? false : true;
         }
 
-        // GET: Users/Login
-        public IActionResult Login()
+        // POST: Users/Login
+        [HttpPost, ActionName("Login")]
+        public IActionResult Login(string username, string password)
         {
             return View();
         }

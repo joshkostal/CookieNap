@@ -5,7 +5,18 @@ namespace Server.Models
 {
     public class Listing
     {
-        public Listing(double price, ConditionTypes condition, Book bookListed, ListingTypes listingType, User listingCreator)
+        //Only to be used for info coming from front end, use other constructor in backend
+        public Listing(int price, string condition, string isbn, string listingType, int id)
+        {
+            DatabaseConnection dbc = new DatabaseConnection();
+
+            Price = price;
+            Condition = ConvertStringToConditionType(condition);
+            BookListed = new Book(isbn);
+            ListingType = ConvertStringToListingType(listingType);
+            ListingCreator = dbc.GetUser(id);
+        }
+        public Listing(int price, ConditionTypes condition, Book bookListed, ListingTypes listingType, User listingCreator)
         {
             Price = price;
             Condition = condition;
@@ -17,7 +28,7 @@ namespace Server.Models
         public enum ListingTypes { Sell, Buy }
 
         [Required]
-        public double Price { get; set; }
+        public int Price { get; set; }
 
         [Required]
         public ConditionTypes Condition { get; set; }
@@ -35,5 +46,31 @@ namespace Server.Models
 
         [Key]
         public int ListingID { get; set; }
+
+        public ListingTypes ConvertStringToListingType(string listingType)
+        {
+            return listingType == "Buy" ? ListingTypes.Buy : ListingTypes.Sell;
+        }
+
+        public ConditionTypes ConvertStringToConditionType(string condition)
+        {
+            if (condition.Equals("Great"))
+            {
+                return ConditionTypes.Great;
+            }
+            else if (condition.Equals("Good"))
+            {
+                return ConditionTypes.Good;
+            }
+            else if (condition.Equals("Okay"))
+            {
+                return ConditionTypes.Okay;
+            }
+            else if (condition.Equals("Poor"))
+            {
+                return ConditionTypes.Poor;
+            }
+            else return ConditionTypes.Okay;
+        }
     }
 }

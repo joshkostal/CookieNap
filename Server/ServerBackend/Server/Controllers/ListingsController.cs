@@ -43,7 +43,7 @@ namespace Server.Controllers
         // POST: Listings/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Price,Condition,LastDateEdited,ListingType,ListingID,ListingCreator")] Listing listing)
+        public IActionResult Create([Bind("Price,Condition,ListingType,ListingCreator")] Listing listing)
         {
             if (ModelState.IsValid)
             {
@@ -115,6 +115,18 @@ namespace Server.Controllers
         {
             _dbc.DeleteListingByID(id);
             return RedirectToAction(nameof(Index));
+        }
+
+        // GET: Listings/User/5
+        public IActionResult User(int id)
+        {
+            var user = _dbc.GetUser(id);
+            if(user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
         }
 
         private bool ListingExists(int id)

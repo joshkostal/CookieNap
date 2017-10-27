@@ -14,6 +14,7 @@ namespace Server.Models
         }
         [Key]
         [Required]
+        [RegularExpression("^[0-9]{10,13}$", ErrorMessage = "This is not a valid ISBN format")]
         public string ISBN { get; set; }
 
         public string Authors { get; set; }
