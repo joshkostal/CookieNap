@@ -6,6 +6,18 @@ export function routerConfig($stateProvider: angular.ui.IStateProvider, $urlRout
       templateUrl: 'app/main/main.html',
       controller: 'MainController',
       controllerAs: 'main'
+    })  
+    .state('signIn', {
+      url: '/signIn',
+      templateUrl: 'app/signin/signin.html',
+      controller: 'SignInController',
+      controllerAs: 'signIn'
+    })
+    .state('createListing', {
+      url: '/createListing',
+      templateUrl: 'app/createListing/createListing.html',
+      controller: 'CreateListingController',
+      controllerAs: 'createListing'
     });
 
   $urlRouterProvider.otherwise('/');
