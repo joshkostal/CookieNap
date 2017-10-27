@@ -4,7 +4,7 @@ VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server", "Server\Server.csproj", "{5B0C48A8-2438-4542-8F4C-1BA5C1528D3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookieNapTests", "CookieNapTests\CookieNapTests.csproj", "{67105B00-FEB4-44A9-A3F4-FF2ADB810037}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerBackendTests", "ServerBackendTests\ServerBackendTests.csproj", "{139A83A1-7065-49F9-BD7F-FC9EEE184E79}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -16,10 +16,10 @@ Global
 		{5B0C48A8-2438-4542-8F4C-1BA5C1528D3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B0C48A8-2438-4542-8F4C-1BA5C1528D3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B0C48A8-2438-4542-8F4C-1BA5C1528D3D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{67105B00-FEB4-44A9-A3F4-FF2ADB810037}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{67105B00-FEB4-44A9-A3F4-FF2ADB810037}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{67105B00-FEB4-44A9-A3F4-FF2ADB810037}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{67105B00-FEB4-44A9-A3F4-FF2ADB810037}.Release|Any CPU.Build.0 = Release|Any CPU
+		{139A83A1-7065-49F9-BD7F-FC9EEE184E79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{139A83A1-7065-49F9-BD7F-FC9EEE184E79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{139A83A1-7065-49F9-BD7F-FC9EEE184E79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{139A83A1-7065-49F9-BD7F-FC9EEE184E79}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

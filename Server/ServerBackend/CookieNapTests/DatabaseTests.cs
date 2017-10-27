@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Server.Models;
 
 namespace CookieNapTests
@@ -9,7 +8,7 @@ namespace CookieNapTests
     {
         private DatabaseConnection _dbc = new DatabaseConnection();
         private static Book book = new Book("1259446298");
-        private static User user = new User("gwashington", "george", "washington", "george.washington@hsukers.unl.edu", "gwash@gmail.com");
+        private static User user = new User("gwashington", "george", "washington", "george.washington@huskers.unl.edu", "gwash@gmail.com");
         private Listing listing = new Listing(5, Listing.ConditionTypes.Good, book, Listing.ListingTypes.Sell, user);
 
         [TestMethod]
