@@ -12,6 +12,30 @@ namespace BackendTests
         private Listing listing = new Listing(5, Listing.ConditionTypes.Good, book, Listing.ListingTypes.Sell, user);
 
         [TestMethod]
+        public void InsertUserTest()
+        {
+
+        }
+
+        [TestMethod]
+        public void GetUserTest()
+        {
+
+        }
+
+        [TestMethod]
+        public void UpdateEmailsTest()
+        {
+
+        }
+
+        [TestMethod]
+        public void DeleteUserByIdTest()
+        {
+
+        }
+
+        [TestMethod]
         public void InsertListingTest()
         {
             //Arrange
@@ -23,6 +47,84 @@ namespace BackendTests
             //Assert
             Listing listing2 = _dbc.GetListing(listing.ListingID);
             Assert.AreEqual(listing, listing2);
+        }
+
+        [TestMethod]
+        public void UpdateBookPriceTest()
+        {
+
+        }
+
+        [TestMethod]
+        public void DeleteListingByIDTest()
+        {
+
+        }
+
+        [TestMethod]
+        public void DeleteListingByDateTest()
+        {
+
+        }
+
+        [TestMethod]
+        public void DeleteListingsPastDeletionDateTest()
+        {
+
+        }
+
+        [TestMethod]
+        public void GetListingTest()
+        {
+
+        }
+
+        [TestMethod]
+        public void GetAllListingsTest()
+        {
+
+        }
+
+        [TestMethod]
+        public void FindBooksListedTest()
+        {
+
+        }
+
+        [TestMethod]
+        public void SetListingsForBookTest()
+        {
+
+        }
+
+        [TestMethod]
+        public void SetListingsForUserTest()
+        {
+
+        }
+
+        [TestMethod]
+        public void RetrievePasswordTest()
+        {
+
+        }
+
+        [TestMethod]
+        public void StorePasswordTest()
+        {
+
+        }
+
+        [TestMethod]
+        public void CheckUniqueUsernameTest()
+        {
+
+        }
+
+        [TestMethod]
+        public void CheckUniqueHuskerEmailTest()
+        {
+
         }
     }
 }
