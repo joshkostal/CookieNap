@@ -7,6 +7,7 @@ namespace Server.Controllers
     public class UsersController : Controller
     {
         private DatabaseConnection _dbc = new DatabaseConnection();
+        private Email _email = new Email();
 
         // GET: Users/Details/5
         [HttpGet]
@@ -15,26 +16,25 @@ namespace Server.Controllers
             return _dbc.GetUser(id);
         }
 
-        public enum CreateTypes { UsernameFail, EmailFail, Success, GeneralFail }
         // POST: Users/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public CreateTypes Create([Bind("UserName,FirstName,LastName,HuskerEmail,CommunicationEmail,Password")] User user)
+        public string Create([Bind("UserName,FirstName,LastName,HuskerEmail,CommunicationEmail,Password")] User user)
         {
             if (ModelState.IsValid)
             {
                 bool uniqueUsername = _dbc.CheckUniqueUsername(user.UserName);
                 bool uniqueHuskerEmail = _dbc.CheckUniqueHuskerEmail(user.HuskerEmail);
 
-                if(uniqueUsername || uniqueHuskerEmail)
+                if(!uniqueUsername || !uniqueHuskerEmail)
                 {
-                    return uniqueUsername ? CreateTypes.UsernameFail : CreateTypes.EmailFail;
+                    return uniqueUsername ? "UsernameFail" : "EmailFail";
                 }
 
                 _dbc.InsertUser(user);
-                return CreateTypes.Success;
+                return _email.SendRegistrationEmail(user);
             }
-            return CreateTypes.GeneralFail;
+            return "GeneralFail";
         }
 
         // GET: Users/Edit/5

@@ -22,12 +22,12 @@ namespace BackendTests
 
             //Act
             User returnedUser = _dbc.GetUser(user.UserID);
-
-            //Tear Down
             _dbc.DeleteUser(user);
+            User deletedUser = _dbc.GetUser(user.UserID);
 
             //Assert
             Assert.AreEqual(user.UserName, returnedUser.UserName);
+            Assert.IsNull(deletedUser);
         }
 
         [TestMethod]
@@ -58,12 +58,12 @@ namespace BackendTests
 
             //Act
             Listing returnedListing = _dbc.GetListing(listing.ListingID);
-
-            //Tear Down
             _dbc.DeleteListingByID(listing.ListingID);
+            Listing deletedListing = _dbc.GetListing(listing.ListingID);
 
             //Assert
             Assert.AreEqual(listing.ListingID, returnedListing.ListingID);
+            Assert.IsNull(deletedListing);
         }
 
         [TestMethod]
@@ -90,10 +90,10 @@ namespace BackendTests
         public void DeleteListingByDateTest()
         {
             //Arrange
-            listing = _dbc.InsertListing(listing);
+            listing = _dbc.InsertListingIntoPast(listing);
 
             //Act
-            _dbc.DeleteListingByDate(DateTime.Today);   //Change to past
+            _dbc.DeleteListingByDate(new DateTime(2000, 1, 1));
 
             var id = listing.ListingID;
             listing = _dbc.GetListing(id);

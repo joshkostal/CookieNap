@@ -175,6 +175,40 @@ namespace Server.Models
             return listing;
         }
 
+        public Listing InsertListingIntoPast(Listing listing)
+        {
+            //Convert listing type to boolean for the database
+            int isSelling = 0;
+            if (listing.ListingType == Listing.ListingTypes.Sell)
+            {
+                isSelling = 1;
+            }
+
+            if (this.OpenConnection())
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.Connection = connection;
+
+                cmd.CommandText = string.Format("INSERT INTO Listing (Price, BookISBN, Listing.Condition, IsSelling, User_UserId) VALUES (@Price, @ISBN, @Condition, @isSelling, (Select User.UserId from User where User.UserName = '{0}' group by User.UserName))", listing.ListingCreator.UserName);
+
+                cmd.Prepare();
+
+                cmd.Parameters.AddWithValue("@Price", listing.Price);
+                cmd.Parameters.AddWithValue("@ISBN", listing.BookListed.ISBN);
+                cmd.Parameters.AddWithValue("@Condition", listing.Condition.ToString());
+                cmd.Parameters.AddWithValue("@isSelling", isSelling);
+                cmd.Parameters.AddWithValue("@Username", listing.ListingCreator.UserName);
+
+                cmd.ExecuteNonQuery();
+                listing.ListingID = (int)cmd.LastInsertedId;
+                listing.LastDateEdited = new DateTime(2000, 1, 1);
+
+                this.CloseConnection();
+            }
+
+            return listing;
+        }
+
         public Listing UpdateBookPrice(Listing listing)
         {
             if (this.OpenConnection())
@@ -215,7 +249,7 @@ namespace Server.Models
 
         public void DeleteListingByDate(DateTime date)
         {
-            string query = string.Format("DELETE FROM Listing WHERE Listing.LastEditedDate='{0}'", date);
+            string query = string.Format("DELETE FROM Listing WHERE Listing.LastEditedDate={0}", date);
             if (this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand(query, connection);
@@ -229,7 +263,7 @@ namespace Server.Models
 
         public void DeleteListingsPastDeletionDate()
         {
-            string query = "DELETE FROM Listing WHERE Listing.LastEditedDate >= DATE_SUB(CURDATE(), INTERVAL 45 DAY)";
+            string query = "DELETE FROM Listing WHERE LastEditedDate <= DATE_SUB(CURDATE(), INTERVAL 45 DAY)";
             if (this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand(query, connection);
