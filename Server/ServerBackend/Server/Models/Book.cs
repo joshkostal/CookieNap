@@ -52,9 +52,9 @@ namespace Server.Models
                 var authors = data["items"][0]["volumeInfo"]["authors"].ToString();
                 var author = authors.Remove(0, 9);
                 var a = author.Remove(author.Length - 4, 4);
-                var thumbnailURL = data["items"][0]["volumeInfo"]["imageLinks"]["thumbnail"].ToString();
+                var thumbnailURL = data["items"][0]["volumeInfo"]["imageLinks"]["thumbnail"];
                 var title = data["items"][0]["volumeInfo"]["title"].ToString();
-                book = new Book(ISBN, title, a, thumbnailURL);
+                book = new Book(ISBN, title, a, thumbnailURL==null? "http://res.freestockphotos.biz/pictures/14/14342-illustration-of-a-book-pv.png" : thumbnailURL.ToString()); //replace "" with book not found
             }
             return book;
         }

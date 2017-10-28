@@ -91,9 +91,10 @@ namespace BackendTests
         {
             //Arrange
             listing = _dbc.InsertListingIntoPast(listing);
+            DateTime date = new DateTime(2000, 1, 1);
 
             //Act
-            _dbc.DeleteListingByDate(new DateTime(2000, 1, 1));
+            _dbc.DeleteListingByDate(date);
 
             var id = listing.ListingID;
             listing = _dbc.GetListing(id);
@@ -112,11 +113,11 @@ namespace BackendTests
             Listing newListing = listing;
             newListing.LastDateEdited = new DateTime(2000, 1, 1);
             newListing = _dbc.InsertListing(newListing);
+            var id = newListing.ListingID;
 
             //Act
             _dbc.DeleteListingsPastDeletionDate();
-
-            var id = newListing.ListingID;
+                        
             newListing = _dbc.GetListing(id);
 
             //Tear Down
@@ -149,7 +150,7 @@ namespace BackendTests
             listing3.BookListed = book3;
             listingsListed.Add(listing3);
 
-            Book book4 = new Book("4444444444");
+            Book book4 = new Book("5555555555");
             Listing listing4 = listing;
             listing4.BookListed = book4;
             listingsListed.Add(listing4);
@@ -198,7 +199,7 @@ namespace BackendTests
             listing3.BookListed = book3;
             booksListed.Add(book3);
 
-            Book book4 = new Book("4444444444");
+            Book book4 = new Book("5555555555");
             Listing listing4 = listing;
             listing4.BookListed = book4;
             booksListed.Add(book4);
@@ -239,7 +240,7 @@ namespace BackendTests
             //Arrange
             List<Listing> listings = new List<Listing>();
 
-            Book book1 = new Book("1111111111");
+            Book book1 = new Book("0321596943");
             Listing listing1 = listing;
             listing1.BookListed = book1;
             listings.Add(listing1);

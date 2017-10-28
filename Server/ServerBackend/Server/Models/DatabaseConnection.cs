@@ -346,7 +346,7 @@ namespace Server.Models
                 {
                     tempUser.UserID = dr.GetInt32(5);
                     Book book = new Book((string)dr[3]);
-                    book.QueryISBN();
+                    book = book.QueryISBN();
                     Listing listing = new Listing();
                     listing = new Listing(dr.GetInt32(0), listing.ConvertStringToConditionType((string)dr[1]), book, dr.GetInt32(2) == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, tempUser);
                     listing.ListingID = dr.GetInt32(4);
