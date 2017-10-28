@@ -36,18 +36,34 @@ namespace Server.Models
 
         public List<Listing> ListingsWithBook { get; set; }
 
-        public Book QueryISBN()
+        public Book QueryISBNAsync()
         {
             Book book = null;
             string url = string.Format("https://www.googleapis.com/books/v1/volumes?q=isbn:{0}&key=AIzaSyA0_9-gOBdZSR6Cw5n9cJdBEY_kAsbPmTs", ISBN);
 
+            //using(var client = new HttpClient())
+            //{
+            //    HttpResponseMessage response = await client.GetAsync(url);
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //        string result = await response.Content.ReadAsStringAsync();
+            //        var rootResult = JsonConvert.DeserializeObject<RootObject>(result);
+            //        return 
+            //    }
+            //    else
+            //    {
+            //        return null;
+            //    }
+            //}
+
+
+
+
+
+
             HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
             httpWebRequest.Method = WebRequestMethods.Http.Get;
             httpWebRequest.Accept = "application/json";
-
-            //HttpWebResponse response = await httpWebRequest.GetResponseAsync() as HttpWebResponse;
-            //var r = response.GetResponseStream();
-            //var data = JObject.Parse(r.ToString());
 
             var httpResponse = httpWebRequest.GetResponse() as HttpWebResponse;
             using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
