@@ -155,7 +155,7 @@ namespace Server.Models
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = connection;
 
-                cmd.CommandText = string.Format("INSERT INTO Listing (Price, BookISBN, Listing.Condition, IsSelling, User_UserId) VALUES (@Price, @ISBN, @Condition, @isSelling, '{0}')",listing.ListingCreator.UserID);
+                cmd.CommandText = string.Format("INSERT INTO Listing (Price, BookISBN, Listing.Condition, IsSelling, User_UserId) VALUES (@Price, @ISBN, @Condition, @isSelling, (Select (distinct) User.UserId from User where User.UserName = '{0}'))",listing.ListingCreator.UserName);
 
                 cmd.Prepare();
 
@@ -201,7 +201,7 @@ namespace Server.Models
 
         public void DeleteListingByID(int id)
         {
-            string query = string.Format("DELETE FROM Listing WHERE Listing.ListingId={0}", id);
+            string query = string.Format("DELETE FROM Listing WHERE Listing.ListingId='{0}'", id);
             if (this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand(query, connection);
@@ -257,11 +257,12 @@ namespace Server.Models
 
                 cmd.Prepare();
                 MySqlDataReader dr = cmd.ExecuteReader();
+                dr.Read();
                 if (!dr.HasRows)
                 {
                     return null;
                 }
-                int data1 = (int)dr[0];
+                double data1 = (double)dr[0];
                 string data2 = (string)dr[1];
                 int data3 = (int)dr[2];
                 string data4 = (string)dr[3];
