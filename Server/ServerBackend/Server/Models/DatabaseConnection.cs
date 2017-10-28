@@ -72,7 +72,7 @@ namespace Server.Models
         {
             User user = null;
 
-            string query = string.Format("SELECT FirstName, LastName, UserName, PrimaryEmailAddress, SecondaryEmailAddress FROM User WHERE UserId={0}", id);
+            string query = string.Format("SELECT FirstName, LastName, UserName, PrimaryEmailAddress, SecondaryEmailAddress FROM User WHERE UserId='{0}'", id);
 
             if (this.OpenConnection())
             {
@@ -121,13 +121,13 @@ namespace Server.Models
         {
             if (this.OpenConnection())
             {
-                string query1 = string.Format("DELETE FROM Listing WHERE Listing.User_UserId={0}", id);
+                string query1 = string.Format("DELETE FROM Listing WHERE Listing.User_UserId='{0}'", id);
                 MySqlCommand cmd = new MySqlCommand(query1, connection);
 
                 cmd.Prepare();
                 cmd.ExecuteNonQuery();
 
-                string query2 = string.Format("DELETE FROM User WHERE UserId={0}", id);
+                string query2 = string.Format("DELETE FROM User WHERE UserId='{0}'", id);
                 cmd = new MySqlCommand(query2, connection);
                 cmd.Prepare();
                 cmd.ExecuteNonQuery();
@@ -156,7 +156,7 @@ namespace Server.Models
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = connection;
 
-                cmd.CommandText = string.Format("INSERT INTO Listing (Price, BookISBN, Listing.Condition, IsSelling, LastDateEdited, User_UserId) VALUES (@Price, @ISBN, @Condition, @isSelling, @LastDateEdited, (Select User.UserId from User where User.UserName = '{0}' group by User.UserName))", listing.ListingCreator.UserName);
+                cmd.CommandText = string.Format("INSERT INTO Listing (Price, BookISBN, Listing.Condition, IsSelling, LastEditedDate, User_UserId) VALUES (@Price, @ISBN, @Condition, @isSelling, @LastDateEdited, (Select User.UserId from User where User.UserName = '{0}' group by User.UserName))", listing.ListingCreator.UserName);
 
                 cmd.Prepare();
 
@@ -172,6 +172,8 @@ namespace Server.Models
 
                 this.CloseConnection();
             }
+
+            DeleteListingsPastDeletionDate();
 
             return listing;
         }
@@ -191,7 +193,7 @@ namespace Server.Models
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = connection;
 
-                cmd.CommandText = string.Format("INSERT INTO Listing (Price, BookISBN, Listing.Condition, IsSelling, User_UserId, LastDateEdited) VALUES (@Price, @ISBN, @Condition, @isSelling, (Select User.UserId from User where User.UserName = '{0}' group by User.UserName))", listing.ListingCreator.UserName);
+                cmd.CommandText = string.Format("INSERT INTO Listing (Price, BookISBN, Listing.Condition, IsSelling, User_UserId, LastEditedDate) VALUES (@Price, @ISBN, @Condition, @isSelling, (Select User.UserId from User where User.UserName = '{0}' order by UserId limit 1), @LastEditedDate)", listing.ListingCreator.UserName);
 
                 cmd.Prepare();
 
@@ -200,6 +202,7 @@ namespace Server.Models
                 cmd.Parameters.AddWithValue("@Condition", listing.Condition.ToString());
                 cmd.Parameters.AddWithValue("@isSelling", isSelling);
                 cmd.Parameters.AddWithValue("@Username", listing.ListingCreator.UserName);
+                cmd.Parameters.AddWithValue("@LastEditedDate", listing.LastDateEdited);
 
                 cmd.ExecuteNonQuery();
                 listing.ListingID = (int)cmd.LastInsertedId;
@@ -219,7 +222,7 @@ namespace Server.Models
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = connection;
 
-                cmd.CommandText = "UPDATE Listing SET (Price=@Price, LastDateEdited=@LastDateEdited) WHERE ListingID=@ListingID";
+                cmd.CommandText = "UPDATE Listing SET Price=@Price, LastEditedDate=@LastDateEdited WHERE ListingID=@ListingID";
 
                 cmd.Prepare();
 
@@ -252,7 +255,7 @@ namespace Server.Models
 
         public void DeleteListingByDate(DateTime date)
         {
-            string query = string.Format("DELETE FROM Listing WHERE Listing.LastEditedDate={0}", date);
+            string query = string.Format("DELETE FROM Listing WHERE Listing.LastEditedDate='{0}'", date);
             if (this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand(query, connection);
@@ -490,6 +493,7 @@ namespace Server.Models
 
                 cmd.Prepare();
                 MySqlDataReader dr = cmd.ExecuteReader();
+                dr.Read();
                 string password = (string)dr[0];
 
                 dr.Close();
