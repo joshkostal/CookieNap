@@ -89,10 +89,10 @@ namespace Server.Controllers
 
         // POST: Users/Login
         [HttpPost, ActionName("Login")]
-        public bool Login(string username, string password)
+        public string Login(string username, string password)
         {
-            User user = null;
-            return user.UserPassword.VerifyPassword(username, password);
+            User user = new User();
+            return user.UserPassword.VerifyPassword(username, password) ? username : "fail";
         }
 
         private bool UserExists(int id)
