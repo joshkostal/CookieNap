@@ -37,13 +37,13 @@ namespace Server.Models
         public Book QueryISBN()
         {
             Book book = null;
-            string url = string.Format("https://www.googleapis.com/books/v1/volumes?q=isbn:{0}&key=AIzaSyA0_9-gOBdZSR6Cw5n9cJdBEY_kAsbPmTs", this.ISBN);
+            string url = string.Format("https://www.googleapis.com/books/v1/volumes?q=isbn:{0}&key=AIzaSyA0_9-gOBdZSR6Cw5n9cJdBEY_kAsbPmTs", ISBN);
 
             HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
-            httpWebRequest.Method = WebRequestMethods.Http.Get;
+            httpWebRequest.Method = WebRequestMethods.Http.Post;
             httpWebRequest.Accept = "application/json";
 
-            using (var sr = new StreamReader(httpWebRequest.GetRequestStream()))
+            using (var sr = httpWebRequest.GetResponse() as HttpWebResponse)
             {
                 var json = sr.ToString();
                 JObject data = JObject.Parse(json);

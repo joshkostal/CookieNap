@@ -9,51 +9,35 @@ namespace Server.Controllers
         private DatabaseConnection _dbc = new DatabaseConnection();
 
         // GET: Users/Details/5
-        public IActionResult Details(int id)
+        [HttpGet]
+        public User Details(int id)
         {
-            User user = _dbc.GetUser(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return View(user);
-        }
-
-        // GET: Users/Create
-        public IActionResult Create()
-        {
-            return View();
+            return _dbc.GetUser(id);
         }
 
         // POST: Users/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("UserName,FirstName,LastName,HuskerEmail,CommunicationEmail,Password")] User user)
+        public bool Create([Bind("UserName,FirstName,LastName,HuskerEmail,CommunicationEmail,Password")] User user)
         {
             if (ModelState.IsValid)
             {
                 _dbc.InsertUser(user);
-                return RedirectToAction(nameof(ListingsController.Index));
+                return true;
             }
-            return View(user);
+            return false;
         }
 
         // GET: Users/Edit/5
-        public IActionResult Edit(int id)
+        public User Edit(int id)
         {
-            var user = _dbc.GetUser(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-            return View(user);
+            return _dbc.GetUser(id);
         }
 
         // POST: Users/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(string id, [Bind("UserName,FirstName,LastName,HuskerEmail,CommunicationEmail")] User user)
+        public bool Edit(string id, [Bind("UserName,FirstName,LastName,HuskerEmail,CommunicationEmail")] User user)
         {
             if (ModelState.IsValid)
             {
@@ -65,49 +49,44 @@ namespace Server.Controllers
                 {
                     if (!UserExists(user.UserID))
                     {
-                        return NotFound();
+                        return false;
                     }
                     else
                     {
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(ListingsController.Index));
+                return true;
             }
-            return View(user);
+            return false;
         }
 
         // GET: Users/Delete/5
-        public IActionResult Delete(int id)
+        public User Delete(int id)
         {
-            var user = _dbc.GetUser(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return View(user);
+            return _dbc.GetUser(id);
         }
 
         // POST: Users/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
+        public bool DeleteConfirmed(int id)
         {
             _dbc.DeleteUserById(id);
-            return RedirectToAction(nameof(ListingsController.Index));
+            return true;
+        }
+
+        // POST: Users/Login
+        [HttpPost, ActionName("Login")]
+        public bool Login(string username, string password)
+        {
+            User user = null;
+            return user.UserPassword.VerifyPassword(username, password);
         }
 
         private bool UserExists(int id)
         {
             return _dbc.GetUser(id) == null ? false : true;
-        }
-
-        // POST: Users/Login
-        [HttpPost, ActionName("Login")]
-        public IActionResult Login(string username, string password)
-        {
-            return View();
         }
     }
 }
