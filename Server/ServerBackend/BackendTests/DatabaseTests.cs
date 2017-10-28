@@ -10,7 +10,8 @@ namespace BackendTests
     {
         private DatabaseConnection _dbc = new DatabaseConnection();
         private static Book book = new Book("1259446298");
-        private static User user = new User("gwashington", "george", "washington", "george.washington@huskers.unl.edu", "gwash@gmail.com"); //Create local versions where needed
+        private static User.Password pswd = new User.Password("1234");
+        private static User user = new User("gwashington", "george", "washington", "george.washington@huskers.unl.edu", "gwash@gmail.com", pswd); //Create local versions where needed
         private Listing listing = new Listing(5, Listing.ConditionTypes.Good, book, Listing.ListingTypes.Sell, user);   //Create local versions where needed- anywhere listing is altered
 
         [TestMethod]
