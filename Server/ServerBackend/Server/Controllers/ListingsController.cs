@@ -10,68 +10,54 @@ namespace Server.Controllers
         private DatabaseConnection _dbc = new DatabaseConnection();
 
         // GET: Listings
-        public IActionResult Index()
+        [HttpGet]
+        public List<Listing> Index()
         {
-            List<Listing> listings = _dbc.GetAllListings();
-            return View(listings);
+            return _dbc.GetAllListings();
         }
 
-        public IActionResult Search(string isbn)
+        // GET: Listings/Search
+        [HttpGet]
+        public List<Listing> Search(string isbn)
         {
-            List<Listing> listings = _dbc.SetListingsForBook(isbn);
-            return View(listings);
+            return _dbc.SetListingsForBook(isbn);
         }
 
         // GET: Listings/Details/5
-        public IActionResult Details(int id)
+        [HttpGet]
+        public Listing Details(int id)
         {
-            var listing = _dbc.GetListing(id);
-            if (listing == null)
-            {
-                return NotFound();
-            }
-
-            return View(listing);
-        }
-
-        // GET: Listings/Create
-        public IActionResult Create()
-        {
-            return View();
+            return _dbc.GetListing(id);
         }
 
         // POST: Listings/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Price,Condition,ListingType,ListingCreator")] Listing listing)
+        public bool Create([Bind("Price,Condition,ListingType,ListingCreator")] Listing listing)
         {
             if (ModelState.IsValid)
             {
                 _dbc.InsertListing(listing);
-                return RedirectToAction(nameof(Index));
+                return true;
             }
-            return View(listing);
+            return false;
         }
 
         // GET: Listings/Edit/5
-        public IActionResult Edit(int id)
+        [HttpGet]
+        public Listing Edit(int id)
         {
-            var listing = _dbc.GetListing(id);
-            if (listing == null)
-            {
-                return NotFound();
-            }
-            return View(listing);
+            return _dbc.GetListing(id);
         }
 
         // POST: Listings/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("Price,Condition,LastDateEdited,ListingType,ListingID")] Listing listing)
+        public bool Edit(int id, [Bind("Price,Condition,LastDateEdited,ListingType,ListingID")] Listing listing)
         {
             if (id != listing.ListingID)
             {
-                return NotFound();
+                return false;
             }
 
             if (ModelState.IsValid)
@@ -84,49 +70,39 @@ namespace Server.Controllers
                 {
                     if (!ListingExists(listing.ListingID))
                     {
-                        return NotFound();
+                        return false;
                     }
                     else
                     {
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return true;
             }
-            return View(listing);
+            return false;
         }
 
         // GET: Listings/Delete/5
-        public IActionResult Delete(int id)
+        [HttpGet]
+        public Listing Delete(int id)
         {
-            var listing = _dbc.GetListing(id);
-            if (listing == null)
-            {
-                return NotFound();
-            }
-
-            return View(listing);
+            return _dbc.GetListing(id);
         }
 
         // POST: Listings/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
+        public bool DeleteConfirmed(int id)
         {
             _dbc.DeleteListingByID(id);
-            return RedirectToAction(nameof(Index));
+            return true;
         }
 
         // GET: Listings/User/5
-        public IActionResult User(int id)
+        [HttpGet]
+        public User User(int id)
         {
-            var user = _dbc.GetUser(id);
-            if(user == null)
-            {
-                return NotFound();
-            }
-
-            return View(user);
+            return _dbc.GetUser(id);
         }
 
         private bool ListingExists(int id)

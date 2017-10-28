@@ -29,6 +29,7 @@ namespace Server.Controllers
         }
 
         // GET: Users/Edit/5
+        [HttpGet]
         public User Edit(int id)
         {
             return _dbc.GetUser(id);
@@ -62,6 +63,7 @@ namespace Server.Controllers
         }
 
         // GET: Users/Delete/5
+        [HttpGet]
         public User Delete(int id)
         {
             return _dbc.GetUser(id);
