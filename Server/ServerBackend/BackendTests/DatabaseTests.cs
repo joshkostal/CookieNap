@@ -63,7 +63,7 @@ namespace BackendTests
             _dbc.DeleteListingByID(listing.ListingID);
 
             //Assert
-            Assert.AreEqual(listing, returnedListing);
+            Assert.AreEqual(listing.ListingID, returnedListing.ListingID);
         }
 
         [TestMethod]
@@ -79,10 +79,11 @@ namespace BackendTests
 
             //Tear Down
             _dbc.DeleteListingByID(listing.ListingID);
-            listing.Price = 5;
 
             //Assert
             Assert.AreEqual(listing.Price, updatedListing.Price);
+            listing.Price = 5;
+
         }
 
         [TestMethod]
@@ -92,7 +93,7 @@ namespace BackendTests
             listing = _dbc.InsertListing(listing);
 
             //Act
-            _dbc.DeleteListingByDate(DateTime.Today);
+            _dbc.DeleteListingByDate(DateTime.Today);   //Change to past
 
             var id = listing.ListingID;
             listing = _dbc.GetListing(id);
@@ -126,7 +127,7 @@ namespace BackendTests
         }
 
         [TestMethod]
-        public void GetAllListingsTestAsync()
+        public void GetAllListingsTest()
         {
             //Arrange
             List<Listing> initialFoundListings = _dbc.GetAllListings();
@@ -164,15 +165,15 @@ namespace BackendTests
             _dbc.DeleteListingByID(listing4.ListingID);
 
             //Assert
-            Assert.AreEqual(newFoundListings.Count - initialFoundListings.Count, 4);
+            Assert.AreEqual(4, newFoundListings.Count - initialFoundListings.Count);
 
 
         }
 
         [TestMethod]
-        public void FindBooksListedTestAsync()
+        public void FindBooksListedTest()
         {
-            List<Book> initialFoundBooks = _dbc.FindBooksListedAsync();
+            List<Book> initialFoundBooks = _dbc.FindBooksListed();
 
             //Arrange
             List<Book> booksListed = new List<Book>();
@@ -213,7 +214,7 @@ namespace BackendTests
             listing5 = _dbc.InsertListing(listing5);
             listing6 = _dbc.InsertListing(listing6);
 
-            List<Book> newFoundBooks = _dbc.FindBooksListedAsync();
+            List<Book> newFoundBooks = _dbc.FindBooksListed();
 
             //Tear Down
             _dbc.DeleteListingByID(listing1.ListingID);
@@ -224,11 +225,11 @@ namespace BackendTests
             _dbc.DeleteListingByID(listing6.ListingID);
 
             //Assert
-            Assert.AreEqual(newFoundBooks.Count - initialFoundBooks.Count, 4);
+            Assert.AreEqual(4, newFoundBooks.Count - initialFoundBooks.Count);
         }
 
         [TestMethod]
-        public void SetListingsForBookTestAsync()
+        public void SetListingsForBookTest()
         {
             //Arrange
             List<Listing> listings = new List<Listing>();
@@ -258,7 +259,7 @@ namespace BackendTests
             _dbc.DeleteListingByID(listing3.ListingID);
 
             //Assert
-            Assert.AreEqual(result.Count, listings.Count);
+            Assert.AreEqual(listings.Count, result.Count);
         }
 
         [TestMethod]
@@ -289,7 +290,7 @@ namespace BackendTests
             _dbc.DeleteListingByID(listing3.ListingID);
 
             //Assert
-            Assert.AreEqual(result.Count, listings.Count);
+            Assert.AreEqual(listings.Count, result.Count);
         }
 
         [TestMethod]

@@ -24,6 +24,7 @@ namespace Server.Models
             HuskerEmail = huskerEmail;
             CommunicationEmail = communicationEmail;
         }
+        public User() { }
 
         [Key]
         [Required]

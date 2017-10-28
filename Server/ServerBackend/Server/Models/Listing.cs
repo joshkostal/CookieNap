@@ -24,6 +24,7 @@ namespace Server.Models
             ListingType = listingType;
             ListingCreator = listingCreator;
         }
+        public Listing() { }
         public enum ConditionTypes { Great, Good, Okay }
         public enum ListingTypes { Sell, Buy }
 

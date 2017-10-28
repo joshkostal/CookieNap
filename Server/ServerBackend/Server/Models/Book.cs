@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -41,17 +42,20 @@ namespace Server.Models
             string url = string.Format("https://www.googleapis.com/books/v1/volumes?q=isbn:{0}&key=AIzaSyA0_9-gOBdZSR6Cw5n9cJdBEY_kAsbPmTs", ISBN);
 
             HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
-            httpWebRequest.Method = WebRequestMethods.Http.Post;
+            httpWebRequest.Method = WebRequestMethods.Http.Get;
             httpWebRequest.Accept = "application/json";
 
             //HttpWebResponse response = await httpWebRequest.GetResponseAsync() as HttpWebResponse;
             //var r = response.GetResponseStream();
             //var data = JObject.Parse(r.ToString());
 
-            using (var sr = httpWebRequest.GetResponse())
-            {
-                var json = sr.ToString();
-                JObject data = JObject.Parse(json);
+            var httpResponse = httpWebRequest.GetResponse() as HttpWebResponse;
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+{
+                var result = streamReader.ReadToEnd();
+                JObject data = JObject.Parse(result);
+                //TextReader textReader = new TextReader();
+                //JsonTextReader reader = new JsonTextReader();
 
                 book = new Book(ISBN, (string)data["authors"], (string)data["title"], (string)data["thumbnail"]);
             }

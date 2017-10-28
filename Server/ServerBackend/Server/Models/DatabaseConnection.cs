@@ -243,7 +243,7 @@ namespace Server.Models
 
         public Listing GetListing(int listingID)
         {
-            Listing listing = null;
+            Listing listing = new Listing();
 
             string query = string.Format("SELECT Price, Listing.Condition, IsSelling, BookISBN, ListingId, User_UserId FROM Listing WHERE Listing.ListingId={0}", listingID);
 
@@ -262,8 +262,8 @@ namespace Server.Models
                 string data2 = (string)dr[1];
                 sbyte data3 = (sbyte)dr[2];
                 string data4 = (string)dr[3];
-                int data5 = (int)dr[4];
-                int data6 = (int)dr[5];
+                int data5 = dr.GetInt32(4);
+                int data6 = dr.GetInt32(5);
                 dr.Close();
 
                 query = string.Format("SELECT FirstName, LastName, UserName, PrimaryEmailAddress, SecondaryEmailAddress FROM User WHERE UserId='{0}'", data6);
@@ -301,35 +301,37 @@ namespace Server.Models
                 cmd.Prepare();
                 MySqlDataReader dr = cmd.ExecuteReader();
 
-                User tempUser = null;
+                User tempUser = new User();
                 while (dr.Read())
                 {
+                    tempUser.UserID = dr.GetInt32(5);
                     Book book = new Book((string)dr[3]);
                     book.QueryISBN();
-                    Listing listing = null;
-                    listing = new Listing((int)dr[0], listing.ConvertStringToConditionType((string)dr[1]), book, (int)dr[2] == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, tempUser);
-                    listing.ListingID = (int)dr[4];
+                    Listing listing = new Listing();
+                    listing = new Listing(dr.GetInt32(0), listing.ConvertStringToConditionType((string)dr[1]), book, dr.GetInt32(2) == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, tempUser);
+                    listing.ListingID = dr.GetInt32(4);
                     listings.Add(listing);
                 }
-
+                dr.Close();
                 foreach (Listing listing in listings)
                 {
-                    query = string.Format("SELECT FirstName, LastName, UserName, PrimaryEmailAddress, SecondaryEmailAddress FROM User WHERE UserId='{0}'", (int)dr[5]);
-                    cmd = new MySqlCommand(query, connection);
+                    query = string.Format("SELECT FirstName, LastName, UserName, PrimaryEmailAddress, SecondaryEmailAddress FROM User WHERE UserId='{0}'", listing.ListingCreator.UserID);
+                    cmd.CommandText = query;
 
                     cmd.Prepare();
                     MySqlDataReader rdr = cmd.ExecuteReader();
+                    rdr.Read();
                     User user = new User((string)rdr[2], (string)rdr[0], (string)rdr[1], (string)rdr[3], (string)rdr[4]);
                     listing.ListingCreator = user;
+                    rdr.Close();
                 }
-                dr.Close();
                 this.CloseConnection();
             }
 
             return listings;
         }
         
-        public List<Book> FindBooksListedAsync()
+        public List<Book> FindBooksListed()
         {
             List<Book> booksListed = new List<Book>();
             string query = "SELECT DISTINCT BookISBN FROM Listing";
@@ -389,7 +391,7 @@ namespace Server.Models
                     Book book = new Book(isbn);
                     book = book.QueryISBN();
 
-                    Listing listing = null;
+                    Listing listing = new Listing();
                     listing = new Listing(data0[i], listing.ConvertStringToConditionType(data1[i]), book, data2[2] == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, user);
                     listings.Add(listing);
                     rdr.Close();
@@ -416,7 +418,7 @@ namespace Server.Models
                     return null;
                 }
 
-                int listingID = (int)dr[0];
+                int listingID = dr.GetInt32(0);
                 query = string.Format("SELECT Price, BookISBN, Listing.Condition, IsSelling FROM Listing WHERE Listing.User_UserID='{0}'", listingID);
 
                 dr.Close();
@@ -431,8 +433,8 @@ namespace Server.Models
                     Book book = new Book((string)rdr[1]);
                     book = book.QueryISBN();
 
-                    Listing listing = null;
-                    listing = new Listing((int)rdr[0], listing.ConvertStringToConditionType((string)rdr[2]), book, (int)rdr[3] == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, user);
+                    Listing listing = new Listing();
+                    listing = new Listing(rdr.GetInt32(0), listing.ConvertStringToConditionType((string)rdr[2]), book, rdr.GetInt32(3) == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, user);
                     listings.Add(listing);
                 }
                 rdr.Close();
