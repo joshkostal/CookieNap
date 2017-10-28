@@ -6,7 +6,7 @@ namespace Server.Models
     public class Listing
     {
         //Only to be used for info coming from front end, use other constructor in backend
-        public Listing(int price, string condition, string isbn, string listingType, int id)
+        public Listing(double price, string condition, string isbn, string listingType, int id)
         {
             DatabaseConnection dbc = new DatabaseConnection();
 
@@ -16,7 +16,7 @@ namespace Server.Models
             ListingType = ConvertStringToListingType(listingType);
             ListingCreator = dbc.GetUser(id);
         }
-        public Listing(int price, ConditionTypes condition, Book bookListed, ListingTypes listingType, User listingCreator)
+        public Listing(double price, ConditionTypes condition, Book bookListed, ListingTypes listingType, User listingCreator)
         {
             Price = price;
             Condition = condition;
@@ -28,7 +28,7 @@ namespace Server.Models
         public enum ListingTypes { Sell, Buy }
 
         [Required]
-        public int Price { get; set; }
+        public double Price { get; set; }
 
         [Required]
         public ConditionTypes Condition { get; set; }
