@@ -248,7 +248,7 @@ namespace Server.Models
         {
             Listing listing = null;
 
-            string query = string.Format("SELECT Price, Condition, IsSelling, BookISBN, ListingId, User_UserId FROM Listing WHERE Listing.ListingId={0}", listingID);
+            string query = string.Format("SELECT Price, Listing.Condition, IsSelling, BookISBN, ListingId, User_UserId FROM Listing WHERE Listing.ListingId={0}", listingID);
 
             if (this.OpenConnection())
             {
@@ -261,20 +261,30 @@ namespace Server.Models
                 {
                     return null;
                 }
+                int data1 = (int)dr[0];
+                string data2 = (string)dr[1];
+                int data3 = (int)dr[2];
+                string data4 = (string)dr[3];
+                int data5 = (int)dr[4];
+                int data6 = (int)dr[5];
+                dr.Close();
 
-                query = string.Format("SELECT FirstName, LastName, UserName, PrimaryEmailAddress, SecondaryEmailAddress FROM User WHERE UserId={0}", (int)dr[5]);
+                query = string.Format("SELECT FirstName, LastName, UserName, PrimaryEmailAddress, SecondaryEmailAddress FROM User WHERE UserId='{0}'", data6);
                 cmd = new MySqlCommand(query, connection);
+
 
                 cmd.Prepare();
                 MySqlDataReader rdr = cmd.ExecuteReader();
+                rdr.Read();
+
                 User user = new User((string)rdr[2], (string)rdr[0], (string)rdr[1], (string)rdr[3], (string)rdr[4]);
 
-                Book book = new Book((string)dr[3]);
+                Book book = new Book(data4);
                 book.QueryISBN();
-                listing = new Listing((int)dr[0], listing.ConvertStringToConditionType((string)dr[1]), book, (int)dr[2] == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, user);
-                listing.ListingID = (int)dr[4];
 
-                dr.Close();
+                listing = new Listing(data1, listing.ConvertStringToConditionType(data2), book, data3 == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, user);
+                listing.ListingID = data5;
+                
                 this.CloseConnection();
             }
 
@@ -285,7 +295,7 @@ namespace Server.Models
         {
             List<Listing> listings = new List<Listing>();
 
-            string query = string.Format("SELECT Price, Condition, IsSelling, BookISBN, ListingId, User_UserId FROM Listing");
+            string query = string.Format("SELECT Price, Listing.Condition, IsSelling, BookISBN, ListingId, User_UserId FROM Listing");
 
             if (this.OpenConnection())
             {
@@ -347,7 +357,7 @@ namespace Server.Models
         public List<Listing> SetListingsForBook(string isbn)
         {
             List<Listing> listings = new List<Listing>();
-            string query = string.Format("SELECT Price, Condition, IsSelling FROM Listing WHERE BookISBN='{0}'", isbn);
+            string query = string.Format("SELECT Price, Listing.Condition, IsSelling FROM Listing WHERE BookISBN='{0}'", isbn);
 
             if(this.OpenConnection())
             {
@@ -380,8 +390,9 @@ namespace Server.Models
             return listings;
         }
 
-        public User SetListingsForUser(User user)
+        public List<Listing> SetListingsForUser(User user)
         {
+            List<Listing> listings = new List<Listing>();
             string query = string.Format("SELECT UserId FROM User WHERE User.username='{0}'", user.UserName);
 
             if(this.OpenConnection())
@@ -393,7 +404,7 @@ namespace Server.Models
                 MySqlDataReader dr = cmd.ExecuteReader();
                 if (!dr.HasRows)
                 {
-                    return user;
+                    return null;
                 }
 
                 string listingID = (string)dr[0];
@@ -403,6 +414,7 @@ namespace Server.Models
 
                 cmd.Prepare();
                 MySqlDataReader rdr = cmd.ExecuteReader();
+                rdr.Read();
 
                 while(rdr.Read())
                 {
@@ -411,13 +423,13 @@ namespace Server.Models
 
                     Listing listing = null;
                     listing = new Listing((int)rdr[0], listing.ConvertStringToConditionType((string)dr[1]), book, (int)rdr[3] == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, user);
-                    user.ListingsForUser.Add(listing);
+                    listings.Add(listing);
                 }
                 dr.Close();
                 rdr.Close();
                 this.CloseConnection();
             }
-            return user;
+            return listings;
         }
         
         //TODO: Check this one for SQL Injection- not sure how to do it in SELECT statements yet
@@ -463,7 +475,7 @@ namespace Server.Models
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = connection;
 
-                cmd.CommandText = "Update USER SET HashedPassword = VALUE @password WHERE User.UserName=@Username";
+                cmd.CommandText = "Update User SET HashedPassword = @password WHERE User.UserName=@Username";
 
                 cmd.Prepare();
 
@@ -480,7 +492,7 @@ namespace Server.Models
         public bool CheckUniqueUsername(string username)
         {
             bool usernameFound = true;
-            string query = string.Format("SELECT COUNT(*) FROM USER WHERE User.UserName='{0}'", username);
+            string query = string.Format("SELECT COUNT(*) FROM User WHERE User.UserName='{0}'", username);
 
             if(this.OpenConnection())
             {
@@ -502,7 +514,7 @@ namespace Server.Models
         public bool CheckUniqueHuskerEmail(string huskerEmail)
         {
             bool emailFound = true;
-            string query = string.Format("SELECT COUNT(*) FROM USER WHERE User.PrimaryEmailAddress='{0}'", huskerEmail);
+            string query = string.Format("SELECT COUNT(*) FROM User WHERE User.PrimaryEmailAddress='{0}'", huskerEmail);
 
             if(this.OpenConnection())
             {
