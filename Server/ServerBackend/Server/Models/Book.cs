@@ -41,14 +41,14 @@ namespace Server.Models
             Book book = null;
             string url = string.Format("https://www.googleapis.com/books/v1/volumes?q=isbn:{0}&key=AIzaSyA0_9-gOBdZSR6Cw5n9cJdBEY_kAsbPmTs", ISBN);
 
-            //using(var client = new HttpClient())
+            //using (var client = new HttpClient())
             //{
             //    HttpResponseMessage response = await client.GetAsync(url);
             //    if (response.IsSuccessStatusCode)
             //    {
             //        string result = await response.Content.ReadAsStringAsync();
             //        var rootResult = JsonConvert.DeserializeObject<RootObject>(result);
-            //        return 
+            //        return
             //    }
             //    else
             //    {

@@ -149,13 +149,14 @@ namespace Server.Models
             {
                 isSelling = 1;
             }
+            listing.LastDateEdited = DateTime.Today;
 
             if (this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = connection;
 
-                cmd.CommandText = string.Format("INSERT INTO Listing (Price, BookISBN, Listing.Condition, IsSelling, User_UserId) VALUES (@Price, @ISBN, @Condition, @isSelling, (Select User.UserId from User where User.UserName = '{0}' group by User.UserName))", listing.ListingCreator.UserName);
+                cmd.CommandText = string.Format("INSERT INTO Listing (Price, BookISBN, Listing.Condition, IsSelling, LastDateEdited, User_UserId) VALUES (@Price, @ISBN, @Condition, @isSelling, @LastDateEdited, (Select User.UserId from User where User.UserName = '{0}' group by User.UserName))", listing.ListingCreator.UserName);
 
                 cmd.Prepare();
 
@@ -164,10 +165,10 @@ namespace Server.Models
                 cmd.Parameters.AddWithValue("@Condition", listing.Condition.ToString());
                 cmd.Parameters.AddWithValue("@isSelling", isSelling);
                 cmd.Parameters.AddWithValue("@Username", listing.ListingCreator.UserName);
+                cmd.Parameters.AddWithValue("@LastDateEdited", listing.LastDateEdited);
 
                 cmd.ExecuteNonQuery();
                 listing.ListingID = (int)cmd.LastInsertedId;
-                listing.LastDateEdited = DateTime.Today;
 
                 this.CloseConnection();
             }
@@ -183,13 +184,14 @@ namespace Server.Models
             {
                 isSelling = 1;
             }
+            listing.LastDateEdited = new DateTime(2000, 1, 1);
 
             if (this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = connection;
 
-                cmd.CommandText = string.Format("INSERT INTO Listing (Price, BookISBN, Listing.Condition, IsSelling, User_UserId) VALUES (@Price, @ISBN, @Condition, @isSelling, (Select User.UserId from User where User.UserName = '{0}' group by User.UserName))", listing.ListingCreator.UserName);
+                cmd.CommandText = string.Format("INSERT INTO Listing (Price, BookISBN, Listing.Condition, IsSelling, User_UserId, LastDateEdited) VALUES (@Price, @ISBN, @Condition, @isSelling, (Select User.UserId from User where User.UserName = '{0}' group by User.UserName))", listing.ListingCreator.UserName);
 
                 cmd.Prepare();
 
@@ -201,7 +203,6 @@ namespace Server.Models
 
                 cmd.ExecuteNonQuery();
                 listing.ListingID = (int)cmd.LastInsertedId;
-                listing.LastDateEdited = new DateTime(2000, 1, 1);
 
                 this.CloseConnection();
             }
@@ -213,18 +214,20 @@ namespace Server.Models
         {
             if (this.OpenConnection())
             {
+                listing.LastDateEdited = DateTime.Today;
+
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = connection;
 
-                cmd.CommandText = "UPDATE Listing SET Price=@Price WHERE ListingID=@ListingID";
+                cmd.CommandText = "UPDATE Listing SET (Price=@Price, LastDateEdited=@LastDateEdited) WHERE ListingID=@ListingID";
 
                 cmd.Prepare();
 
                 cmd.Parameters.AddWithValue("@Price", listing.Price);
                 cmd.Parameters.AddWithValue("@ListingID", listing.ListingID);
+                cmd.Parameters.AddWithValue("@LastDateEdited", listing.LastDateEdited);
 
                 cmd.ExecuteNonQuery();
-                listing.LastDateEdited = DateTime.Today;
 
                 this.CloseConnection();
             }
