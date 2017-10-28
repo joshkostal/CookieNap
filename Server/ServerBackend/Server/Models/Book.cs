@@ -43,7 +43,7 @@ namespace Server.Models
             httpWebRequest.Method = WebRequestMethods.Http.Post;
             httpWebRequest.Accept = "application/json";
 
-            using (var sr = httpWebRequest.GetResponse() as HttpWebResponse)
+            using (var sr = httpWebRequest.GetResponseAsync())
             {
                 var json = sr.ToString();
                 JObject data = JObject.Parse(json);

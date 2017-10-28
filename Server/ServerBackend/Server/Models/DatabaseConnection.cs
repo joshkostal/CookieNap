@@ -265,10 +265,10 @@ namespace Server.Models
                 }
                 double data1 = (double)dr[0];
                 string data2 = (string)dr[1];
-                int data3 = (int)dr[2];
+                int data3 = dr.GetInt32(2);
                 string data4 = (string)dr[3];
-                int data5 = (int)dr[4];
-                int data6 = (int)dr[5];
+                int data5 = dr.GetInt32(4);
+                int data6 = dr.GetInt32(5);
                 dr.Close();
 
                 query = string.Format("SELECT FirstName, LastName, UserName, PrimaryEmailAddress, SecondaryEmailAddress FROM User WHERE UserId='{0}'", data6);
@@ -313,8 +313,8 @@ namespace Server.Models
                     Book book = new Book((string)dr[3]);
                     book.QueryISBN();
                     Listing listing = null;
-                    listing = new Listing((int)dr[0], listing.ConvertStringToConditionType((string)dr[1]), book, (int)dr[2] == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, tempUser);
-                    listing.ListingID = (int)dr[4];
+                    listing = new Listing(dr.GetInt32(0), listing.ConvertStringToConditionType((string)dr[1]), book, dr.GetInt32(2) == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, tempUser);
+                    listing.ListingID = dr.GetInt32(4);
                     listings.Add(listing);
                 }
 
@@ -388,7 +388,7 @@ namespace Server.Models
                     book = book.QueryISBN();
 
                     Listing listing = null;
-                    listing = new Listing((int)dr[0], listing.ConvertStringToConditionType((string)dr[1]), book, (int)dr[2] == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, user);
+                    listing = new Listing(dr.GetInt32(0), listing.ConvertStringToConditionType((string)dr[1]), book, dr.GetInt32(2) == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, user);
                     listings.Add(listing);
                 }
                 dr.Close();
@@ -429,7 +429,7 @@ namespace Server.Models
                     book = book.QueryISBN();
 
                     Listing listing = null;
-                    listing = new Listing((int)rdr[0], listing.ConvertStringToConditionType((string)dr[1]), book, (int)rdr[3] == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, user);
+                    listing = new Listing(rdr.GetInt32(0), listing.ConvertStringToConditionType((string)dr[1]), book, rdr.GetInt32(3) == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, user);
                     listings.Add(listing);
                 }
                 dr.Close();

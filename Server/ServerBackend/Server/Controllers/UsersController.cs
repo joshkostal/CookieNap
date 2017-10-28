@@ -15,17 +15,26 @@ namespace Server.Controllers
             return _dbc.GetUser(id);
         }
 
+        public enum CreateTypes { UsernameFail, EmailFail, Success, GeneralFail }
         // POST: Users/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public bool Create([Bind("UserName,FirstName,LastName,HuskerEmail,CommunicationEmail,Password")] User user)
+        public CreateTypes Create([Bind("UserName,FirstName,LastName,HuskerEmail,CommunicationEmail,Password")] User user)
         {
             if (ModelState.IsValid)
             {
+                bool uniqueUsername = _dbc.CheckUniqueUsername(user.UserName);
+                bool uniqueHuskerEmail = _dbc.CheckUniqueHuskerEmail(user.HuskerEmail);
+
+                if(uniqueUsername || uniqueHuskerEmail)
+                {
+                    return uniqueUsername ? CreateTypes.UsernameFail : CreateTypes.EmailFail;
+                }
+
                 _dbc.InsertUser(user);
-                return true;
+                return CreateTypes.Success;
             }
-            return false;
+            return CreateTypes.GeneralFail;
         }
 
         // GET: Users/Edit/5
