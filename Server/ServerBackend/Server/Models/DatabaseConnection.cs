@@ -49,7 +49,7 @@ namespace Server.Models
                 MySqlCommand cmd = new MySqlCommand();
 
                 cmd.CommandText = "INSERT INTO User (FirstName, LastName, UserName, PrimaryEmailAddress, SecondaryEmailAddress) VALUES (@Firstname, @Lastname, @Username, @PrimaryEmail, @SecondaryEmail)";
-
+                cmd.Connection = connection;
                 cmd.Prepare();
 
                 cmd.Parameters.AddWithValue("@Firstname", user.FirstName);
@@ -77,6 +77,7 @@ namespace Server.Models
             if (this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand(query, connection);
+                cmd.Connection = connection;
 
                 cmd.Prepare();
                 MySqlDataReader dr = cmd.ExecuteReader();
@@ -99,6 +100,7 @@ namespace Server.Models
             if (this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand();
+                cmd.Connection = connection;
 
                 cmd.CommandText = "UPDATE User SET PrimaryEmailAddress=@PrimaryEmail, SecondaryEmailAddress=@SecondaryEmail WHERE UserName=@Username";
 
@@ -121,6 +123,7 @@ namespace Server.Models
             {
                 string query1 = string.Format("DELETE FROM Listing WHERE Listing.User_UserId={0}", id);
                 MySqlCommand cmd = new MySqlCommand(query1, connection);
+
                 cmd.Prepare();
                 cmd.ExecuteNonQuery();
 
@@ -150,6 +153,7 @@ namespace Server.Models
             if (this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand();
+                cmd.Connection = connection;
 
                 cmd.CommandText = string.Format("INSERT INTO Listing (Price, BookISBN, Listing.Condition, IsSelling, User_UserId) VALUES (@Price, @ISBN, @Condition, @isSelling, '{0}')",listing.ListingCreator.UserID);
 
@@ -176,6 +180,7 @@ namespace Server.Models
            if (this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand();
+                cmd.Connection = connection;
 
                 cmd.CommandText = "UPDATE Listing SET Price=@Price WHERE ListingID=@ListingID";
 
@@ -200,6 +205,7 @@ namespace Server.Models
             if (this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand(query, connection);
+                cmd.Connection = connection;
 
                 cmd.Prepare();
                 cmd.ExecuteNonQuery();
@@ -214,6 +220,7 @@ namespace Server.Models
             if (this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand(query, connection);
+                cmd.Connection = connection;
 
                 cmd.Prepare();
                 cmd.ExecuteNonQuery();
@@ -228,6 +235,7 @@ namespace Server.Models
             if (this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand(query, connection);
+                cmd.Connection = connection;
 
                 cmd.Prepare();
                 cmd.ExecuteNonQuery();
@@ -245,6 +253,7 @@ namespace Server.Models
             if (this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand(query, connection);
+                cmd.Connection = connection;
 
                 cmd.Prepare();
                 MySqlDataReader dr = cmd.ExecuteReader();
@@ -281,6 +290,7 @@ namespace Server.Models
             if (this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand(query, connection);
+                cmd.Connection = connection;
 
                 cmd.Prepare();
                 MySqlDataReader dr = cmd.ExecuteReader();
@@ -316,6 +326,7 @@ namespace Server.Models
             if(this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand(query, connection);
+                cmd.Connection = connection;
 
                 cmd.Prepare();
                 MySqlDataReader dr = cmd.ExecuteReader();
@@ -341,6 +352,7 @@ namespace Server.Models
             if(this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand(query, connection);
+                cmd.Connection = connection;
 
                 cmd.Prepare();
                 MySqlDataReader dr = cmd.ExecuteReader();
@@ -375,6 +387,7 @@ namespace Server.Models
             if(this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand(query, connection);
+                cmd.Connection = connection;
 
                 cmd.Prepare();
                 MySqlDataReader dr = cmd.ExecuteReader();
@@ -415,6 +428,7 @@ namespace Server.Models
             if(this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand(query, connection);
+                cmd.Connection = connection;
 
                 cmd.Prepare();
                 MySqlDataReader dr = cmd.ExecuteReader();
@@ -447,6 +461,7 @@ namespace Server.Models
            if (this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand();
+                cmd.Connection = connection;
 
                 cmd.CommandText = "Update USER SET HashedPassword = VALUE @password WHERE User.UserName=@Username";
 
@@ -470,6 +485,7 @@ namespace Server.Models
             if(this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand(query, connection);
+                cmd.Connection = connection;
 
                 cmd.Prepare();
                 object result = cmd.ExecuteScalar();
@@ -491,6 +507,7 @@ namespace Server.Models
             if(this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand(query, connection);
+                cmd.Connection = connection;
 
                 cmd.Prepare();
                 object result = cmd.ExecuteScalar();

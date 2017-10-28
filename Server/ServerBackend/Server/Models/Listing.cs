@@ -24,7 +24,7 @@ namespace Server.Models
             ListingType = listingType;
             ListingCreator = listingCreator;
         }
-        public enum ConditionTypes { Great, Good, Okay, Poor }
+        public enum ConditionTypes { Great, Good, Okay }
         public enum ListingTypes { Sell, Buy }
 
         [Required]
@@ -62,15 +62,10 @@ namespace Server.Models
             {
                 return ConditionTypes.Good;
             }
-            else if (condition.Equals("Okay"))
+            else
             {
-                return ConditionTypes.Okay;
+                return ConditionTypes.Okay;     //defaults to okay
             }
-            else if (condition.Equals("Poor"))
-            {
-                return ConditionTypes.Poor;
-            }
-            else return ConditionTypes.Okay;
         }
     }
 }

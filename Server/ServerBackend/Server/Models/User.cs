@@ -34,7 +34,7 @@ namespace Server.Models
         public string LastName { get; set; }
 
         [Required]
-        [RegularExpression(@"^[a-zA-Z]+\.{1}[a-zA-Z]+@huskers.unl.edu$", ErrorMessage = "This is not a Husker email")]
+        [RegularExpression("@huskers.unl.edu$", ErrorMessage = "This is not a Husker email")]
         public string HuskerEmail { get; set; }
 
         [Required]
