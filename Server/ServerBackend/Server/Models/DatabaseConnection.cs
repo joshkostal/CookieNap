@@ -460,7 +460,6 @@ namespace Server.Models
 
                 cmd.Prepare();
                 MySqlDataReader rdr = cmd.ExecuteReader();
-                rdr.Read();
 
                 while (rdr.Read())
                 {
