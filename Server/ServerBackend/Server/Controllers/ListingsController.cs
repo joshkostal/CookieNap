@@ -11,23 +11,23 @@ namespace Server.Controllers
 
         // GET: Listings
         [HttpGet]
-        public List<Listing> Index()
+        public async System.Threading.Tasks.Task<List<Listing>> Index()
         {
-            return _dbc.GetAllListings();
+            return await _dbc.GetAllListingsAsync();
         }
 
         // GET: Listings/Search
         [HttpGet]
-        public List<Listing> Search(string isbn)
+        public async System.Threading.Tasks.Task<List<Listing>> Search(string isbn)
         {
-            return _dbc.SetListingsForBook(isbn);
+            return await _dbc.SetListingsForBookAsync(isbn);
         }
 
         // GET: Listings/Details/5
         [HttpGet]
-        public Listing Details(int id)
+        public async System.Threading.Tasks.Task<Listing> Details(int id)
         {
-            return _dbc.GetListing(id);
+            return await _dbc.GetListingAsync(id);
         }
 
         // POST: Listings/Create
@@ -45,9 +45,9 @@ namespace Server.Controllers
 
         // GET: Listings/Edit/5
         [HttpGet]
-        public Listing Edit(int id)
+        public async System.Threading.Tasks.Task<Listing> Edit(int id)
         {
-            return _dbc.GetListing(id);
+            return await _dbc.GetListingAsync(id);
         }
 
         // POST: Listings/Edit/5
@@ -84,9 +84,9 @@ namespace Server.Controllers
 
         // GET: Listings/Delete/5
         [HttpGet]
-        public Listing Delete(int id)
+        public async System.Threading.Tasks.Task<Listing> Delete(int id)
         {
-            return _dbc.GetListing(id);
+            return await _dbc.GetListingAsync(id);
         }
 
         // POST: Listings/Delete/5
@@ -98,16 +98,16 @@ namespace Server.Controllers
             return true;
         }
 
-        // GET: Listings/User/5
+        // GET: Listings/Creator/5
         [HttpGet]
-        public User User(int id)
+        public User Creator(int id)
         {
             return _dbc.GetUser(id);
         }
 
         private bool ListingExists(int id)
         {
-            return _dbc.GetListing(id) == null ? false : true;
+            return _dbc.GetListingAsync(id) == null ? false : true;
         }
     }
 }

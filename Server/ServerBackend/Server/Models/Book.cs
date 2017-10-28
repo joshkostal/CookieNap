@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 
 namespace Server.Models
 {
@@ -34,7 +35,7 @@ namespace Server.Models
 
         public List<Listing> ListingsWithBook { get; set; }
 
-        public Book QueryISBN()
+        public async System.Threading.Tasks.Task<Book> QueryISBNAsync()
         {
             Book book = null;
             string url = string.Format("https://www.googleapis.com/books/v1/volumes?q=isbn:{0}&key=AIzaSyA0_9-gOBdZSR6Cw5n9cJdBEY_kAsbPmTs", ISBN);
@@ -43,13 +44,19 @@ namespace Server.Models
             httpWebRequest.Method = WebRequestMethods.Http.Post;
             httpWebRequest.Accept = "application/json";
 
-            using (var sr = httpWebRequest.GetResponseAsync())
-            {
-                var json = sr.ToString();
-                JObject data = JObject.Parse(json);
+            HttpWebResponse response = await httpWebRequest.GetResponseAsync() as HttpWebResponse;
+            var r = response.GetResponseStream();
+            var data = JObject.Parse(r.ToString());
 
-                book = new Book(this.ISBN, (string)data["authors"], (string)data["title"], (string)data["thumbnail"]);
-            }
+            
+            //using (var sr = httpWebRequest.GetResponse())
+            //{
+            //    sr.();
+            //    var json = sr.ToString();
+            //    JObject data = JObject.Parse(json);
+
+            book = new Book(ISBN, (string)data["authors"], (string)data["title"], (string)data["thumbnail"]);
+            //}
             return book;
         }
     }

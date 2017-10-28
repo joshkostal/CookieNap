@@ -49,7 +49,7 @@ namespace BackendTests
         }
 
         [TestMethod]
-        public void InsertGetAndDeleteListingTest()
+        public async System.Threading.Tasks.Task InsertGetAndDeleteListingTestAsync()
         {
             //Arrange
             User newUser = user;
@@ -57,7 +57,7 @@ namespace BackendTests
             listing = _dbc.InsertListing(listing);
 
             //Act
-            Listing returnedListing = _dbc.GetListing(listing.ListingID);
+            Listing returnedListing = await _dbc.GetListingAsync(listing.ListingID);
 
             //Tear Down
             _dbc.DeleteListingByID(listing.ListingID);
@@ -67,7 +67,7 @@ namespace BackendTests
         }
 
         [TestMethod]
-        public void UpdateBookPriceTest()
+        public async System.Threading.Tasks.Task UpdateBookPriceTestAsync()
         {
             //Arrange
             listing = _dbc.InsertListing(listing);
@@ -75,7 +75,7 @@ namespace BackendTests
 
             //Act
             listing = _dbc.UpdateBookPrice(listing);
-            Listing updatedListing = _dbc.GetListing(listing.ListingID);
+            Listing updatedListing = await _dbc.GetListingAsync(listing.ListingID);
 
             //Tear Down
             _dbc.DeleteListingByID(listing.ListingID);
@@ -86,7 +86,7 @@ namespace BackendTests
         }
 
         [TestMethod]
-        public void DeleteListingByDateTest()
+        public async System.Threading.Tasks.Task DeleteListingByDateTestAsync()
         {
             //Arrange
             listing = _dbc.InsertListing(listing);
@@ -95,7 +95,7 @@ namespace BackendTests
             _dbc.DeleteListingByDate(DateTime.Today);
 
             var id = listing.ListingID;
-            listing = _dbc.GetListing(id);
+            listing = await _dbc.GetListingAsync(id);
 
             //Tear Down
             _dbc.DeleteListingByID(id);
@@ -105,7 +105,7 @@ namespace BackendTests
         }
 
         [TestMethod]
-        public void DeleteListingsPastDeletionDateTest()
+        public async System.Threading.Tasks.Task DeleteListingsPastDeletionDateTestAsync()
         {
             //Arrange
             Listing newListing = listing;
@@ -116,7 +116,7 @@ namespace BackendTests
             _dbc.DeleteListingsPastDeletionDate();
 
             var id = newListing.ListingID;
-            newListing = _dbc.GetListing(id);
+            newListing = await _dbc.GetListingAsync(id);
 
             //Tear Down
             _dbc.DeleteListingByID(id);
@@ -126,10 +126,10 @@ namespace BackendTests
         }
 
         [TestMethod]
-        public void GetAllListingsTest()
+        public async void GetAllListingsTestAsync()
         {
             //Arrange
-            List<Listing> initialFoundListings = _dbc.GetAllListings();
+            List<Listing> initialFoundListings = await _dbc.GetAllListingsAsync();
 
             List<Listing> listingsListed = new List<Listing>();
 
@@ -155,7 +155,7 @@ namespace BackendTests
 
 
             //Act
-            List<Listing> newFoundListings = _dbc.GetAllListings();
+            List<Listing> newFoundListings = await _dbc.GetAllListingsAsync();
 
             //Tear Down
             _dbc.DeleteListingByID(listing1.ListingID);
@@ -170,9 +170,9 @@ namespace BackendTests
         }
 
         [TestMethod]
-        public void FindBooksListedTest()
+        public async void FindBooksListedTestAsync()
         {
-            List<Book> initialFoundBooks = _dbc.FindBooksListed();
+            List<Book> initialFoundBooks = await _dbc.FindBooksListedAsync();
 
             //Arrange
             List<Book> booksListed = new List<Book>();
@@ -213,7 +213,7 @@ namespace BackendTests
             listing5 = _dbc.InsertListing(listing5);
             listing6 = _dbc.InsertListing(listing6);
 
-            List<Book> newFoundBooks = _dbc.FindBooksListed();
+            List<Book> newFoundBooks = await _dbc.FindBooksListedAsync();
 
             //Tear Down
             _dbc.DeleteListingByID(listing1.ListingID);
@@ -228,7 +228,7 @@ namespace BackendTests
         }
 
         [TestMethod]
-        public void SetListingsForBookTest()
+        public async void SetListingsForBookTestAsync()
         {
             //Arrange
             List<Listing> listings = new List<Listing>();
@@ -247,7 +247,7 @@ namespace BackendTests
             listings.Add(listing3);
 
             //Act
-            List<Listing> result = _dbc.SetListingsForBook(book1.ISBN);
+            List<Listing> result = await _dbc.SetListingsForBookAsync(book1.ISBN);
 
             //Tear Down
             _dbc.DeleteListingByID(listing1.ListingID);
@@ -259,7 +259,7 @@ namespace BackendTests
         }
 
         [TestMethod]
-        public void SetListingsForUserTest()
+        public async void SetListingsForUserTestAsync()
         {
             //Arrange
             List<Listing> listings = new List<Listing>();
@@ -278,7 +278,7 @@ namespace BackendTests
             listings.Add(listing3);
 
             //Act
-            List<Listing> result = _dbc.SetListingsForUser(user1);
+            List<Listing> result = await _dbc.SetListingsForUserAsync(user1);
 
             //Tear Down
             _dbc.DeleteListingByID(listing1.ListingID);
@@ -296,12 +296,14 @@ namespace BackendTests
 
 
             //Act
-            //_dbc.RetrievePassword();
-
-            //Assert
 
 
             //Tear Down
+            
+            
+            //Assert
+
+
         }
 
         [TestMethod]
@@ -311,12 +313,14 @@ namespace BackendTests
 
 
             //Act
-            //_dbc.CheckUniqueUsername(username);
+
+
+            //Tear Down
+
 
             //Assert
 
 
-            //Tear Down
         }
 
         [TestMethod]
@@ -326,12 +330,14 @@ namespace BackendTests
 
 
             //Act
-            _dbc.CheckUniqueHuskerEmail("abc");
+
+
+            //Tear Down
+
 
             //Assert
 
 
-            //Tear Down
         }
     }
 }
