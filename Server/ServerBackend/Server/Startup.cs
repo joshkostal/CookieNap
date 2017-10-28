@@ -23,6 +23,8 @@ namespace Server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
+
             services.AddMvc();
 
             services.AddDbContext<ServerContext>(options =>
@@ -42,6 +44,8 @@ namespace Server
             }
 
             app.UseStaticFiles();
+
+            app.UseCors(options => options.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin());
 
             app.UseMvc(routes =>
             {

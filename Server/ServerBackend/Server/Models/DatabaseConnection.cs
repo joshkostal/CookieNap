@@ -77,7 +77,6 @@ namespace Server.Models
             if (this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand(query, connection);
-                cmd.Connection = connection;
 
                 cmd.Prepare();
                 MySqlDataReader dr = cmd.ExecuteReader();
@@ -106,7 +105,7 @@ namespace Server.Models
                 cmd.CommandText = "UPDATE User SET PrimaryEmailAddress=@PrimaryEmail, SecondaryEmailAddress=@SecondaryEmail WHERE UserName=@Username";
 
                 cmd.Prepare();
-                
+
                 cmd.Parameters.AddWithValue("@Username", userName);
                 cmd.Parameters.AddWithValue("@PrimaryEmail", primaryEmail);
                 cmd.Parameters.AddWithValue("@SecondaryEmail", secondaryEmail);
@@ -120,7 +119,7 @@ namespace Server.Models
 
         public void DeleteUserById(int id) //deletes by a certain id. Can be modified to delete by other fields
         {
-            if(this.OpenConnection())
+            if (this.OpenConnection())
             {
                 string query1 = string.Format("DELETE FROM Listing WHERE Listing.User_UserId={0}", id);
                 MySqlCommand cmd = new MySqlCommand(query1, connection);
@@ -136,7 +135,7 @@ namespace Server.Models
                 this.CloseConnection();
             }
         }
-        
+
         public void DeleteUser(User user)
         {
             DeleteUserById(user.UserID);
@@ -146,17 +145,17 @@ namespace Server.Models
         {
             //Convert listing type to boolean for the database
             int isSelling = 0;
-            if(listing.ListingType == Listing.ListingTypes.Sell)
+            if (listing.ListingType == Listing.ListingTypes.Sell)
             {
                 isSelling = 1;
             }
-            
+
             if (this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = connection;
 
-                cmd.CommandText = string.Format("INSERT INTO Listing (Price, BookISBN, Listing.Condition, IsSelling, User_UserId) VALUES (@Price, @ISBN, @Condition, @isSelling, (Select (distinct) User.UserId from User where User.UserName = '{0}'))",listing.ListingCreator.UserName);
+                cmd.CommandText = string.Format("INSERT INTO Listing (Price, BookISBN, Listing.Condition, IsSelling, User_UserId) VALUES (@Price, @ISBN, @Condition, @isSelling, (Select User.UserId from User where User.UserName = '{0}' group by User.UserName))", listing.ListingCreator.UserName);
 
                 cmd.Prepare();
 
@@ -178,7 +177,7 @@ namespace Server.Models
 
         public Listing UpdateBookPrice(Listing listing)
         {
-           if (this.OpenConnection())
+            if (this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = connection;
@@ -206,7 +205,6 @@ namespace Server.Models
             if (this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand(query, connection);
-                cmd.Connection = connection;
 
                 cmd.Prepare();
                 cmd.ExecuteNonQuery();
@@ -221,7 +219,6 @@ namespace Server.Models
             if (this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand(query, connection);
-                cmd.Connection = connection;
 
                 cmd.Prepare();
                 cmd.ExecuteNonQuery();
@@ -236,7 +233,6 @@ namespace Server.Models
             if (this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand(query, connection);
-                cmd.Connection = connection;
 
                 cmd.Prepare();
                 cmd.ExecuteNonQuery();
@@ -254,7 +250,6 @@ namespace Server.Models
             if (this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand(query, connection);
-                cmd.Connection = connection;
 
                 cmd.Prepare();
                 MySqlDataReader dr = cmd.ExecuteReader();
@@ -265,10 +260,10 @@ namespace Server.Models
                 }
                 double data1 = (double)dr[0];
                 string data2 = (string)dr[1];
-                int data3 = dr.GetInt32(2);
+                sbyte data3 = (sbyte)dr[2];
                 string data4 = (string)dr[3];
-                int data5 = dr.GetInt32(4);
-                int data6 = dr.GetInt32(5);
+                int data5 = (int)dr[4];
+                int data6 = (int)dr[5];
                 dr.Close();
 
                 query = string.Format("SELECT FirstName, LastName, UserName, PrimaryEmailAddress, SecondaryEmailAddress FROM User WHERE UserId='{0}'", data6);
@@ -286,7 +281,7 @@ namespace Server.Models
 
                 listing = new Listing(data1, listing.ConvertStringToConditionType(data2), book, data3 == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, user);
                 listing.ListingID = data5;
-                
+
                 this.CloseConnection();
             }
 
@@ -302,7 +297,6 @@ namespace Server.Models
             if (this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand(query, connection);
-                cmd.Connection = connection;
 
                 cmd.Prepare();
                 MySqlDataReader dr = cmd.ExecuteReader();
@@ -313,12 +307,12 @@ namespace Server.Models
                     Book book = new Book((string)dr[3]);
                     await book.QueryISBNAsync();
                     Listing listing = null;
-                    listing = new Listing(dr.GetInt32(0), listing.ConvertStringToConditionType((string)dr[1]), book, dr.GetInt32(2) == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, tempUser);
-                    listing.ListingID = dr.GetInt32(4);
+                    listing = new Listing((int)dr[0], listing.ConvertStringToConditionType((string)dr[1]), book, (int)dr[2] == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, tempUser);
+                    listing.ListingID = (int)dr[4];
                     listings.Add(listing);
                 }
 
-                foreach(Listing listing in listings)
+                foreach (Listing listing in listings)
                 {
                     query = string.Format("SELECT FirstName, LastName, UserName, PrimaryEmailAddress, SecondaryEmailAddress FROM User WHERE UserId='{0}'", (int)dr[5]);
                     cmd = new MySqlCommand(query, connection);
@@ -340,15 +334,14 @@ namespace Server.Models
             List<Book> booksListed = new List<Book>();
             string query = "SELECT DISTINCT BookISBN FROM Listing";
 
-            if(this.OpenConnection())
+            if (this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand(query, connection);
-                cmd.Connection = connection;
 
                 cmd.Prepare();
                 MySqlDataReader dr = cmd.ExecuteReader();
 
-                while(dr.Read())
+                while (dr.Read())
                 {
                     Book book = new Book((string)dr[0]);
                     book = await book.QueryISBNAsync();
@@ -366,32 +359,41 @@ namespace Server.Models
             List<Listing> listings = new List<Listing>();
             string query = string.Format("SELECT Price, Listing.Condition, IsSelling FROM Listing WHERE BookISBN='{0}'", isbn);
 
-            if(this.OpenConnection())
+            if (this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand(query, connection);
-                cmd.Connection = connection;
 
                 cmd.Prepare();
                 MySqlDataReader dr = cmd.ExecuteReader();
 
-                while(dr.Read())
+                List<int> data0 = new List<int>();
+                List<string> data1 = new List<string>();
+                List<int> data2 = new List<int>();
+                while (dr.Read())
                 {
-                    query = "SELECT FirstName, LastName, UserName, PrimaryEmailAddress, SecondaryEmailAddress, HashedPassword FROM User";
+                    data0.Add(dr.GetInt32(0));
+                    data1.Add((string)dr[1]);
+                    data2.Add(dr.GetInt32(2));
+                }
+                dr.Close();
+                for(int i=0; i<data0.Count; i++)
+                {
+                    query = "SELECT FirstName, LastName, UserName, PrimaryEmailAddress, SecondaryEmailAddress FROM User";
                     cmd = new MySqlCommand(query, connection);
 
                     cmd.Prepare();
                     MySqlDataReader rdr = cmd.ExecuteReader();
-                    Password password = new Password((string)rdr[5]);
-                    User user = new User((string)rdr[2], (string)rdr[0], (string)rdr[1], (string)rdr[3], (string)rdr[4], password);
+                    rdr.Read();
+                    User user = new User((string)rdr[2], (string)rdr[0], (string)rdr[1], (string)rdr[3], (string)rdr[4]);
 
                     Book book = new Book(isbn);
                     book = await book.QueryISBNAsync();
 
                     Listing listing = null;
-                    listing = new Listing(dr.GetInt32(0), listing.ConvertStringToConditionType((string)dr[1]), book, dr.GetInt32(2) == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, user);
+                    listing = new Listing(data0[i], listing.ConvertStringToConditionType(data1[i]), book, data2[2] == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, user);
                     listings.Add(listing);
+                    rdr.Close();
                 }
-                dr.Close();
                 this.CloseConnection();
             }
             return listings;
@@ -402,52 +404,51 @@ namespace Server.Models
             List<Listing> listings = new List<Listing>();
             string query = string.Format("SELECT UserId FROM User WHERE User.username='{0}'", user.UserName);
 
-            if(this.OpenConnection())
+            if (this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand(query, connection);
-                cmd.Connection = connection;
 
                 cmd.Prepare();
                 MySqlDataReader dr = cmd.ExecuteReader();
+                dr.Read();
                 if (!dr.HasRows)
                 {
                     return null;
                 }
 
-                string listingID = (string)dr[0];
-                query = string.Format("SELECT Price, BookISBN, Condition, IsSelling FROM Listing WHERE Listing.User_UserID='{0}'", listingID);
+                int listingID = (int)dr[0];
+                query = string.Format("SELECT Price, BookISBN, Listing.Condition, IsSelling FROM Listing WHERE Listing.User_UserID='{0}'", listingID);
 
-                cmd = new MySqlCommand(query, connection);
+                dr.Close();
+                cmd.CommandText = query;
 
                 cmd.Prepare();
                 MySqlDataReader rdr = cmd.ExecuteReader();
                 rdr.Read();
 
-                while(rdr.Read())
+                while (rdr.Read())
                 {
                     Book book = new Book((string)rdr[1]);
                     book = await book.QueryISBNAsync();
 
                     Listing listing = null;
-                    listing = new Listing(rdr.GetInt32(0), listing.ConvertStringToConditionType((string)dr[1]), book, rdr.GetInt32(3) == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, user);
+                    listing = new Listing((int)rdr[0], listing.ConvertStringToConditionType((string)rdr[2]), book, (int)rdr[3] == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, user);
                     listings.Add(listing);
                 }
-                dr.Close();
                 rdr.Close();
                 this.CloseConnection();
             }
             return listings;
         }
-        
+
         //TODO: Check this one for SQL Injection- not sure how to do it in SELECT statements yet
         public string RetrievePassword(string username)
         {
             string query = string.Format("SELECT HashedPassword FROM User WHERE User.UserName='{0}'", username);
 
-            if(this.OpenConnection())
+            if (this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand(query, connection);
-                cmd.Connection = connection;
 
                 cmd.Prepare();
                 MySqlDataReader dr = cmd.ExecuteReader();
@@ -457,27 +458,27 @@ namespace Server.Models
                 this.CloseConnection();
             }
 
-           /* if (this.OpenConnection())
-            {
-                MySqlCommand cmd = new MySqlCommand();
+            /* if (this.OpenConnection())
+             {
+                 MySqlCommand cmd = new MySqlCommand();
 
-                cmd.CommandText = "SELECT HashedPassword FROM User WHERE User.UserName=@Username";
+                 cmd.CommandText = "SELECT HashedPassword FROM User WHERE User.UserName=@Username";
 
-                cmd.Prepare();
+                 cmd.Prepare();
 
-                cmd.Parameters.AddWithValue("@Username", username);
+                 cmd.Parameters.AddWithValue("@Username", username);
 
-                cmd.ExecuteNonQuery();
+                 cmd.ExecuteNonQuery();
 
-                this.CloseConnection();
-            }*/
+                 this.CloseConnection();
+             }*/
 
             return password;
         }
 
         public void StorePassword(string username, string password)
         {
-           if (this.OpenConnection())
+            if (this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = connection;
@@ -501,10 +502,9 @@ namespace Server.Models
             bool usernameFound = true;
             string query = string.Format("SELECT COUNT(*) FROM User WHERE User.UserName='{0}'", username);
 
-            if(this.OpenConnection())
+            if (this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand(query, connection);
-                cmd.Connection = connection;
 
                 cmd.Prepare();
                 object result = cmd.ExecuteScalar();
@@ -523,10 +523,9 @@ namespace Server.Models
             bool emailFound = true;
             string query = string.Format("SELECT COUNT(*) FROM User WHERE User.PrimaryEmailAddress='{0}'", huskerEmail);
 
-            if(this.OpenConnection())
+            if (this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand(query, connection);
-                cmd.Connection = connection;
 
                 cmd.Prepare();
                 object result = cmd.ExecuteScalar();
