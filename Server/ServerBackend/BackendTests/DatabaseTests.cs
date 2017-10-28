@@ -27,7 +27,7 @@ namespace BackendTests
             _dbc.DeleteUser(user);
 
             //Assert
-            Assert.AreEqual(user, returnedUser);
+            Assert.AreEqual(user.UserName, returnedUser.UserName);
         }
 
         [TestMethod]
@@ -44,8 +44,8 @@ namespace BackendTests
             _dbc.DeleteUser(user);
 
             //Assert
-            Assert.AreEqual(user.CommunicationEmail, returnedUser.CommunicationEmail);
-            Assert.AreEqual(user.HuskerEmail, returnedUser.HuskerEmail);
+            Assert.AreNotEqual(user.CommunicationEmail, returnedUser.CommunicationEmail);
+            Assert.AreNotEqual(user.HuskerEmail, returnedUser.HuskerEmail);
         }
 
         [TestMethod]
@@ -247,6 +247,9 @@ namespace BackendTests
             listings.Add(listing3);
 
             //Act
+            listing1 = _dbc.InsertListing(listing1);
+            listing2 = _dbc.InsertListing(listing2);
+            listing3 = _dbc.InsertListing(listing3);
             List<Listing> result = _dbc.SetListingsForBook(book1.ISBN);
 
             //Tear Down
