@@ -173,6 +173,8 @@ namespace Server.Models
                 this.CloseConnection();
             }
 
+            DeleteListingsPastDeletionDate();
+
             return listing;
         }
 
@@ -191,7 +193,7 @@ namespace Server.Models
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = connection;
 
-                cmd.CommandText = string.Format("INSERT INTO Listing (Price, BookISBN, Listing.Condition, IsSelling, User_UserId, LastEditedDate) VALUES (@Price, @ISBN, @Condition, @isSelling, (Select User.UserId from User where User.UserName = '{0}' group by User.UserName))", listing.ListingCreator.UserName);
+                cmd.CommandText = string.Format("INSERT INTO Listing (Price, BookISBN, Listing.Condition, IsSelling, User_UserId, LastEditedDate) VALUES (@Price, @ISBN, @Condition, @isSelling, (Select User.UserId from User where User.UserName = '{0}' order by UserId limit 1), @LastEditedDate)", listing.ListingCreator.UserName);
 
                 cmd.Prepare();
 
@@ -200,6 +202,7 @@ namespace Server.Models
                 cmd.Parameters.AddWithValue("@Condition", listing.Condition.ToString());
                 cmd.Parameters.AddWithValue("@isSelling", isSelling);
                 cmd.Parameters.AddWithValue("@Username", listing.ListingCreator.UserName);
+                cmd.Parameters.AddWithValue("@LastEditedDate", listing.LastDateEdited);
 
                 cmd.ExecuteNonQuery();
                 listing.ListingID = (int)cmd.LastInsertedId;
