@@ -156,8 +156,13 @@ namespace BackendTests
 
 
             //Act
-            List<Listing> newFoundListings = _dbc.GetAllListings();
+            _dbc.InsertListing(listing1);
+            _dbc.InsertListing(listing2);
+            _dbc.InsertListing(listing3);
+            _dbc.InsertListing(listing4);
 
+            List<Listing> newFoundListings = _dbc.GetAllListings();
+            
             //Tear Down
             _dbc.DeleteListingByID(listing1.ListingID);
             _dbc.DeleteListingByID(listing2.ListingID);
@@ -268,7 +273,7 @@ namespace BackendTests
             //Arrange
             List<Listing> listings = new List<Listing>();
 
-            User user1 = new User("gwashington", "george", "washington", "george.washington@huskers.unl.edu", "gwash@gmail.com");
+            User user1 = new User("huskerfan", "Lil", "Red", "huskerfan@huskers.unl.edu", "husker@gmail.com", pswd);
             Listing listing1 = listing;
             listing1.ListingCreator = user1;
             listings.Add(listing1);
@@ -282,12 +287,19 @@ namespace BackendTests
             listings.Add(listing3);
 
             //Act
+            _dbc.InsertUser(user1);
+            _dbc.InsertListing(listing1);
+            _dbc.InsertListing(listing2);
+            _dbc.InsertListing(listing3);
+            
+
             List<Listing> result = _dbc.SetListingsForUser(user1);
 
             //Tear Down
             _dbc.DeleteListingByID(listing1.ListingID);
             _dbc.DeleteListingByID(listing2.ListingID);
             _dbc.DeleteListingByID(listing3.ListingID);
+            _dbc.DeleteUser(user1);
 
             //Assert
             Assert.AreEqual(listings.Count, result.Count);
