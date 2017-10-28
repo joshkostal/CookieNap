@@ -11,23 +11,23 @@ namespace Server.Controllers
 
         // GET: Listings
         [HttpGet]
-        public async System.Threading.Tasks.Task<List<Listing>> Index()
+        public List<Listing> Index()
         {
-            return await _dbc.GetAllListingsAsync();
+            return _dbc.GetAllListings();
         }
 
         // GET: Listings/Search
         [HttpGet]
-        public async System.Threading.Tasks.Task<List<Listing>> Search(string isbn)
+        public List<Listing> Search(string isbn)
         {
-            return await _dbc.SetListingsForBookAsync(isbn);
+            return _dbc.SetListingsForBook(isbn);
         }
 
         // GET: Listings/Details/5
         [HttpGet]
-        public async System.Threading.Tasks.Task<Listing> Details(int id)
+        public Listing Details(int id)
         {
-            return await _dbc.GetListingAsync(id);
+            return _dbc.GetListing(id);
         }
 
         // POST: Listings/Create
@@ -45,9 +45,9 @@ namespace Server.Controllers
 
         // GET: Listings/Edit/5
         [HttpGet]
-        public async System.Threading.Tasks.Task<Listing> Edit(int id)
+        public Listing Edit(int id)
         {
-            return await _dbc.GetListingAsync(id);
+            return _dbc.GetListing(id);
         }
 
         // POST: Listings/Edit/5
@@ -84,9 +84,9 @@ namespace Server.Controllers
 
         // GET: Listings/Delete/5
         [HttpGet]
-        public async System.Threading.Tasks.Task<Listing> Delete(int id)
+        public Listing Delete(int id)
         {
-            return await _dbc.GetListingAsync(id);
+            return _dbc.GetListing(id);
         }
 
         // POST: Listings/Delete/5
@@ -107,7 +107,7 @@ namespace Server.Controllers
 
         private bool ListingExists(int id)
         {
-            return _dbc.GetListingAsync(id) == null ? false : true;
+            return _dbc.GetListing(id) == null ? false : true;
         }
     }
 }

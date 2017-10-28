@@ -241,7 +241,7 @@ namespace Server.Models
             }
         }
 
-        public async System.Threading.Tasks.Task<Listing> GetListingAsync(int listingID)
+        public Listing GetListing(int listingID)
         {
             Listing listing = null;
 
@@ -277,7 +277,7 @@ namespace Server.Models
                 User user = new User((string)rdr[2], (string)rdr[0], (string)rdr[1], (string)rdr[3], (string)rdr[4]);
 
                 Book book = new Book(data4);
-                await book.QueryISBNAsync();
+                book.QueryISBN();
 
                 listing = new Listing(data1, listing.ConvertStringToConditionType(data2), book, data3 == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, user);
                 listing.ListingID = data5;
@@ -288,7 +288,7 @@ namespace Server.Models
             return listing;
         }
 
-        public async System.Threading.Tasks.Task<List<Listing>> GetAllListingsAsync()
+        public List<Listing> GetAllListings()
         {
             List<Listing> listings = new List<Listing>();
 
@@ -305,7 +305,7 @@ namespace Server.Models
                 while (dr.Read())
                 {
                     Book book = new Book((string)dr[3]);
-                    await book.QueryISBNAsync();
+                    book.QueryISBN();
                     Listing listing = null;
                     listing = new Listing((int)dr[0], listing.ConvertStringToConditionType((string)dr[1]), book, (int)dr[2] == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, tempUser);
                     listing.ListingID = (int)dr[4];
@@ -329,7 +329,7 @@ namespace Server.Models
             return listings;
         }
         
-        public async System.Threading.Tasks.Task<List<Book>> FindBooksListedAsync()
+        public List<Book> FindBooksListedAsync()
         {
             List<Book> booksListed = new List<Book>();
             string query = "SELECT DISTINCT BookISBN FROM Listing";
@@ -344,7 +344,7 @@ namespace Server.Models
                 while (dr.Read())
                 {
                     Book book = new Book((string)dr[0]);
-                    book = await book.QueryISBNAsync();
+                    book = book.QueryISBN();
                     booksListed.Add(book);
                 }
                 dr.Close();
@@ -354,7 +354,7 @@ namespace Server.Models
         }
 
         //TODO: Needs to be checked
-        public async System.Threading.Tasks.Task<List<Listing>> SetListingsForBookAsync(string isbn)
+        public List<Listing> SetListingsForBook(string isbn)
         {
             List<Listing> listings = new List<Listing>();
             string query = string.Format("SELECT Price, Listing.Condition, IsSelling FROM Listing WHERE BookISBN='{0}'", isbn);
@@ -387,7 +387,7 @@ namespace Server.Models
                     User user = new User((string)rdr[2], (string)rdr[0], (string)rdr[1], (string)rdr[3], (string)rdr[4]);
 
                     Book book = new Book(isbn);
-                    book = await book.QueryISBNAsync();
+                    book = book.QueryISBN();
 
                     Listing listing = null;
                     listing = new Listing(data0[i], listing.ConvertStringToConditionType(data1[i]), book, data2[2] == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, user);
@@ -399,7 +399,7 @@ namespace Server.Models
             return listings;
         }
 
-        public async System.Threading.Tasks.Task<List<Listing>> SetListingsForUserAsync(User user)
+        public List<Listing> SetListingsForUser(User user)
         {
             List<Listing> listings = new List<Listing>();
             string query = string.Format("SELECT UserId FROM User WHERE User.username='{0}'", user.UserName);
@@ -429,7 +429,7 @@ namespace Server.Models
                 while (rdr.Read())
                 {
                     Book book = new Book((string)rdr[1]);
-                    book = await book.QueryISBNAsync();
+                    book = book.QueryISBN();
 
                     Listing listing = null;
                     listing = new Listing((int)rdr[0], listing.ConvertStringToConditionType((string)rdr[2]), book, (int)rdr[3] == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, user);
