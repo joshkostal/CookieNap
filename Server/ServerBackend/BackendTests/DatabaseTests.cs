@@ -128,51 +128,20 @@ namespace BackendTests
         public void GetAllListingsTest()
         {
             //Arrange
-            List<Listing> initialFoundListings = _dbc.GetAllListings();
-
-            List<Listing> listingsListed = new List<Listing>();
-
-            Book book1 = new Book("1111111111");
-            Listing listing1 = listing;
-            listing1.BookListed = book1;
-            listingsListed.Add(listing1);
-
-            Book book2 = new Book("2222222222");
-            Listing listing2 = listing;
-            listing2.BookListed = book1;
-            listingsListed.Add(listing2);
-
-            Book book3 = new Book("3333333333");
-            Listing listing3 = listing;
-            listing3.BookListed = book3;
-            listingsListed.Add(listing3);
-
-            Book book4 = new Book("4444444444");
-            Listing listing4 = listing;
-            listing4.BookListed = book4;
-            listingsListed.Add(listing4);
-
-                        
-            //Act
-            List<Listing> newFoundListings =_dbc.GetAllListings();
-
-            //Tear Down
-            _dbc.DeleteListingByID(listing1.ListingID);
-            _dbc.DeleteListingByID(listing2.ListingID);
-            _dbc.DeleteListingByID(listing3.ListingID);
-            _dbc.DeleteListingByID(listing4.ListingID);
-
-            //Assert
-            Assert.AreEqual(newFoundListings.Count - initialFoundListings.Count, 4);
 
             
+            //Act
+
+
+            //Assert
+
+
+            //Tear Down
         }
 
         [TestMethod]
         public void FindBooksListedTest()
         {
-            List<Book> initialFoundBooks = _dbc.FindBooksListed();
-
             //Arrange
             List<Book> booksListed = new List<Book>();
 
@@ -183,25 +152,25 @@ namespace BackendTests
 
             Book book2 = new Book("2222222222");
             Listing listing2 = listing;
-            listing2.BookListed = book2;
+            listing1.BookListed = book2;
             booksListed.Add(book2);
 
             Book book3 = new Book("3333333333");
             Listing listing3 = listing;
-            listing3.BookListed = book3;
+            listing1.BookListed = book3;
             booksListed.Add(book3);
 
             Book book4 = new Book("4444444444");
             Listing listing4 = listing;
-            listing4.BookListed = book4;
+            listing1.BookListed = book4;
             booksListed.Add(book4);
 
             Listing listing5 = listing;
-            listing5.BookListed = book4;
+            listing1.BookListed = book4;
             booksListed.Add(book4);
 
             Listing listing6= listing;
-            listing6.BookListed = book4;
+            listing1.BookListed = book4;
             booksListed.Add(book4);
 
             //Act
@@ -212,7 +181,7 @@ namespace BackendTests
             listing5 = _dbc.InsertListing(listing5);
             listing6 = _dbc.InsertListing(listing6);
 
-            List<Book> newFoundBooks = _dbc.FindBooksListed();
+            List<Book> foundBooks = _dbc.FindBooksListed();
 
             //Tear Down
             _dbc.DeleteListingByID(listing1.ListingID);
@@ -223,79 +192,47 @@ namespace BackendTests
             _dbc.DeleteListingByID(listing6.ListingID);
 
             //Assert
-            Assert.AreEqual(newFoundBooks.Count - initialFoundBooks.Count, 4);
+            Assert.AreEqual(foundBooks.Count, 4);
         }
 
         [TestMethod]
         public void SetListingsForBookTest()
         {
             //Arrange
-            List<Listing> listings = new List<Listing>();
 
-            Book book1 = new Book("1111111111");
-            Listing listing1 = listing;
-            listing1.BookListed = book1;
-            listings.Add(listing1);
-            
-            Listing listing2 = listing;
-            listing2.BookListed = book1;
-            listings.Add(listing2);
-            
-            Listing listing3 = listing;
-            listing3.BookListed = book1;
-            listings.Add(listing3);
 
             //Act
-            List<Listing> result = _dbc.SetListingsForBook(book1.ISBN);
 
-            //Tear Down
-            _dbc.DeleteListingByID(listing1.ListingID);
-            _dbc.DeleteListingByID(listing2.ListingID);
-            _dbc.DeleteListingByID(listing3.ListingID);
 
             //Assert
-            Assert.AreEqual(result.Count, listings.Count);            
+
+
+            //Tear Down
         }
 
         [TestMethod]
         public void SetListingsForUserTest()
         {
             //Arrange
-            List<Listing> listings = new List<Listing>();
 
-            User user1 = new User("gwashington", "george", "washington", "george.washington@huskers.unl.edu", "gwash@gmail.com");
-            Listing listing1 = listing;
-            listing1.ListingCreator = user1;
-            listings.Add(listing1);
-
-            Listing listing2 = listing;
-            listing2.ListingCreator = user1;
-            listings.Add(listing2);
-
-            Listing listing3 = listing;
-            listing3.ListingCreator = user1;
-            listings.Add(listing3);
 
             //Act
-            List<Listing> result = _dbc.SetListingsForUser(user1);
 
-            //Tear Down
-            _dbc.DeleteListingByID(listing1.ListingID);
-            _dbc.DeleteListingByID(listing2.ListingID);
-            _dbc.DeleteListingByID(listing3.ListingID);
 
             //Assert
-            Assert.AreEqual(result.Count, listings.Count);
+
+
+            //Tear Down
         }
 
         [TestMethod]
-        public void storeRetrievePasswordTest()
+        public void RetrievePasswordTest()
         {
             //Arrange
 
 
             //Act
-            //_dbc.RetrievePassword();
+
 
             //Assert
 
@@ -303,14 +240,29 @@ namespace BackendTests
             //Tear Down
         }
 
-       [TestMethod]
+        [TestMethod]
+        public void StorePasswordTest()
+        {
+            //Arrange
+
+
+            //Act
+
+
+            //Assert
+
+
+            //Tear Down
+        }
+
+        [TestMethod]
         public void CheckUniqueUsernameTest()
         {
             //Arrange
 
 
             //Act
-            //_dbc.CheckUniqueUsername(username);
+
 
             //Assert
 
@@ -325,7 +277,7 @@ namespace BackendTests
 
 
             //Act
-            _dbc.CheckUniqueHuskerEmail("abc");
+
 
             //Assert
 
