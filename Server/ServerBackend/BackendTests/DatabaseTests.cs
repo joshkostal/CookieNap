@@ -312,12 +312,14 @@ namespace BackendTests
 
 
             //Act
-
+            _dbc.StorePassword("gwashington", pswd.HashedPassword);
+            string newPswrd = _dbc.RetrievePassword("gwashington");
 
             //Tear Down
-            
-            
+
+
             //Assert
+            Assert.AreNotEqual(pswd.HashedPassword, newPswrd);
 
 
         }
@@ -326,16 +328,17 @@ namespace BackendTests
         public void CheckUniqueUsernameTest()
         {
             //Arrange
-
+            User user1 = new User("huskerfan2", "Lil", "Red", "huskerfan2@huskers.unl.edu", "husker@gmail.com", pswd);
 
             //Act
-
+            bool isUnique = _dbc.CheckUniqueUsername(user1.UserName);
+            _dbc.InsertUser(user1);
 
             //Tear Down
-
+            _dbc.DeleteUser(user1);
 
             //Assert
-
+            Assert.IsTrue(isUnique);
 
         }
 
@@ -343,15 +346,17 @@ namespace BackendTests
         public void CheckUniqueHuskerEmailTest()
         {
             //Arrange
-
+            User user1 = new User("huskerfan2", "Lil", "Red", "huskerfan2@huskers.unl.edu", "husker@gmail.com", pswd);
 
             //Act
-
+            bool isUnique = _dbc.CheckUniqueHuskerEmail(user1.HuskerEmail);
+            _dbc.InsertUser(user1);
 
             //Tear Down
-
+            _dbc.DeleteUser(user1);
 
             //Assert
+            Assert.IsTrue(isUnique);
 
 
         }

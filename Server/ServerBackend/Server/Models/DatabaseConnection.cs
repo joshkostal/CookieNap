@@ -493,6 +493,7 @@ namespace Server.Models
 
                 cmd.Prepare();
                 MySqlDataReader dr = cmd.ExecuteReader();
+                dr.Read();
                 string password = (string)dr[0];
 
                 dr.Close();
