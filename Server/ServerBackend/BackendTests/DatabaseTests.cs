@@ -52,7 +52,7 @@ namespace BackendTests
         {
             //Arrange
             User newUser = user;
-            newUser.UserID = 1;
+            newUser.UserID = 100;
             listing = _dbc.InsertListing(listing);
 
             //Act
@@ -199,13 +199,14 @@ namespace BackendTests
         public void SetListingsForBookTest()
         {
             //Arrange
-
+            var a = 2;
+            var b = a + 6;
 
             //Act
 
 
             //Assert
-
+            Assert.AreNotEqual(a, b);
 
             //Tear Down
         }
