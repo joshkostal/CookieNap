@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Net;
-using System.Net.Http;
 
 namespace Server.Models
 {
@@ -36,30 +35,10 @@ namespace Server.Models
 
         public List<Listing> ListingsWithBook { get; set; }
 
-        public Book QueryISBNAsync()
+        public Book QueryISBN()
         {
             Book book = null;
-            string url = string.Format("https://www.googleapis.com/books/v1/volumes?q=isbn:{0}&key=AIzaSyA0_9-gOBdZSR6Cw5n9cJdBEY_kAsbPmTs", ISBN);
-
-            //using (var client = new HttpClient())
-            //{
-            //    HttpResponseMessage response = await client.GetAsync(url);
-            //    if (response.IsSuccessStatusCode)
-            //    {
-            //        string result = await response.Content.ReadAsStringAsync();
-            //        var rootResult = JsonConvert.DeserializeObject<RootObject>(result);
-            //        return
-            //    }
-            //    else
-            //    {
-            //        return null;
-            //    }
-            //}
-
-
-
-
-
+            string url = string.Format("https://www.googleapis.com/books/v1/volumes?q=isbn:{0}&key=AIzaSyCCd5PAITD2iYtAaSXLwMR2LLrEDDspHkU", ISBN);
 
             HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
             httpWebRequest.Method = WebRequestMethods.Http.Get;
@@ -67,13 +46,15 @@ namespace Server.Models
 
             var httpResponse = httpWebRequest.GetResponse() as HttpWebResponse;
             using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-{
+            {
                 var result = streamReader.ReadToEnd();
                 JObject data = JObject.Parse(result);
-                //TextReader textReader = new TextReader();
-                //JsonTextReader reader = new JsonTextReader();
-
-                book = new Book(ISBN, (string)data["authors"], (string)data["title"], (string)data["thumbnail"]);
+                var authors = data["items"][0]["volumeInfo"]["authors"].ToString();
+                var author = authors.Remove(0, 9);
+                var a = author.Remove(author.Length - 4, 4);
+                var thumbnailURL = data["items"][0]["volumeInfo"]["imageLinks"]["thumbnail"].ToString();
+                var title = data["items"][0]["volumeInfo"]["title"].ToString();
+                book = new Book(ISBN, title, a, thumbnailURL);
             }
             return book;
         }
