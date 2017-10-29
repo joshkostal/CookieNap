@@ -1,0 +1,20 @@
+﻿<Properties StartupConfiguration="{5B0C48A8-2438-4542-8F4C-1BA5C1528D3D}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Server/Models/DatabaseConnection.cs">
+    <Files>
+      <File FileName="Server/Controllers/UsersController.cs" Line="96" Column="84" />
+      <File FileName="Server/Controllers/ListingsController.cs" Line="32" Column="10" />
+      <File FileName="Server/Models/Listing.cs" Line="9" Column="1" />
+      <File FileName="Server/Controllers/HttpJson/UserJson.cs" Line="14" Column="29" />
+      <File FileName="Server/Controllers/HttpJson/ListingJson.cs" Line="10" Column="39" />
+      <File FileName="Server/Models/User.cs" Line="34" Column="25" />
+      <File FileName="Server/Models/DatabaseConnection.cs" Line="115" Column="50" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Server PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+</Properties>
