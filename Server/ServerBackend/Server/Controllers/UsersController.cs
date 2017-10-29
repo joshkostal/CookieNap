@@ -91,7 +91,7 @@ namespace Server.Controllers
         [HttpPost, ActionName("Login")]
         public string Login(string username, string password)
         {
-            User user = new User();
+            User user = new User(username,"test","test","test","test", new Models.User.Password(password));
             return user.UserPassword.VerifyPassword(username, password) ? username : "fail";
         }
 
