@@ -33,7 +33,7 @@ namespace Server.Controllers
         // POST: Listings/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public bool Create([Bind("Price,Condition,ListingType,ListingCreator")] Listing listing)
+        public bool Create([Bind("Price,Condition,ListingType,ListingCreator,BookISBN")] Listing listing)
         {
             if (ModelState.IsValid)
             {

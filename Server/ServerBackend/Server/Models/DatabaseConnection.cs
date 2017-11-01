@@ -17,6 +17,11 @@ namespace Server.Models
             Initialize();
         }
 
+        public DatabaseConnection(string testUser, string testPassword)
+        {
+            Initialize(testUser, testPassword);
+        }
+
         public MySqlConnection Connection
         {
             get { return connection; }
@@ -25,6 +30,12 @@ namespace Server.Models
         public void Initialize()
         {
             string connstring = string.Format("Server=cse.unl.edu; database={0}; UID={1}; password={2}", databaseName, userName, password);
+            connection = new MySqlConnection(connstring);
+        }
+
+        public void Initialize(string testUser, string testPassword)
+        {
+            string connstring = string.Format("Server=cse.unl.edu; database={0}; UID={1}; password={2}", testUser, testUser, testPassword);
             connection = new MySqlConnection(connstring);
         }
 
@@ -73,6 +84,33 @@ namespace Server.Models
             User user = null;
 
             string query = string.Format("SELECT FirstName, LastName, UserName, PrimaryEmailAddress, SecondaryEmailAddress FROM User WHERE UserId='{0}'", id);
+
+            if (this.OpenConnection())
+            {
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+
+                cmd.Prepare();
+                MySqlDataReader dr = cmd.ExecuteReader();
+                dr.Read();
+                if (!dr.HasRows)
+                {
+                    return null;
+                }
+
+                user = new User((string)dr[2], (string)dr[0], (string)dr[1], (string)dr[3], (string)dr[4]);
+
+                dr.Close();
+                this.CloseConnection();
+            }
+
+            return user;
+        }
+
+        public User GetUser(string username)
+        {
+            User user = new User();
+
+            string query = string.Format("SELECT FirstName, LastName, UserName, PrimaryEmailAddress, SecondaryEmailAddress FROM User WHERE UserName='{0}'", username);
 
             if (this.OpenConnection())
             {
@@ -186,7 +224,7 @@ namespace Server.Models
             {
                 isSelling = 1;
             }
-            listing.LastDateEdited = new DateTime(2000, 1, 1);
+            listing.LastDateEdited = new DateTime(2007, 1, 1);
 
             if (this.OpenConnection())
             {
@@ -494,6 +532,10 @@ namespace Server.Models
                 cmd.Prepare();
                 MySqlDataReader dr = cmd.ExecuteReader();
                 dr.Read();
+                if (!dr.HasRows)
+                {
+                    return null;
+                }
                 string password = (string)dr[0];
 
                 dr.Close();

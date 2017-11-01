@@ -16,6 +16,13 @@ namespace Server.Controllers
             return _dbc.GetUser(id);
         }
 
+        // GET: Users/Details/gwash
+        [HttpGet]
+        public User Details(string username)
+        {
+            return _dbc.GetUser(username);
+        }
+
         // POST: Users/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -71,12 +78,12 @@ namespace Server.Controllers
             return false;
         }
 
-        // GET: Users/Delete/5
-        [HttpGet]
-        public User Delete(int id)
-        {
-            return _dbc.GetUser(id);
-        }
+        //// GET: Users/Delete/5
+        //[HttpGet]
+        //public User Delete(int id)
+        //{
+        //    return _dbc.GetUser(id);
+        //}
 
         // POST: Users/Delete/5
         [HttpPost, ActionName("Delete")]
@@ -88,10 +95,10 @@ namespace Server.Controllers
         }
 
         // POST: Users/Login
-        [HttpPost, ActionName("Login")]
+        [HttpGet, ActionName("Login")]
         public string Login(string username, string password)
         {
-            User user = new User();
+            User user = new User(username,"test","test","test","test", new Models.User.Password(password));
             return user.UserPassword.VerifyPassword(username, password) ? username : "fail";
         }
 

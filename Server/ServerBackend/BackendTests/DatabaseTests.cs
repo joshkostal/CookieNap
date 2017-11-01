@@ -8,7 +8,7 @@ namespace BackendTests
     [TestClass]
     public class DatabaseTests
     {
-        private DatabaseConnection _dbc = new DatabaseConnection();
+        private DatabaseConnection _dbc = new DatabaseConnection("jkostal", "8m:qUA");
         private static Book book = new Book("1259446298");
         private static User.Password pswd = new User.Password("1234");
         private static User user = new User("gwashington", "george", "washington", "george.washington@huskers.unl.edu", "gwash@gmail.com", pswd); //Create local versions where needed
@@ -91,7 +91,7 @@ namespace BackendTests
         {
             //Arrange
             listing = _dbc.InsertListingIntoPast(listing);
-            DateTime date = new DateTime(2000, 1, 1);
+            DateTime date = new DateTime(2007, 1, 1);
 
             //Act
             _dbc.DeleteListingByDate(date);
