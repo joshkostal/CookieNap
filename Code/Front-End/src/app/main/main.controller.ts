@@ -59,9 +59,19 @@ export class MainController {
   }
   
   getWebDevTec() {
+    var self = this;
     this.$http.get('http://localhost:5001/Listings')
     .then((response: any): any => {
-      this.allBooks = response.data;
+      self.allBooks = response.data;
+      for(let i = 0;i<self.allBooks.length;i++){
+        if(self.allBooks[i].condition == 0){
+          self.allBooks[i].condition = 'Like-new';
+        }else if(self.allBooks[i].condition == 1){
+          self.allBooks[i].condition = 'Good';      
+        }else{
+          self.allBooks[i].condition = 'Usable';      
+        }
+      }
     })
     .catch((error: any): any => {
       this.$log.error('XHR Failed for getContributors.\n', error.data);

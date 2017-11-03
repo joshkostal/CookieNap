@@ -23,10 +23,13 @@ export class NavbarController {
   public creationDate: number;
   public mainAppService: MainAppService;
   public $log: any;
+  public val: string;
 
   constructor($log: any, moment: moment.MomentStatic, mainAppService: MainAppService) {
     this.$log = $log;
     this.mainAppService = mainAppService;
-    
+    if(this.mainAppService.currentUserName != ''){
+      this.val = 'Welcome ' + this.mainAppService.currentUserName;
+    }
   }
 }

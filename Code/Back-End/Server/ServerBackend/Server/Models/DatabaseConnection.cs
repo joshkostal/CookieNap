@@ -368,9 +368,10 @@ namespace Server.Models
                 cmd.Prepare();
                 MySqlDataReader dr = cmd.ExecuteReader();
 
-                User tempUser = new User();
+                User tempUser;
                 while (dr.Read())
                 {
+                    tempUser = new User();
                     tempUser.UserID = dr.GetInt32(5);
                     Book book = new Book((string)dr[3]);
                     book = book.QueryISBN();
@@ -513,7 +514,7 @@ namespace Server.Models
         public string RetrievePassword(string username)
         {
             string query = string.Format("SELECT HashedPassword FROM User WHERE User.UserName='{0}'", username);
-
+            string passwordInstance = null;
             if (this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand(query, connection);
@@ -521,7 +522,11 @@ namespace Server.Models
                 cmd.Prepare();
                 MySqlDataReader dr = cmd.ExecuteReader();
                 dr.Read();
-                string password = (string)dr[0];
+				if (!dr.HasRows)
+				{
+					return null;
+				}
+                passwordInstance = (string)dr[0];
 
                 dr.Close();
                 this.CloseConnection();
@@ -542,7 +547,7 @@ namespace Server.Models
                  this.CloseConnection();
              }*/
 
-            return password;
+            return passwordInstance;
         }
 
         public void StorePassword(string username, string password)

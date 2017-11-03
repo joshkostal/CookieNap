@@ -7,6 +7,7 @@ export class IndividualListingPageController {
     public creationDate: number;
     public $location: any;
     public $log: any;
+    public $window: any;
     public price: number;
     public isbn: string;
     public condition: string;
@@ -17,11 +18,12 @@ export class IndividualListingPageController {
     public emailAvailable: boolean = false;
 
     /* @ngInject */
-    constructor ($log, $location, listingHttpService: ListingHttpService, mainAppService: MainAppService) {
+    constructor ($window, $log, $location, listingHttpService: ListingHttpService, mainAppService: MainAppService) {
       this.$location = $location;
       this.listingHttpService = listingHttpService;
       this.mainAppService = mainAppService;
       this.$log = $log;
+      this.$window = $window;
       if(this.mainAppService.selectedListingURL){
         this.url = this.mainAppService.selectedListingURL;
       }
@@ -36,7 +38,11 @@ export class IndividualListingPageController {
     /** @ngInject */
   
     toggleEmailAvailable() {
-      this.emailAvailable = true;
+      if(this.mainAppService.currentUserName != ''){
+        this.emailAvailable = true;
+      }else{
+        this.$window.alert('Sign in to see email');
+      }
     }
     
     deleteListing() {

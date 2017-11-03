@@ -92,7 +92,7 @@ namespace Server.Controllers
         [HttpPost]
         public string Login([FromBody] UserSignInJson info)
         {
-            User user = new User();
+            User user = new User(info.UserName, "test", "test", "test", "test", new User.Password(info.Password));
             string returnVal = user.UserPassword.VerifyPassword(info.UserName, info.Password) ? info.UserName : "fail";
             return returnVal;
         }

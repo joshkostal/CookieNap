@@ -6,7 +6,7 @@ export class MainAppService {
     public selectedListingCondition: string = '';
     public selectedListingURL: string = '';
     public selectedListingOwnersEmail: string = '';
-    public currentUserName: string = 'asdf';
+    public currentUserName: string = '';
     public selectedListingId: number = null;
   
     /** @ngInject */

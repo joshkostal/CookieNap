@@ -55,7 +55,7 @@ namespace Server.Models
 
         public ConditionTypes ConvertStringToConditionType(string condition)
         {
-            if (condition.Equals("Great"))
+            if (condition.Equals("Like-new") || condition.Equals("Great"))
             {
                 return ConditionTypes.Great;
             }
@@ -63,10 +63,13 @@ namespace Server.Models
             {
                 return ConditionTypes.Good;
             }
-            else
+            else if (condition.Equals("Usable") || condition.Equals("Okay"))
             {
                 return ConditionTypes.Okay;     //defaults to okay
-            }
+            }else
+            {
+                return ConditionTypes.Great;
+			}
         }
     }
 }
