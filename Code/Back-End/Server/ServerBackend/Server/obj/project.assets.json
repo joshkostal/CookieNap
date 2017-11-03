@@ -32537,10 +32537,10 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/MiPurcell/Desktop/CSSE/CookieNap/Server/ServerBackend/Server/Server.csproj",
+      "projectUniqueName": "/Users/MiPurcell/Desktop/CookieNap/Code/Back-End/Server/ServerBackend/Server/Server.csproj",
       "projectName": "Server",
-      "projectPath": "/Users/MiPurcell/Desktop/CSSE/CookieNap/Server/ServerBackend/Server/Server.csproj",
-      "outputPath": "/Users/MiPurcell/Desktop/CSSE/CookieNap/Server/ServerBackend/Server/obj",
+      "projectPath": "/Users/MiPurcell/Desktop/CookieNap/Code/Back-End/Server/ServerBackend/Server/Server.csproj",
+      "outputPath": "/Users/MiPurcell/Desktop/CookieNap/Code/Back-End/Server/ServerBackend/Server/obj",
       "projectStyle": "PackageReference",
       "originalTargetFrameworks": [
         "netcoreapp2.0"

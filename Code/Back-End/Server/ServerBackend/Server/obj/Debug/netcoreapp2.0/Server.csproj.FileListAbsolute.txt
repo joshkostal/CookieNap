@@ -33,3 +33,15 @@ C:/Users/Josh/Source/Repos/CookieNap/Server/ServerBackend/Server/obj/Debug/netco
 /Users/MiPurcell/Desktop/CSSE/CookieNap/Server/ServerBackend/Server/obj/Debug/netcoreapp2.0/Server.AssemblyInfo.cs
 /Users/MiPurcell/Desktop/CSSE/CookieNap/Server/ServerBackend/Server/obj/Debug/netcoreapp2.0/Server.dll
 /Users/MiPurcell/Desktop/CSSE/CookieNap/Server/ServerBackend/Server/obj/Debug/netcoreapp2.0/Server.pdb
+/Users/MiPurcell/Desktop/CookieNap/Code/Back-End/Server/ServerBackend/Server/bin/Debug/netcoreapp2.0/libe_sqlite3.dylib
+/Users/MiPurcell/Desktop/CookieNap/Code/Back-End/Server/ServerBackend/Server/bin/Debug/netcoreapp2.0/Server.deps.json
+/Users/MiPurcell/Desktop/CookieNap/Code/Back-End/Server/ServerBackend/Server/bin/Debug/netcoreapp2.0/Server.runtimeconfig.json
+/Users/MiPurcell/Desktop/CookieNap/Code/Back-End/Server/ServerBackend/Server/bin/Debug/netcoreapp2.0/Server.runtimeconfig.dev.json
+/Users/MiPurcell/Desktop/CookieNap/Code/Back-End/Server/ServerBackend/Server/bin/Debug/netcoreapp2.0/Server.dll
+/Users/MiPurcell/Desktop/CookieNap/Code/Back-End/Server/ServerBackend/Server/bin/Debug/netcoreapp2.0/Server.pdb
+/Users/MiPurcell/Desktop/CookieNap/Code/Back-End/Server/ServerBackend/Server/obj/Debug/netcoreapp2.0/Server.csprojResolveAssemblyReference.cache
+/Users/MiPurcell/Desktop/CookieNap/Code/Back-End/Server/ServerBackend/Server/obj/Debug/netcoreapp2.0/Server.csproj.CoreCompileInputs.cache
+/Users/MiPurcell/Desktop/CookieNap/Code/Back-End/Server/ServerBackend/Server/obj/Debug/netcoreapp2.0/Server.AssemblyInfoInputs.cache
+/Users/MiPurcell/Desktop/CookieNap/Code/Back-End/Server/ServerBackend/Server/obj/Debug/netcoreapp2.0/Server.AssemblyInfo.cs
+/Users/MiPurcell/Desktop/CookieNap/Code/Back-End/Server/ServerBackend/Server/obj/Debug/netcoreapp2.0/Server.dll
+/Users/MiPurcell/Desktop/CookieNap/Code/Back-End/Server/ServerBackend/Server/obj/Debug/netcoreapp2.0/Server.pdb

@@ -15051,10 +15051,10 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/MiPurcell/Desktop/CSSE/CookieNap/Server/ServerBackend/BackendTests/BackendTests.csproj",
+      "projectUniqueName": "/Users/MiPurcell/Desktop/CookieNap/Code/Back-End/Server/ServerBackend/BackendTests/BackendTests.csproj",
       "projectName": "BackendTests",
-      "projectPath": "/Users/MiPurcell/Desktop/CSSE/CookieNap/Server/ServerBackend/BackendTests/BackendTests.csproj",
-      "outputPath": "/Users/MiPurcell/Desktop/CSSE/CookieNap/Server/ServerBackend/BackendTests/obj",
+      "projectPath": "/Users/MiPurcell/Desktop/CookieNap/Code/Back-End/Server/ServerBackend/BackendTests/BackendTests.csproj",
+      "outputPath": "/Users/MiPurcell/Desktop/CookieNap/Code/Back-End/Server/ServerBackend/BackendTests/obj",
       "projectStyle": "PackageReference",
       "originalTargetFrameworks": [
         "netcoreapp2.0"
@@ -15062,8 +15062,8 @@
       "frameworks": {
         "netcoreapp2.0": {
           "projectReferences": {
-            "/Users/MiPurcell/Desktop/CSSE/CookieNap/Server/ServerBackend/Server/Server.csproj": {
-              "projectPath": "/Users/MiPurcell/Desktop/CSSE/CookieNap/Server/ServerBackend/Server/Server.csproj"
+            "/Users/MiPurcell/Desktop/CookieNap/Code/Back-End/Server/ServerBackend/Server/Server.csproj": {
+              "projectPath": "/Users/MiPurcell/Desktop/CookieNap/Code/Back-End/Server/ServerBackend/Server/Server.csproj"
             }
           }
         }
