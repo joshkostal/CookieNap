@@ -1,0 +1,35 @@
+<div class="container">
+
+  <div>
+    <acme-navbar creation-date="main.creationDate"></acme-navbar>
+  </div>
+
+  <div class="jumbotron text-center">
+    <h1>Bienvenido</h1>
+    <p class="lead">
+      <img src="assets/images/cookie.png" alt="Cookies!"><br>
+      Welcome to CookieNap!
+    </p>
+    <p class="animated infinite" ng-class="main.classAnimation">
+      <button type="button" class="btn btn-lg btn-success" ng-click="main.signIn()">Get Started</button>
+    </p>
+    <p>
+      Produced by <acme-malarkey extra-values="['Bethany', 'Josh', 'Kevin','Michael']"></acme-malarkey>
+    </p>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-6 col-md-4" ng-repeat="awesomeThing in main.allBooks">
+      <div class="thumbnail" ng-click="main.openListing(awesomeThing)">
+          <img class="pull-right" ng-src="{{ awesomeThing.bookListed.thumbnailURL }}" alt="{{ awesomeThing.title }}">
+          <div class="caption">
+            <h3>Title: {{ awesomeThing.bookListed.title }}</h3>
+            <p>Condition: {{ awesomeThing.condition }}</p>
+            <p>Owner's UserName: {{ awesomeThing.listingCreator.userName }}</p>
+            <p>${{ awesomeThing.price }}</p>
+         </div>
+      </div>
+    </div>
+  </div>
+
+</div>
