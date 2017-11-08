@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "targets": {
     ".NETCoreApp,Version=v2.0": {
       "Google.Apis/1.30.0": {
@@ -2843,9 +2843,6 @@
         },
         "compile": {
           "ref/netstandard1.3/_._": {}
-        },
-        "runtime": {
-          "lib/net46/Microsoft.Win32.Primitives.dll": {}
         }
       },
       "Microsoft.Win32.Registry/4.4.0": {
@@ -3315,9 +3312,6 @@
         "runtime": {
           "lib/netstandard2.0/_._": {}
         },
-        "build": {
-          "build/net35/SQLitePCLRaw.lib.e_sqlite3.linux.targets": {}
-        },
         "runtimeTargets": {
           "runtimes/linux-x64/native/libe_sqlite3.so": {
             "assetType": "native",
@@ -3337,9 +3331,6 @@
         "runtime": {
           "lib/netstandard2.0/_._": {}
         },
-        "build": {
-          "build/net35/SQLitePCLRaw.lib.e_sqlite3.osx.targets": {}
-        },
         "runtimeTargets": {
           "runtimes/osx-x64/native/libe_sqlite3.dylib": {
             "assetType": "native",
@@ -3354,9 +3345,6 @@
         },
         "runtime": {
           "lib/netstandard2.0/_._": {}
-        },
-        "build": {
-          "build/net35/SQLitePCLRaw.lib.e_sqlite3.v110_xp.targets": {}
         },
         "runtimeTargets": {
           "runtimes/win7-x64/native/e_sqlite3.dll": {
@@ -3446,9 +3434,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Collections.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Collections.Concurrent/4.3.0": {
@@ -3714,9 +3699,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Console.dll": {}
-        },
-        "runtime": {
-          "lib/net46/System.Console.dll": {}
         }
       },
       "System.Data.Common/4.3.0": {
@@ -3784,9 +3766,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Diagnostics.Debug.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Diagnostics.DiagnosticSource/4.4.1": {
@@ -3813,9 +3792,6 @@
         },
         "compile": {
           "ref/netstandard1.3/_._": {}
-        },
-        "runtime": {
-          "lib/net46/System.Diagnostics.FileVersionInfo.dll": {}
         },
         "runtimeTargets": {
           "runtimes/unix/lib/netstandard1.3/System.Diagnostics.FileVersionInfo.dll": {
@@ -3855,9 +3831,6 @@
         },
         "compile": {
           "ref/netstandard1.4/System.Diagnostics.Process.dll": {}
-        },
-        "runtime": {
-          "lib/net461/System.Diagnostics.Process.dll": {}
         },
         "runtimeTargets": {
           "runtimes/linux/lib/netstandard1.4/System.Diagnostics.Process.dll": {
@@ -3915,9 +3888,6 @@
         },
         "compile": {
           "ref/netstandard1.0/System.Diagnostics.Tools.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Diagnostics.TraceSource/4.3.0": {
@@ -3935,9 +3905,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Diagnostics.TraceSource.dll": {}
-        },
-        "runtime": {
-          "lib/net46/System.Diagnostics.TraceSource.dll": {}
         },
         "runtimeTargets": {
           "runtimes/unix/lib/netstandard1.3/System.Diagnostics.TraceSource.dll": {
@@ -3959,9 +3926,6 @@
         },
         "compile": {
           "ref/netstandard1.5/System.Diagnostics.Tracing.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Dynamic.Runtime/4.3.0": {
@@ -3998,9 +3962,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Globalization.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Globalization.Calendars/4.3.0": {
@@ -4013,9 +3974,6 @@
         },
         "compile": {
           "ref/netstandard1.3/_._": {}
-        },
-        "runtime": {
-          "lib/net46/System.Globalization.Calendars.dll": {}
         }
       },
       "System.Globalization.Extensions/4.3.0": {
@@ -4030,9 +3988,6 @@
         },
         "compile": {
           "ref/netstandard1.3/_._": {}
-        },
-        "runtime": {
-          "lib/net46/System.Globalization.Extensions.dll": {}
         },
         "runtimeTargets": {
           "runtimes/unix/lib/netstandard1.3/System.Globalization.Extensions.dll": {
@@ -4080,9 +4035,6 @@
         },
         "compile": {
           "ref/netstandard1.5/System.IO.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.IO.Compression/4.3.0": {
@@ -4106,9 +4058,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.IO.Compression.dll": {}
-        },
-        "runtime": {
-          "lib/net46/System.IO.Compression.dll": {}
         },
         "runtimeTargets": {
           "runtimes/unix/lib/netstandard1.3/System.IO.Compression.dll": {
@@ -4135,9 +4084,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.IO.FileSystem.dll": {}
-        },
-        "runtime": {
-          "lib/net46/System.IO.FileSystem.dll": {}
         }
       },
       "System.IO.FileSystem.Primitives/4.3.0": {
@@ -4171,9 +4117,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.IO.MemoryMappedFiles.dll": {}
-        },
-        "runtime": {
-          "lib/net46/System.IO.MemoryMappedFiles.dll": {}
         },
         "runtimeTargets": {
           "runtimes/unix/lib/netstandard1.3/System.IO.MemoryMappedFiles.dll": {
@@ -4211,9 +4154,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.IO.Pipes.dll": {}
-        },
-        "runtime": {
-          "lib/net46/System.IO.Pipes.dll": {}
         },
         "runtimeTargets": {
           "runtimes/unix/lib/netstandard1.3/System.IO.Pipes.dll": {
@@ -4363,9 +4303,6 @@
         "compile": {
           "ref/netstandard1.3/System.Net.Http.dll": {}
         },
-        "runtime": {
-          "lib/net46/System.Net.Http.dll": {}
-        },
         "runtimeTargets": {
           "runtimes/unix/lib/netstandard1.6/System.Net.Http.dll": {
             "assetType": "runtime",
@@ -4398,9 +4335,6 @@
         "compile": {
           "ref/netstandard1.3/System.Net.NameResolution.dll": {}
         },
-        "runtime": {
-          "lib/net46/System.Net.NameResolution.dll": {}
-        },
         "runtimeTargets": {
           "runtimes/unix/lib/netstandard1.3/System.Net.NameResolution.dll": {
             "assetType": "runtime",
@@ -4422,9 +4356,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Net.Primitives.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Net.Requests/4.3.0": {
@@ -4446,9 +4377,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Net.Requests.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         },
         "runtimeTargets": {
           "runtimes/unix/lib/netstandard1.3/System.Net.Requests.dll": {
@@ -4496,9 +4424,6 @@
         "compile": {
           "ref/netstandard1.3/System.Net.Security.dll": {}
         },
-        "runtime": {
-          "lib/net46/System.Net.Security.dll": {}
-        },
         "runtimeTargets": {
           "runtimes/unix/lib/netstandard1.6/System.Net.Security.dll": {
             "assetType": "runtime",
@@ -4522,9 +4447,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Net.Sockets.dll": {}
-        },
-        "runtime": {
-          "lib/net46/System.Net.Sockets.dll": {}
         }
       },
       "System.Net.WebHeaderCollection/4.3.0": {
@@ -4613,9 +4535,6 @@
         },
         "compile": {
           "ref/netstandard1.5/System.Reflection.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Reflection.Emit/4.3.0": {
@@ -4673,9 +4592,6 @@
         },
         "compile": {
           "ref/netstandard1.0/System.Reflection.Extensions.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Reflection.Metadata/1.5.0": {
@@ -4696,9 +4612,6 @@
         },
         "compile": {
           "ref/netstandard1.0/System.Reflection.Primitives.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Reflection.TypeExtensions/4.3.0": {
@@ -4725,9 +4638,6 @@
         },
         "compile": {
           "ref/netstandard1.0/System.Resources.ResourceManager.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Runtime/4.3.0": {
@@ -4738,9 +4648,6 @@
         },
         "compile": {
           "ref/netstandard1.5/System.Runtime.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Runtime.CompilerServices.Unsafe/4.4.0": {
@@ -4761,9 +4668,6 @@
         },
         "compile": {
           "ref/netstandard1.5/System.Runtime.Extensions.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Runtime.Handles/4.3.0": {
@@ -4775,9 +4679,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Runtime.Handles.dll": {}
-        },
-        "runtime": {
-          "lib/net46/_._": {}
         }
       },
       "System.Runtime.InteropServices/4.3.0": {
@@ -4792,9 +4693,6 @@
         },
         "compile": {
           "ref/netcoreapp1.1/System.Runtime.InteropServices.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Runtime.InteropServices.RuntimeInformation/4.3.0": {
@@ -4945,9 +4843,6 @@
         "compile": {
           "ref/netstandard1.6/System.Security.Cryptography.Algorithms.dll": {}
         },
-        "runtime": {
-          "lib/net461/System.Security.Cryptography.Algorithms.dll": {}
-        },
         "runtimeTargets": {
           "runtimes/osx/lib/netstandard1.6/System.Security.Cryptography.Algorithms.dll": {
             "assetType": "runtime",
@@ -4981,9 +4876,6 @@
         "compile": {
           "ref/netstandard1.6/_._": {}
         },
-        "runtime": {
-          "lib/net461/System.Security.Cryptography.Cng.dll": {}
-        },
         "runtimeTargets": {
           "runtimes/unix/lib/netstandard1.6/System.Security.Cryptography.Cng.dll": {
             "assetType": "runtime",
@@ -5015,9 +4907,6 @@
         "compile": {
           "ref/netstandard1.3/_._": {}
         },
-        "runtime": {
-          "lib/net46/System.Security.Cryptography.Csp.dll": {}
-        },
         "runtimeTargets": {
           "runtimes/unix/lib/netstandard1.3/System.Security.Cryptography.Csp.dll": {
             "assetType": "runtime",
@@ -5047,9 +4936,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Security.Cryptography.Encoding.dll": {}
-        },
-        "runtime": {
-          "lib/net46/System.Security.Cryptography.Encoding.dll": {}
         },
         "runtimeTargets": {
           "runtimes/unix/lib/netstandard1.3/System.Security.Cryptography.Encoding.dll": {
@@ -5156,9 +5042,6 @@
         },
         "compile": {
           "ref/netstandard1.4/System.Security.Cryptography.X509Certificates.dll": {}
-        },
-        "runtime": {
-          "lib/net461/System.Security.Cryptography.X509Certificates.dll": {}
         },
         "runtimeTargets": {
           "runtimes/unix/lib/netstandard1.6/System.Security.Cryptography.X509Certificates.dll": {
@@ -5273,9 +5156,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Text.Encoding.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Text.Encoding.CodePages/4.4.0": {
@@ -5306,9 +5186,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Text.Encoding.Extensions.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Text.Encodings.Web/4.4.0": {
@@ -5356,9 +5233,6 @@
         "compile": {
           "ref/netstandard1.3/_._": {}
         },
-        "runtime": {
-          "lib/net46/System.Threading.Overlapped.dll": {}
-        },
         "runtimeTargets": {
           "runtimes/unix/lib/netstandard1.3/System.Threading.Overlapped.dll": {
             "assetType": "runtime",
@@ -5379,9 +5253,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Threading.Tasks.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Threading.Tasks.Extensions/4.4.0": {
@@ -5446,9 +5317,6 @@
         },
         "compile": {
           "ref/netstandard1.2/System.Threading.Timer.dll": {}
-        },
-        "runtime": {
-          "lib/net451/_._": {}
         }
       },
       "System.ValueTuple/4.4.0": {
@@ -8423,9 +8291,6 @@
         },
         "compile": {
           "ref/netstandard1.3/Microsoft.Win32.Primitives.dll": {}
-        },
-        "runtime": {
-          "lib/net46/Microsoft.Win32.Primitives.dll": {}
         }
       },
       "Microsoft.Win32.Registry/4.4.0": {
@@ -9089,9 +8954,6 @@
         },
         "runtime": {
           "lib/netstandard2.0/_._": {}
-        },
-        "build": {
-          "build/net35/SQLitePCLRaw.lib.e_sqlite3.linux.targets": {}
         }
       },
       "SQLitePCLRaw.lib.e_sqlite3.osx/1.1.7": {
@@ -9101,9 +8963,6 @@
         },
         "runtime": {
           "lib/netstandard2.0/_._": {}
-        },
-        "build": {
-          "build/net35/SQLitePCLRaw.lib.e_sqlite3.osx.targets": {}
         }
       },
       "SQLitePCLRaw.lib.e_sqlite3.v110_xp/1.1.7": {
@@ -9113,9 +8972,6 @@
         },
         "runtime": {
           "lib/netstandard2.0/_._": {}
-        },
-        "build": {
-          "build/net35/SQLitePCLRaw.lib.e_sqlite3.v110_xp.targets": {}
         }
       },
       "SQLitePCLRaw.provider.e_sqlite3.netstandard11/1.1.7": {
@@ -9196,9 +9052,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Collections.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Collections.Concurrent/4.3.0": {
@@ -9465,9 +9318,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Console.dll": {}
-        },
-        "runtime": {
-          "lib/net46/System.Console.dll": {}
         }
       },
       "System.Data.Common/4.3.0": {
@@ -9526,9 +9376,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Diagnostics.Debug.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Diagnostics.DiagnosticSource/4.4.1": {
@@ -9634,9 +9481,6 @@
         },
         "compile": {
           "ref/netstandard1.0/System.Diagnostics.Tools.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Diagnostics.TraceSource/4.3.0": {
@@ -9669,9 +9513,6 @@
         },
         "compile": {
           "ref/netstandard1.5/System.Diagnostics.Tracing.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Dynamic.Runtime/4.3.0": {
@@ -9709,9 +9550,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Globalization.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Globalization.Calendars/4.3.0": {
@@ -9725,9 +9563,6 @@
         },
         "compile": {
           "ref/netstandard1.3/_._": {}
-        },
-        "runtime": {
-          "lib/net46/System.Globalization.Calendars.dll": {}
         }
       },
       "System.Globalization.Extensions/4.3.0": {
@@ -9783,9 +9618,6 @@
         },
         "compile": {
           "ref/netstandard1.5/System.IO.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.IO.Compression/4.3.0": {
@@ -9829,9 +9661,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.IO.FileSystem.dll": {}
-        },
-        "runtime": {
-          "lib/net46/System.IO.FileSystem.dll": {}
         }
       },
       "System.IO.FileSystem.Primitives/4.3.0": {
@@ -10077,9 +9906,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Net.Primitives.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Net.Requests/4.3.0": {
@@ -10158,9 +9984,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Net.Sockets.dll": {}
-        },
-        "runtime": {
-          "lib/net46/System.Net.Sockets.dll": {}
         }
       },
       "System.Net.WebHeaderCollection/4.3.0": {
@@ -10260,9 +10083,6 @@
         },
         "compile": {
           "ref/netstandard1.5/System.Reflection.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Reflection.Emit/4.3.0": {
@@ -10321,9 +10141,6 @@
         },
         "compile": {
           "ref/netstandard1.0/System.Reflection.Extensions.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Reflection.Metadata/1.5.0": {
@@ -10345,9 +10162,6 @@
         },
         "compile": {
           "ref/netstandard1.0/System.Reflection.Primitives.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Reflection.TypeExtensions/4.3.0": {
@@ -10375,9 +10189,6 @@
         },
         "compile": {
           "ref/netstandard1.0/System.Resources.ResourceManager.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Runtime/4.3.0": {
@@ -10389,9 +10200,6 @@
         },
         "compile": {
           "ref/netstandard1.5/System.Runtime.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Runtime.CompilerServices.Unsafe/4.4.0": {
@@ -10413,9 +10221,6 @@
         },
         "compile": {
           "ref/netstandard1.5/System.Runtime.Extensions.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Runtime.Handles/4.3.0": {
@@ -10428,9 +10233,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Runtime.Handles.dll": {}
-        },
-        "runtime": {
-          "lib/net46/_._": {}
         }
       },
       "System.Runtime.InteropServices/4.3.0": {
@@ -10446,9 +10248,6 @@
         },
         "compile": {
           "ref/netcoreapp1.1/System.Runtime.InteropServices.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Runtime.InteropServices.RuntimeInformation/4.3.0": {
@@ -10832,9 +10631,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Text.Encoding.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Text.Encoding.CodePages/4.4.0": {
@@ -10860,9 +10656,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Text.Encoding.Extensions.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Text.Encodings.Web/4.4.0": {
@@ -10924,9 +10717,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Threading.Tasks.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Threading.Tasks.Extensions/4.4.0": {
@@ -10992,9 +10782,6 @@
         },
         "compile": {
           "ref/netstandard1.2/System.Threading.Timer.dll": {}
-        },
-        "runtime": {
-          "lib/net451/_._": {}
         }
       },
       "System.ValueTuple/4.4.0": {
@@ -13978,9 +13765,6 @@
         },
         "compile": {
           "ref/netstandard1.3/Microsoft.Win32.Primitives.dll": {}
-        },
-        "runtime": {
-          "lib/net46/Microsoft.Win32.Primitives.dll": {}
         }
       },
       "Microsoft.Win32.Registry/4.4.0": {
@@ -14889,9 +14673,6 @@
         },
         "runtime": {
           "lib/netstandard2.0/_._": {}
-        },
-        "build": {
-          "build/net35/SQLitePCLRaw.lib.e_sqlite3.linux.targets": {}
         }
       },
       "SQLitePCLRaw.lib.e_sqlite3.osx/1.1.7": {
@@ -14901,9 +14682,6 @@
         },
         "runtime": {
           "lib/netstandard2.0/_._": {}
-        },
-        "build": {
-          "build/net35/SQLitePCLRaw.lib.e_sqlite3.osx.targets": {}
         }
       },
       "SQLitePCLRaw.lib.e_sqlite3.v110_xp/1.1.7": {
@@ -14913,9 +14691,6 @@
         },
         "runtime": {
           "lib/netstandard2.0/_._": {}
-        },
-        "build": {
-          "build/net35/SQLitePCLRaw.lib.e_sqlite3.v110_xp.targets": {}
         }
       },
       "SQLitePCLRaw.provider.e_sqlite3.netstandard11/1.1.7": {
@@ -14996,9 +14771,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Collections.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Collections.Concurrent/4.3.0": {
@@ -15265,9 +15037,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Console.dll": {}
-        },
-        "runtime": {
-          "lib/net46/System.Console.dll": {}
         }
       },
       "System.Data.Common/4.3.0": {
@@ -15326,9 +15095,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Diagnostics.Debug.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Diagnostics.DiagnosticSource/4.4.1": {
@@ -15434,9 +15200,6 @@
         },
         "compile": {
           "ref/netstandard1.0/System.Diagnostics.Tools.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Diagnostics.TraceSource/4.3.0": {
@@ -15469,9 +15232,6 @@
         },
         "compile": {
           "ref/netstandard1.5/System.Diagnostics.Tracing.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Dynamic.Runtime/4.3.0": {
@@ -15509,9 +15269,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Globalization.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Globalization.Calendars/4.3.0": {
@@ -15525,9 +15282,6 @@
         },
         "compile": {
           "ref/netstandard1.3/_._": {}
-        },
-        "runtime": {
-          "lib/net46/System.Globalization.Calendars.dll": {}
         }
       },
       "System.Globalization.Extensions/4.3.0": {
@@ -15583,9 +15337,6 @@
         },
         "compile": {
           "ref/netstandard1.5/System.IO.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.IO.Compression/4.3.0": {
@@ -15629,9 +15380,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.IO.FileSystem.dll": {}
-        },
-        "runtime": {
-          "lib/net46/System.IO.FileSystem.dll": {}
         }
       },
       "System.IO.FileSystem.Primitives/4.3.0": {
@@ -15877,9 +15625,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Net.Primitives.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Net.Requests/4.3.0": {
@@ -15958,9 +15703,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Net.Sockets.dll": {}
-        },
-        "runtime": {
-          "lib/net46/System.Net.Sockets.dll": {}
         }
       },
       "System.Net.WebHeaderCollection/4.3.0": {
@@ -16060,9 +15802,6 @@
         },
         "compile": {
           "ref/netstandard1.5/System.Reflection.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Reflection.Emit/4.3.0": {
@@ -16121,9 +15860,6 @@
         },
         "compile": {
           "ref/netstandard1.0/System.Reflection.Extensions.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Reflection.Metadata/1.5.0": {
@@ -16145,9 +15881,6 @@
         },
         "compile": {
           "ref/netstandard1.0/System.Reflection.Primitives.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Reflection.TypeExtensions/4.3.0": {
@@ -16175,9 +15908,6 @@
         },
         "compile": {
           "ref/netstandard1.0/System.Resources.ResourceManager.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Runtime/4.3.0": {
@@ -16189,9 +15919,6 @@
         },
         "compile": {
           "ref/netstandard1.5/System.Runtime.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Runtime.CompilerServices.Unsafe/4.4.0": {
@@ -16213,9 +15940,6 @@
         },
         "compile": {
           "ref/netstandard1.5/System.Runtime.Extensions.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Runtime.Handles/4.3.0": {
@@ -16228,9 +15952,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Runtime.Handles.dll": {}
-        },
-        "runtime": {
-          "lib/net46/_._": {}
         }
       },
       "System.Runtime.InteropServices/4.3.0": {
@@ -16246,9 +15967,6 @@
         },
         "compile": {
           "ref/netcoreapp1.1/System.Runtime.InteropServices.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Runtime.InteropServices.RuntimeInformation/4.3.0": {
@@ -16632,9 +16350,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Text.Encoding.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Text.Encoding.CodePages/4.4.0": {
@@ -16660,9 +16375,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Text.Encoding.Extensions.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Text.Encodings.Web/4.4.0": {
@@ -16724,9 +16436,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Threading.Tasks.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Threading.Tasks.Extensions/4.4.0": {
@@ -16792,9 +16501,6 @@
         },
         "compile": {
           "ref/netstandard1.2/System.Threading.Timer.dll": {}
-        },
-        "runtime": {
-          "lib/net451/_._": {}
         }
       },
       "System.ValueTuple/4.4.0": {
@@ -19778,9 +19484,6 @@
         },
         "compile": {
           "ref/netstandard1.3/Microsoft.Win32.Primitives.dll": {}
-        },
-        "runtime": {
-          "lib/net46/Microsoft.Win32.Primitives.dll": {}
         }
       },
       "Microsoft.Win32.Registry/4.4.0": {
@@ -20689,9 +20392,6 @@
         },
         "runtime": {
           "lib/netstandard2.0/_._": {}
-        },
-        "build": {
-          "build/net35/SQLitePCLRaw.lib.e_sqlite3.linux.targets": {}
         }
       },
       "SQLitePCLRaw.lib.e_sqlite3.osx/1.1.7": {
@@ -20701,9 +20401,6 @@
         },
         "runtime": {
           "lib/netstandard2.0/_._": {}
-        },
-        "build": {
-          "build/net35/SQLitePCLRaw.lib.e_sqlite3.osx.targets": {}
         }
       },
       "SQLitePCLRaw.lib.e_sqlite3.v110_xp/1.1.7": {
@@ -20713,9 +20410,6 @@
         },
         "runtime": {
           "lib/netstandard2.0/_._": {}
-        },
-        "build": {
-          "build/net35/SQLitePCLRaw.lib.e_sqlite3.v110_xp.targets": {}
         }
       },
       "SQLitePCLRaw.provider.e_sqlite3.netstandard11/1.1.7": {
@@ -20796,9 +20490,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Collections.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Collections.Concurrent/4.3.0": {
@@ -21065,9 +20756,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Console.dll": {}
-        },
-        "runtime": {
-          "lib/net46/System.Console.dll": {}
         }
       },
       "System.Data.Common/4.3.0": {
@@ -21126,9 +20814,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Diagnostics.Debug.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Diagnostics.DiagnosticSource/4.4.1": {
@@ -21234,9 +20919,6 @@
         },
         "compile": {
           "ref/netstandard1.0/System.Diagnostics.Tools.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Diagnostics.TraceSource/4.3.0": {
@@ -21269,9 +20951,6 @@
         },
         "compile": {
           "ref/netstandard1.5/System.Diagnostics.Tracing.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Dynamic.Runtime/4.3.0": {
@@ -21309,9 +20988,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Globalization.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Globalization.Calendars/4.3.0": {
@@ -21325,9 +21001,6 @@
         },
         "compile": {
           "ref/netstandard1.3/_._": {}
-        },
-        "runtime": {
-          "lib/net46/System.Globalization.Calendars.dll": {}
         }
       },
       "System.Globalization.Extensions/4.3.0": {
@@ -21383,9 +21056,6 @@
         },
         "compile": {
           "ref/netstandard1.5/System.IO.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.IO.Compression/4.3.0": {
@@ -21429,9 +21099,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.IO.FileSystem.dll": {}
-        },
-        "runtime": {
-          "lib/net46/System.IO.FileSystem.dll": {}
         }
       },
       "System.IO.FileSystem.Primitives/4.3.0": {
@@ -21677,9 +21344,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Net.Primitives.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Net.Requests/4.3.0": {
@@ -21758,9 +21422,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Net.Sockets.dll": {}
-        },
-        "runtime": {
-          "lib/net46/System.Net.Sockets.dll": {}
         }
       },
       "System.Net.WebHeaderCollection/4.3.0": {
@@ -21860,9 +21521,6 @@
         },
         "compile": {
           "ref/netstandard1.5/System.Reflection.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Reflection.Emit/4.3.0": {
@@ -21921,9 +21579,6 @@
         },
         "compile": {
           "ref/netstandard1.0/System.Reflection.Extensions.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Reflection.Metadata/1.5.0": {
@@ -21945,9 +21600,6 @@
         },
         "compile": {
           "ref/netstandard1.0/System.Reflection.Primitives.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Reflection.TypeExtensions/4.3.0": {
@@ -21975,9 +21627,6 @@
         },
         "compile": {
           "ref/netstandard1.0/System.Resources.ResourceManager.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Runtime/4.3.0": {
@@ -21989,9 +21638,6 @@
         },
         "compile": {
           "ref/netstandard1.5/System.Runtime.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Runtime.CompilerServices.Unsafe/4.4.0": {
@@ -22013,9 +21659,6 @@
         },
         "compile": {
           "ref/netstandard1.5/System.Runtime.Extensions.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Runtime.Handles/4.3.0": {
@@ -22028,9 +21671,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Runtime.Handles.dll": {}
-        },
-        "runtime": {
-          "lib/net46/_._": {}
         }
       },
       "System.Runtime.InteropServices/4.3.0": {
@@ -22046,9 +21686,6 @@
         },
         "compile": {
           "ref/netcoreapp1.1/System.Runtime.InteropServices.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Runtime.InteropServices.RuntimeInformation/4.3.0": {
@@ -22432,9 +22069,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Text.Encoding.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Text.Encoding.CodePages/4.4.0": {
@@ -22460,9 +22094,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Text.Encoding.Extensions.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Text.Encodings.Web/4.4.0": {
@@ -22524,9 +22155,6 @@
         },
         "compile": {
           "ref/netstandard1.3/System.Threading.Tasks.dll": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       },
       "System.Threading.Tasks.Extensions/4.4.0": {
@@ -22592,9 +22220,6 @@
         },
         "compile": {
           "ref/netstandard1.2/System.Threading.Timer.dll": {}
-        },
-        "runtime": {
-          "lib/net451/_._": {}
         }
       },
       "System.ValueTuple/4.4.0": {
@@ -32532,23 +32157,35 @@
     ]
   },
   "packageFolders": {
-    "/Users/MiPurcell/.nuget/packages/": {}
+    "/Users/KT/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/MiPurcell/Desktop/CSSE/Back-End/Server/ServerBackend/Server/Server.csproj",
+      "projectUniqueName": "/Users/KT/CookieNap/Back-End/Server/ServerBackend/Server/Server.csproj",
       "projectName": "Server",
-      "projectPath": "/Users/MiPurcell/Desktop/CSSE/Back-End/Server/ServerBackend/Server/Server.csproj",
-      "outputPath": "/Users/MiPurcell/Desktop/CSSE/Back-End/Server/ServerBackend/Server/obj",
+      "projectPath": "/Users/KT/CookieNap/Back-End/Server/ServerBackend/Server/Server.csproj",
+      "packagesPath": "/Users/KT/.nuget/packages/",
+      "outputPath": "/Users/KT/CookieNap/Back-End/Server/ServerBackend/Server/obj",
       "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "/Users/KT/.config/NuGet/NuGet.Config"
+      ],
       "originalTargetFrameworks": [
         "netcoreapp2.0"
       ],
+      "sources": {
+        "https://api.nuget.org/v3/index.json": {}
+      },
       "frameworks": {
         "netcoreapp2.0": {
           "projectReferences": {}
         }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
       }
     },
     "frameworks": {
@@ -32557,7 +32194,8 @@
           "Microsoft.NETCore.App": {
             "suppressParent": "All",
             "target": "Package",
-            "version": "2.0.0"
+            "version": "2.0.0",
+            "autoReferenced": true
           },
           "Google.Apis.books.V1": {
             "target": "Package",
@@ -32594,7 +32232,9 @@
         },
         "imports": [
           "net461"
-        ]
+        ],
+        "assetTargetFallback": true,
+        "warn": true
       }
     },
     "runtimes": {

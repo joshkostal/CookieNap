@@ -1,8 +1,8 @@
 {
   "runtimeOptions": {
     "additionalProbingPaths": [
-      "/Users/MiPurcell/.dotnet/store/|arch|/|tfm|",
-      "/Users/MiPurcell/.nuget/packages"
+      "/Users/KT/.dotnet/store/|arch|/|tfm|",
+      "/Users/KT/.nuget/packages"
     ]
   }
 }
