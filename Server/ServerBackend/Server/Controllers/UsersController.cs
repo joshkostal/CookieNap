@@ -78,13 +78,6 @@ namespace Server.Controllers
             return false;
         }
 
-        //// GET: Users/Delete/5
-        //[HttpGet]
-        //public User Delete(int id)
-        //{
-        //    return _dbc.GetUser(id);
-        //}
-
         // POST: Users/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

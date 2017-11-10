@@ -33,6 +33,8 @@ namespace Server.Models
 
         public string ThumbnailURL { get; set; }
 
+        public int BookId { get; set; }
+
         public List<Listing> ListingsWithBook { get; set; }
 
         public Book QueryISBN()

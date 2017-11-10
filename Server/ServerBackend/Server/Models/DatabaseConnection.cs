@@ -1,7 +1,6 @@
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
-using static Server.Models.User;
 
 namespace Server.Models
 {
@@ -155,6 +154,7 @@ namespace Server.Models
 
         }
 
+        //TODO: Delete books that have no listing associated with them after these listings are deleted, make method for this
         public void DeleteUserById(int id) //deletes by a certain id. Can be modified to delete by other fields
         {
             if (this.OpenConnection())
@@ -181,6 +181,8 @@ namespace Server.Models
 
         public Listing InsertListing(Listing listing)
         {
+            var bookID = InsertBook(listing.BookListed.ISBN);
+
             //Convert listing type to boolean for the database
             int isSelling = 0;
             if (listing.ListingType == Listing.ListingTypes.Sell)
@@ -194,12 +196,11 @@ namespace Server.Models
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = connection;
 
-                cmd.CommandText = string.Format("INSERT INTO Listing (Price, BookISBN, Listing.Condition, IsSelling, LastEditedDate, User_UserId) VALUES (@Price, @ISBN, @Condition, @isSelling, @LastDateEdited, (Select User.UserId from User where User.UserName = '{0}' group by User.UserName))", listing.ListingCreator.UserName);
+                cmd.CommandText = string.Format("INSERT INTO Listing (Price, BookId, Listing.Condition, IsSelling, LastEditedDate, User_UserId) VALUES (@Price, '{1}', @Condition, @isSelling, @LastDateEdited, (Select User.UserId from User where User.UserName = '{0}' group by User.UserName))", listing.ListingCreator.UserName, bookID);
 
                 cmd.Prepare();
 
                 cmd.Parameters.AddWithValue("@Price", listing.Price);
-                cmd.Parameters.AddWithValue("@ISBN", listing.BookListed.ISBN);
                 cmd.Parameters.AddWithValue("@Condition", listing.Condition.ToString());
                 cmd.Parameters.AddWithValue("@isSelling", isSelling);
                 cmd.Parameters.AddWithValue("@Username", listing.ListingCreator.UserName);
@@ -215,7 +216,40 @@ namespace Server.Models
 
             return listing;
         }
+        
+        public int InsertBook(string isbn)
+        {
+            string query = string.Format("SELECT BookId FROM Book WHERE Book.ISBN='{0}')", isbn);
+            Book book = new Book(isbn);
 
+            if (this.OpenConnection())
+            {
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+
+                cmd.Prepare();
+                MySqlDataReader dr = cmd.ExecuteReader();
+                dr.Read();
+
+                if (dr.HasRows)
+                {
+                    return dr.GetInt32(0);
+                }
+                else
+                {
+                    book = book.QueryISBN();
+
+                    query = string.Format("INSERT INTO Book (Title, Author, ISBN, ThumbnailUrl) VALUES ('{0}', '{1}', '{2}', '{3}'", book.Title, book.Authors, book.ISBN, book.ThumbnailURL);
+                    book.BookId = (int)cmd.LastInsertedId;
+                }
+
+                dr.Close();
+                this.CloseConnection();
+            }
+            return book.BookId;
+        }
+
+        //For testing
+        //TODO: Needs to be fixed to include Book table
         public Listing InsertListingIntoPast(Listing listing)
         {
             //Convert listing type to boolean for the database
@@ -277,6 +311,7 @@ namespace Server.Models
             return listing;
         }
 
+        //TODO: If book in listing now has no listings associated with it, delete the book
         public void DeleteListingByID(int id)
         {
             string query = string.Format("DELETE FROM Listing WHERE Listing.ListingId='{0}'", id);
@@ -291,6 +326,7 @@ namespace Server.Models
             }
         }
 
+        //TODO: If book in listing now has no listings associated with it, delete the book
         public void DeleteListingByDate(DateTime date)
         {
             string query = string.Format("DELETE FROM Listing WHERE Listing.LastEditedDate='{0}'", date);
@@ -305,6 +341,7 @@ namespace Server.Models
             }
         }
 
+        //TODO: If book in listing now has no listings associated with it, delete the book
         public void DeleteListingsPastDeletionDate()
         {
             string query = "DELETE FROM Listing WHERE LastEditedDate <= DATE_SUB(CURDATE(), INTERVAL 45 DAY)";
@@ -319,6 +356,7 @@ namespace Server.Models
             }
         }
 
+        //Needs to be fixed to include book table
         public Listing GetListing(int listingID)
         {
             Listing listing = new Listing();
@@ -355,7 +393,7 @@ namespace Server.Models
                 User user = new User((string)rdr[2], (string)rdr[0], (string)rdr[1], (string)rdr[3], (string)rdr[4]);
 
                 Book book = new Book(data4);
-                book.QueryISBN();
+                book = book.QueryISBN();
 
                 listing = new Listing(data1, listing.ConvertStringToConditionType(data2), book, data3 == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, user);
                 listing.ListingID = data5;
@@ -366,6 +404,7 @@ namespace Server.Models
             return listing;
         }
 
+        //TODO: Needs to be fixed to include book table
         public List<Listing> GetAllListings()
         {
             List<Listing> listings = new List<Listing>();
@@ -409,6 +448,7 @@ namespace Server.Models
             return listings;
         }
         
+        //TODO: Needs to be fixed to include Book table
         public List<Book> FindBooksListed()
         {
             List<Book> booksListed = new List<Book>();
@@ -433,7 +473,7 @@ namespace Server.Models
             return booksListed;
         }
 
-        //TODO: Needs to be checked
+        //TODO: Needs to be fixed to include Book table
         public List<Listing> SetListingsForBook(string isbn)
         {
             List<Listing> listings = new List<Listing>();
@@ -479,6 +519,7 @@ namespace Server.Models
             return listings;
         }
 
+        //TODO: Needs to be fixed to include book table
         public List<Listing> SetListingsForUser(User user)
         {
             List<Listing> listings = new List<Listing>();
