@@ -12,15 +12,14 @@ namespace Server.Models
 
         public string SendRegistrationEmail(User recipient)
         {
-            string randomChars = Guid.NewGuid().ToString("n").Substring(0, 8);
-            string url = string.Format("www.cookienap.com/reset/{0}", randomChars);    //will need to change url after deployment to real url
+            string code = Guid.NewGuid().ToString("n").Substring(0, 8);
 
             MailMessage mail = new MailMessage
             {
                 From = new MailAddress(emailAccount),
                 Subject = "Cookie Nap Account Registration",
-                Body = string.Format("Welcome to Cookie Nap! <a href='{0}'>Please click here to complete your account registration.</a>", url),
-                IsBodyHtml = true
+                Body = string.Format("Welcome to Cookie Nap! Please enter this code to complete your registration: {0}", code),
+                IsBodyHtml = false
             };         
             mail.To.Add(recipient.HuskerEmail);
 
@@ -31,7 +30,7 @@ namespace Server.Models
             };
             smtp.Send(mail);
 
-            return url;
+            return code;
         }
 
         public string UserRequestedInfoEmail(User recipient, Listing listing)
@@ -60,15 +59,14 @@ namespace Server.Models
 
         public string ResetPasswordEmail(User recipient)
         {
-            string randomChars = Guid.NewGuid().ToString("n").Substring(0, 8);
-            string url = string.Format("www.cookienap.com/reset/{0}", randomChars);    //will need to change url after deployment to real url
+            string code = Guid.NewGuid().ToString("n").Substring(0, 8);
 
             MailMessage mail = new MailMessage
             {
                 From = new MailAddress(emailAccount),
                 Subject = "Reset Your Cookie Nap Password",
-                Body = string.Format("You have requested to have your password reset. <a href='{0}'>Please click here to reset the password.</a>", url),
-                IsBodyHtml = true
+                Body = string.Format("You have requested to have your password reset. Please enter this code to confirm the request: {0}", code),
+                IsBodyHtml = false
             };
             mail.To.Add(recipient.CommunicationEmail);
 
@@ -79,7 +77,7 @@ namespace Server.Models
             };
             smtp.Send(mail);
 
-            return url;
+            return code;
         }
     }
 }
