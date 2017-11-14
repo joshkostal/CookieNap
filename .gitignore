@@ -18,3 +18,7 @@
 /Back-End/Server/ServerBackend/Server/obj/Server.csproj.nuget.g.props
 /Back-End/Server/ServerBackend/Server/obj/project.assets.json
 /Back-End/Server/ServerBackend/ServerBackend.userprefs
+/Back-End/Server/ServerBackend/BackendTests/obj/BackendTests.csproj.nuget.g.targets
+/Back-End/Server/ServerBackend/Server/obj/Server.csproj.nuget.g.targets
+/Back-End/Server/ServerBackend/Server/obj/Debug/netcoreapp2.0/Server.AssemblyInfo.cs
+/Back-End/Server/ServerBackend/Server/obj/Debug/netcoreapp2.0/Server.AssemblyInfoInputs.cache
