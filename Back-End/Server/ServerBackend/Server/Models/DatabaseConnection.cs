@@ -1,12 +1,12 @@
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
-using static Server.Models.User;
 
 namespace Server.Models
 {
     public class DatabaseConnection
     {
+        #region Connection
         private string databaseName = "bhage";
         private string userName = "bhage";
         private string password = "qmQ8jq";
@@ -15,6 +15,17 @@ namespace Server.Models
         public DatabaseConnection()
         {
             Initialize();
+        }
+
+        public DatabaseConnection(string testDatabase, string testPassword)
+        {
+            Initialize(testDatabase, testPassword);
+        }
+
+        private void Initialize(string testDatabase, string testPassword)
+        {
+            string connstring = string.Format("Server=cse.unl.edu; database={0}; UID={1}; password={2}", testDatabase, testDatabase, testPassword);
+            connection = new MySqlConnection(connstring);
         }
 
         public MySqlConnection Connection
@@ -39,7 +50,9 @@ namespace Server.Models
             connection.Close();
             return true;
         }
+        #endregion
 
+        #region User
         public User InsertUser(User user)
         {
             //test query: INSERT INTO User (FirstName, LastName, UserName, PrimaryEmailAddress, SecondaryEmailAddress) VALUES ('Test', 'Testerson', 'testguy3', 'fakeemail@huskers.unl.edu', 'anotherfake@gmail.com')
@@ -95,32 +108,51 @@ namespace Server.Models
             return user;
         }
 
-		public User GetUserWithUsername(string username)
-		{
-			User user = null;
+        public User GetUser(string username)
+        {
+            User user = null;
 
-			string query = string.Format("SELECT FirstName, LastName, PrimaryEmailAddress, SecondaryEmailAddress, UserId FROM User WHERE UserName='{0}'", username);
+            string query = string.Format("SELECT FirstName, LastName, PrimaryEmailAddress, SecondaryEmailAddress, UserId FROM User WHERE UserName='{0}'", username);
 
-			if (this.OpenConnection())
-			{
-				MySqlCommand cmd = new MySqlCommand(query, connection);
+            if (this.OpenConnection())
+            {
+                MySqlCommand cmd = new MySqlCommand(query, connection);
 
-				cmd.Prepare();
-				MySqlDataReader dr = cmd.ExecuteReader();
-				dr.Read();
-				if (!dr.HasRows)
-				{
-					return null;
-				}
+                cmd.Prepare();
+                MySqlDataReader dr = cmd.ExecuteReader();
+                dr.Read();
+                if (!dr.HasRows)
+                {
+                    return null;
+                }
                 String firstName = (string)dr[0];
-				user = new User(username, (string)dr[0], (string)dr[1], (string)dr[2], (string)dr[3], (int)dr[4]);
+                user = new User(username, (string)dr[0], (string)dr[1], (string)dr[2], (string)dr[3], (int)dr[4]);
 
-				dr.Close();
-				this.CloseConnection();
-			}
+                dr.Close();
+                this.CloseConnection();
+            }
 
-			return user;
-		}
+            return user;
+        }
+
+        public void DeleteUser(int id) //deletes by a certain id. Can be modified to delete by other fields
+        {
+            if (this.OpenConnection())
+            {
+                string query1 = string.Format("DELETE FROM Listing WHERE Listing.User_UserId='{0}'", id);
+                MySqlCommand cmd = new MySqlCommand(query1, connection);
+
+                cmd.Prepare();
+                cmd.ExecuteNonQuery();
+
+                string query2 = string.Format("DELETE FROM User WHERE UserId='{0}'", id);
+                cmd = new MySqlCommand(query2, connection);
+                cmd.Prepare();
+                cmd.ExecuteNonQuery();
+
+                this.CloseConnection();
+            }
+        }
 
         public void UpdateEmails(string primaryEmail, string secondaryEmail, string userName)
         {
@@ -142,32 +174,50 @@ namespace Server.Models
                 this.CloseConnection();
             }
 
-        }
-
-        public void DeleteUserById(int id) //deletes by a certain id. Can be modified to delete by other fields
-        {
-            if (this.OpenConnection())
+            public List<Listing> SetListingsForUser(User user)
             {
-                string query1 = string.Format("DELETE FROM Listing WHERE Listing.User_UserId='{0}'", id);
-                MySqlCommand cmd = new MySqlCommand(query1, connection);
+                List<Listing> listings = new List<Listing>();
+                string query = string.Format("SELECT UserId FROM User WHERE User.username='{0}'", user.UserName);
 
-                cmd.Prepare();
-                cmd.ExecuteNonQuery();
+                if (this.OpenConnection())
+                {
+                    MySqlCommand cmd = new MySqlCommand(query, connection);
 
-                string query2 = string.Format("DELETE FROM User WHERE UserId='{0}'", id);
-                cmd = new MySqlCommand(query2, connection);
-                cmd.Prepare();
-                cmd.ExecuteNonQuery();
+                    cmd.Prepare();
+                    MySqlDataReader dr = cmd.ExecuteReader();
+                    dr.Read();
+                    if (!dr.HasRows)
+                    {
+                        return null;
+                    }
 
-                this.CloseConnection();
+                    int listingID = dr.GetInt32(0);
+                    query = string.Format("SELECT Price, BookISBN, Listing.Condition, IsSelling FROM Listing WHERE Listing.User_UserID='{0}'", listingID);
+
+                    dr.Close();
+                    cmd.CommandText = query;
+
+                    cmd.Prepare();
+                    MySqlDataReader rdr = cmd.ExecuteReader();
+
+                    while (rdr.Read())
+                    {
+                        Book book = new Book((string)rdr[1]);
+                        book = book.QueryISBN();
+
+                        Listing listing = new Listing();
+                        listing = new Listing(rdr.GetInt32(0), listing.ConvertStringToConditionType((string)rdr[2]), book, rdr.GetInt32(3) == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, user);
+                        listings.Add(listing);
+                    }
+                    rdr.Close();
+                    this.CloseConnection();
+                }
+                return listings;
             }
         }
+        #endregion
 
-        public void DeleteUser(User user)
-        {
-            DeleteUserById(user.UserID);
-        }
-
+        #region Listing
         public Listing InsertListing(Listing listing)
         {
             //Convert listing type to boolean for the database
@@ -183,12 +233,14 @@ namespace Server.Models
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = connection;
 
-                cmd.CommandText = string.Format("INSERT INTO Listing (Price, BookISBN, Listing.Condition, IsSelling, LastEditedDate, User_UserId) VALUES (@Price, @ISBN, @Condition, @isSelling, @LastDateEdited, (Select User.UserId from User where User.UserName = '{0}' group by User.UserName))", listing.ListingCreator.UserName);
+                Book book = new Book(listing.BookListed.ISBN);
+                book = book.QueryISBN();
+
+                cmd.CommandText = string.Format("INSERT INTO Listing (Price, BookId, Listing.Condition, IsSelling, LastEditedDate, User_UserId) VALUES (@Price, '{1}', @Condition, @isSelling, @LastDateEdited, (Select User.UserId from User where User.UserName = '{0}' group by User.UserName))", listing.ListingCreator.UserName, book.BookId);
 
                 cmd.Prepare();
 
                 cmd.Parameters.AddWithValue("@Price", listing.Price);
-                cmd.Parameters.AddWithValue("@ISBN", listing.BookListed.ISBN);
                 cmd.Parameters.AddWithValue("@Condition", listing.Condition.ToString());
                 cmd.Parameters.AddWithValue("@isSelling", isSelling);
                 cmd.Parameters.AddWithValue("@Username", listing.ListingCreator.UserName);
@@ -205,6 +257,7 @@ namespace Server.Models
             return listing;
         }
 
+        //For testing only
         public Listing InsertListingIntoPast(Listing listing)
         {
             //Convert listing type to boolean for the database
@@ -238,74 +291,6 @@ namespace Server.Models
             }
 
             return listing;
-        }
-
-        public Listing UpdateBookPrice(Listing listing)
-        {
-            if (this.OpenConnection())
-            {
-                listing.LastDateEdited = DateTime.Today;
-
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.Connection = connection;
-
-                cmd.CommandText = "UPDATE Listing SET Price=@Price, LastEditedDate=@LastDateEdited WHERE ListingID=@ListingID";
-
-                cmd.Prepare();
-
-                cmd.Parameters.AddWithValue("@Price", listing.Price);
-                cmd.Parameters.AddWithValue("@ListingID", listing.ListingID);
-                cmd.Parameters.AddWithValue("@LastDateEdited", listing.LastDateEdited);
-
-                cmd.ExecuteNonQuery();
-
-                this.CloseConnection();
-            }
-
-            listing.LastDateEdited = DateTime.Today;
-            return listing;
-        }
-
-        public void DeleteListingByID(int id)
-        {
-            string query = string.Format("DELETE FROM Listing WHERE Listing.ListingId='{0}'", id);
-            if (this.OpenConnection())
-            {
-                MySqlCommand cmd = new MySqlCommand(query, connection);
-
-                cmd.Prepare();
-                cmd.ExecuteNonQuery();
-
-                this.CloseConnection();
-            }
-        }
-
-        public void DeleteListingByDate(DateTime date)
-        {
-            string query = string.Format("DELETE FROM Listing WHERE Listing.LastEditedDate='{0}'", date);
-            if (this.OpenConnection())
-            {
-                MySqlCommand cmd = new MySqlCommand(query, connection);
-
-                cmd.Prepare();
-                cmd.ExecuteNonQuery();
-
-                this.CloseConnection();
-            }
-        }
-
-        public void DeleteListingsPastDeletionDate()
-        {
-            string query = "DELETE FROM Listing WHERE LastEditedDate <= DATE_SUB(CURDATE(), INTERVAL 45 DAY)";
-            if (this.OpenConnection())
-            {
-                MySqlCommand cmd = new MySqlCommand(query, connection);
-
-                cmd.Prepare();
-                cmd.ExecuteNonQuery();
-
-                this.CloseConnection();
-            }
         }
 
         public Listing GetListing(int listingID)
@@ -398,7 +383,107 @@ namespace Server.Models
 
             return listings;
         }
-        
+
+        public Listing UpdateListingPrice(Listing listing)
+        {
+            if (this.OpenConnection())
+            {
+                listing.LastDateEdited = DateTime.Today;
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.Connection = connection;
+
+                cmd.CommandText = "UPDATE Listing SET Price=@Price, LastEditedDate=@LastDateEdited WHERE ListingID=@ListingID";
+
+                cmd.Prepare();
+
+                cmd.Parameters.AddWithValue("@Price", listing.Price);
+                cmd.Parameters.AddWithValue("@ListingID", listing.ListingID);
+                cmd.Parameters.AddWithValue("@LastDateEdited", listing.LastDateEdited);
+
+                cmd.ExecuteNonQuery();
+
+                this.CloseConnection();
+            }
+
+            listing.LastDateEdited = DateTime.Today;
+            return listing;
+        }
+
+        public void DeleteListing(int id)
+        {
+            string query = string.Format("DELETE FROM Listing WHERE Listing.ListingId='{0}'", id);
+            if (this.OpenConnection())
+            {
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+
+                cmd.Prepare();
+                cmd.ExecuteNonQuery();
+
+                this.CloseConnection();
+            }
+        }
+
+        public void DeleteListing(DateTime date)
+        {
+            string query = string.Format("DELETE FROM Listing WHERE Listing.LastEditedDate='{0}'", date);
+            if (this.OpenConnection())
+            {
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+
+                cmd.Prepare();
+                cmd.ExecuteNonQuery();
+
+                this.CloseConnection();
+            }
+        }
+
+        public void DeleteListingsPastDeletionDate()
+        {
+            string query = "DELETE FROM Listing WHERE LastEditedDate <= DATE_SUB(CURDATE(), INTERVAL 45 DAY)";
+            if (this.OpenConnection())
+            {
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+
+                cmd.Prepare();
+                cmd.ExecuteNonQuery();
+
+                this.CloseConnection();
+            }
+        }
+        #endregion
+
+        #region Book
+        public int InsertBook(string isbn)
+        {
+            string query = string.Format("SELECT BookId FROM Book WHERE Book.ISBN='{0}')", isbn);
+            Book book = new Book(isbn);
+
+            if (this.OpenConnection())
+            {
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+
+                cmd.Prepare();
+                MySqlDataReader dr = cmd.ExecuteReader();
+                dr.Read();
+
+                if (dr.HasRows)
+                {
+                    return dr.GetInt32(0);
+                }
+                else
+                {
+                    book = book.QueryISBN();
+
+                    query = string.Format("INSERT INTO Book (Title, Author, ISBN, ThumbnailUrl) VALUES ('{0}', '{1}', '{2}', '{3}'", book.Title, book.Authors, book.ISBN, book.ThumbnailURL);
+                    book.BookId = (int)cmd.LastInsertedId;
+                }
+                dr.Close();
+                this.CloseConnection();
+            }
+            return book.BookId;
+        }
+
         public List<Book> FindBooksListed()
         {
             List<Book> booksListed = new List<Book>();
@@ -423,7 +508,6 @@ namespace Server.Models
             return booksListed;
         }
 
-        //TODO: Needs to be checked
         public List<Listing> SetListingsForBook(string isbn)
         {
             List<Listing> listings = new List<Listing>();
@@ -446,7 +530,7 @@ namespace Server.Models
                     data2.Add(dr.GetInt32(2));
                 }
                 dr.Close();
-                for(int i=0; i<data0.Count; i++)
+                for (int i = 0; i < data0.Count; i++)
                 {
                     query = "SELECT FirstName, LastName, UserName, PrimaryEmailAddress, SecondaryEmailAddress FROM User";
                     cmd = new MySqlCommand(query, connection);
@@ -468,49 +552,9 @@ namespace Server.Models
             }
             return listings;
         }
+        #endregion
 
-        public List<Listing> SetListingsForUser(User user)
-        {
-            List<Listing> listings = new List<Listing>();
-            string query = string.Format("SELECT UserId FROM User WHERE User.username='{0}'", user.UserName);
-
-            if (this.OpenConnection())
-            {
-                MySqlCommand cmd = new MySqlCommand(query, connection);
-
-                cmd.Prepare();
-                MySqlDataReader dr = cmd.ExecuteReader();
-                dr.Read();
-                if (!dr.HasRows)
-                {
-                    return null;
-                }
-
-                int listingID = dr.GetInt32(0);
-                query = string.Format("SELECT Price, BookISBN, Listing.Condition, IsSelling FROM Listing WHERE Listing.User_UserID='{0}'", listingID);
-
-                dr.Close();
-                cmd.CommandText = query;
-
-                cmd.Prepare();
-                MySqlDataReader rdr = cmd.ExecuteReader();
-
-                while (rdr.Read())
-                {
-                    Book book = new Book((string)rdr[1]);
-                    book = book.QueryISBN();
-
-                    Listing listing = new Listing();
-                    listing = new Listing(rdr.GetInt32(0), listing.ConvertStringToConditionType((string)rdr[2]), book, rdr.GetInt32(3) == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, user);
-                    listings.Add(listing);
-                }
-                rdr.Close();
-                this.CloseConnection();
-            }
-            return listings;
-        }
-
-        //TODO: Check this one for SQL Injection- not sure how to do it in SELECT statements yet
+        #region Password
         public string RetrievePassword(string username)
         {
             string query = string.Format("SELECT HashedPassword FROM User WHERE User.UserName='{0}'", username);
@@ -522,10 +566,10 @@ namespace Server.Models
                 cmd.Prepare();
                 MySqlDataReader dr = cmd.ExecuteReader();
                 dr.Read();
-				if (!dr.HasRows)
-				{
-					return null;
-				}
+                if (!dr.HasRows)
+                {
+                    return null;
+                }
                 passwordInstance = (string)dr[0];
 
                 dr.Close();
@@ -569,8 +613,9 @@ namespace Server.Models
                 this.CloseConnection();
             }
         }
+        #endregion
 
-        //TODO: Prevent SQL injection with the select statement
+        #region Validation
         public bool CheckUniqueUsername(string username)
         {
             bool usernameFound = true;
@@ -613,4 +658,5 @@ namespace Server.Models
             return !emailFound;
         }
     }
+    #endregion
 }
