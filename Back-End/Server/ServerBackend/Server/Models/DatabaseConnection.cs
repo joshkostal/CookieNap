@@ -173,47 +173,47 @@ namespace Server.Models
 
                 this.CloseConnection();
             }
+        }
 
-            public List<Listing> SetListingsForUser(User user)
+        public List<Listing> SetListingsForUser(User user)
+        {
+            List<Listing> listings = new List<Listing>();
+            string query = string.Format("SELECT UserId FROM User WHERE User.username='{0}'", user.UserName);
+
+            if (this.OpenConnection())
             {
-                List<Listing> listings = new List<Listing>();
-                string query = string.Format("SELECT UserId FROM User WHERE User.username='{0}'", user.UserName);
+                MySqlCommand cmd = new MySqlCommand(query, connection);
 
-                if (this.OpenConnection())
+                cmd.Prepare();
+                MySqlDataReader dr = cmd.ExecuteReader();
+                dr.Read();
+                if (!dr.HasRows)
                 {
-                    MySqlCommand cmd = new MySqlCommand(query, connection);
-
-                    cmd.Prepare();
-                    MySqlDataReader dr = cmd.ExecuteReader();
-                    dr.Read();
-                    if (!dr.HasRows)
-                    {
-                        return null;
-                    }
-
-                    int listingID = dr.GetInt32(0);
-                    query = string.Format("SELECT Price, BookISBN, Listing.Condition, IsSelling FROM Listing WHERE Listing.User_UserID='{0}'", listingID);
-
-                    dr.Close();
-                    cmd.CommandText = query;
-
-                    cmd.Prepare();
-                    MySqlDataReader rdr = cmd.ExecuteReader();
-
-                    while (rdr.Read())
-                    {
-                        Book book = new Book((string)rdr[1]);
-                        book = book.QueryISBN();
-
-                        Listing listing = new Listing();
-                        listing = new Listing(rdr.GetInt32(0), listing.ConvertStringToConditionType((string)rdr[2]), book, rdr.GetInt32(3) == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, user);
-                        listings.Add(listing);
-                    }
-                    rdr.Close();
-                    this.CloseConnection();
+                    return null;
                 }
-                return listings;
+
+                int listingID = dr.GetInt32(0);
+                query = string.Format("SELECT Price, BookISBN, Listing.Condition, IsSelling FROM Listing WHERE Listing.User_UserID='{0}'", listingID);
+
+                dr.Close();
+                cmd.CommandText = query;
+
+                cmd.Prepare();
+                MySqlDataReader rdr = cmd.ExecuteReader();
+
+                while (rdr.Read())
+                {
+                    Book book = new Book((string)rdr[1]);
+                    book = book.QueryISBN();
+
+                    Listing listing = new Listing();
+                    listing = new Listing(rdr.GetInt32(0), listing.ConvertStringToConditionType((string)rdr[2]), book, rdr.GetInt32(3) == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, user);
+                    listings.Add(listing);
+                }
+                rdr.Close();
+                this.CloseConnection();
             }
+            return listings;
         }
         #endregion
 

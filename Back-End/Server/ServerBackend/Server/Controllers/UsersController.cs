@@ -77,7 +77,7 @@ namespace Server.Controllers
         [ValidateAntiForgeryToken]
         public bool DeleteConfirmed(int id)
         {
-            _dbc.DeleteUserById(id);
+            _dbc.DeleteUser(id);
             return true;
         }
 

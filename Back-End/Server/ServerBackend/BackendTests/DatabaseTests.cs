@@ -22,7 +22,7 @@ namespace BackendTests
 
             //Act
             User returnedUser = _dbc.GetUser(user.UserID);
-            _dbc.DeleteUser(user);
+            _dbc.DeleteUser(user.UserID);
             User deletedUser = _dbc.GetUser(user.UserID);
 
             //Assert
@@ -41,7 +41,7 @@ namespace BackendTests
             User returnedUser = _dbc.GetUser(user.UserID);
 
             //Tear Down
-            _dbc.DeleteUser(user);
+            _dbc.DeleteUser(user.UserID);
 
             //Assert
             Assert.AreNotEqual(user.CommunicationEmail, returnedUser.CommunicationEmail);
@@ -58,7 +58,7 @@ namespace BackendTests
 
             //Act
             Listing returnedListing = _dbc.GetListing(listing.ListingID);
-            _dbc.DeleteListingByID(listing.ListingID);
+            _dbc.DeleteListing(listing.ListingID);
             Listing deletedListing = _dbc.GetListing(listing.ListingID);
 
             //Assert
@@ -74,11 +74,11 @@ namespace BackendTests
             listing.Price = 8;
 
             //Act
-            listing = _dbc.UpdateBookPrice(listing);
+            listing = _dbc.UpdateListingPrice(listing);
             Listing updatedListing = _dbc.GetListing(listing.ListingID);
 
             //Tear Down
-            _dbc.DeleteListingByID(listing.ListingID);
+            _dbc.DeleteListing(listing.ListingID);
 
             //Assert
             Assert.AreEqual(listing.Price, updatedListing.Price);
@@ -94,13 +94,13 @@ namespace BackendTests
             DateTime date = new DateTime(2000, 1, 1);
 
             //Act
-            _dbc.DeleteListingByDate(date);
+            _dbc.DeleteListing(date);
 
             var id = listing.ListingID;
             listing = _dbc.GetListing(id);
 
             //Tear Down
-            _dbc.DeleteListingByID(id);
+            _dbc.DeleteListing(id);
 
             //Assert
             Assert.IsNull(listing);
@@ -121,7 +121,7 @@ namespace BackendTests
             newListing = _dbc.GetListing(id);
 
             //Tear Down
-            _dbc.DeleteListingByID(id);
+            _dbc.DeleteListing(id);
 
             //Assert
             Assert.IsNull(newListing);
@@ -165,10 +165,10 @@ namespace BackendTests
             List<Listing> newFoundListings = _dbc.GetAllListings();
             
             //Tear Down
-            _dbc.DeleteListingByID(listing1.ListingID);
-            _dbc.DeleteListingByID(listing2.ListingID);
-            _dbc.DeleteListingByID(listing3.ListingID);
-            _dbc.DeleteListingByID(listing4.ListingID);
+            _dbc.DeleteListing(listing1.ListingID);
+            _dbc.DeleteListing(listing2.ListingID);
+            _dbc.DeleteListing(listing3.ListingID);
+            _dbc.DeleteListing(listing4.ListingID);
 
             //Assert
             Assert.AreEqual(4, newFoundListings.Count - initialFoundListings.Count);
@@ -223,12 +223,12 @@ namespace BackendTests
             List<Book> newFoundBooks = _dbc.FindBooksListed();
 
             //Tear Down
-            _dbc.DeleteListingByID(listing1.ListingID);
-            _dbc.DeleteListingByID(listing2.ListingID);
-            _dbc.DeleteListingByID(listing3.ListingID);
-            _dbc.DeleteListingByID(listing4.ListingID);
-            _dbc.DeleteListingByID(listing5.ListingID);
-            _dbc.DeleteListingByID(listing6.ListingID);
+            _dbc.DeleteListing(listing1.ListingID);
+            _dbc.DeleteListing(listing2.ListingID);
+            _dbc.DeleteListing(listing3.ListingID);
+            _dbc.DeleteListing(listing4.ListingID);
+            _dbc.DeleteListing(listing5.ListingID);
+            _dbc.DeleteListing(listing6.ListingID);
 
             //Assert
             Assert.AreEqual(4, newFoundBooks.Count - initialFoundBooks.Count);
@@ -260,9 +260,9 @@ namespace BackendTests
             List<Listing> result = _dbc.SetListingsForBook(book1.ISBN);
 
             //Tear Down
-            _dbc.DeleteListingByID(listing1.ListingID);
-            _dbc.DeleteListingByID(listing2.ListingID);
-            _dbc.DeleteListingByID(listing3.ListingID);
+            _dbc.DeleteListing(listing1.ListingID);
+            _dbc.DeleteListing(listing2.ListingID);
+            _dbc.DeleteListing(listing3.ListingID);
 
             //Assert
             Assert.AreEqual(listings.Count, result.Count);
@@ -297,10 +297,10 @@ namespace BackendTests
             List<Listing> result = _dbc.SetListingsForUser(user1);
 
             //Tear Down
-            _dbc.DeleteListingByID(listing1.ListingID);
-            _dbc.DeleteListingByID(listing2.ListingID);
-            _dbc.DeleteListingByID(listing3.ListingID);
-            _dbc.DeleteUser(user1);
+            _dbc.DeleteListing(listing1.ListingID);
+            _dbc.DeleteListing(listing2.ListingID);
+            _dbc.DeleteListing(listing3.ListingID);
+            _dbc.DeleteUser(user1.UserID);
 
             //Assert
             Assert.AreEqual(listings.Count, result.Count);
@@ -336,7 +336,7 @@ namespace BackendTests
             _dbc.InsertUser(user1);
 
             //Tear Down
-            _dbc.DeleteUser(user1);
+            _dbc.DeleteUser(user1.UserID);
 
             //Assert
             Assert.IsTrue(isUnique);
@@ -354,7 +354,7 @@ namespace BackendTests
             _dbc.InsertUser(user1);
 
             //Tear Down
-            _dbc.DeleteUser(user1);
+            _dbc.DeleteUser(user1.UserID);
 
             //Assert
             Assert.IsTrue(isUnique);
