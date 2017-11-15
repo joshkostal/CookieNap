@@ -1,29 +1,31 @@
-<div>
-    <acme-navbar creation-date="main.creationDate"></acme-navbar>
-  </div>
-<form class="col-sm-4 col-sm-offset-4">
-    <div class="form-group">
-      <label for="ISBN">ISBN:</label>
-      <br>
-      <input type="string" id="ISBN" ng-model="createListing.isbn">
-      <br>
-    </div>
-    <div class="form-group">
-      <label for="price">Price:</label>
-      <br>
-      <input type="number" id="price" ng-model="createListing.price"> 
-      <br>
-    </div>
+<div class="container">
     <div>
-        <label for="condition">Condition:</label>
-        <br>
-        <input type="radio" id="condition" ng-model="createListing.condition" value="Like-new"> Like-new
-        <br>
-        <input type="radio" id="condition" ng-model="createListing.condition" value="Good"> Good
-        <br>
-        <input type="radio" id="condition" ng-model="createListing.condition" value="Usable"> Usable
-        <br>
-        Please do not post a book that you do not think is usable.
-      </div>
-    <button type="post" class="btn btn-default" ng-click="createListing.createListing()">Post</button>
-  </form>
+        <acme-navbar creation-date="main.creationDate"></acme-navbar>
+    </div>
+    <div class="jumbotron text-center">
+        <div class="form-group">
+            <label for="ISBN">ISBN:</label>
+            <br>
+            <input type="string" id="ISBN" ng-model="createListing.isbn">
+            <br>
+        </div>
+        <div class="form-group">
+            <label for="price">Price:</label>
+            <br>
+            <input type="number" id="price" ng-model="createListing.price">
+            <br>
+        </div>
+        <div>
+            <label for="condition">Condition:</label>
+            <br>
+            <input type="radio" id="condition" ng-model="createListing.condition" value="Like-new"> Like-new
+            <br>
+            <input type="radio" id="condition" ng-model="createListing.condition" value="Good"> Good
+            <br>
+            <input type="radio" id="condition" ng-model="createListing.condition" value="Usable"> Usable
+            <br>
+            Please do not post a book that you do not think is usable.
+        </div>
+        <button type="post" class="btn btn-default" ng-click="createListing.createListing()">Post</button>
+    </div>
+</div>
