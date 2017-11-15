@@ -1,57 +1,61 @@
-<div>
-  <acme-navbar creation-date="main.creationDate"></acme-navbar>
+<div class="container">
+    <div>
+        <acme-navbar creation-date="main.creationDate"></acme-navbar>
+    </div>
+    <div class="jumbotron text-center">
+        <form>
+            <h2 ng-show="signIn.newUserSignUpBoolean">Sign up</h2>
+            <h2 ng-show="!signIn.newUserSignUpBoolean">Sign in</h2>
+            <div class="form-group">
+                <label for="pwd">
+                    Please check if you are signing up for a new account: &nbsp
+                    <input type="checkbox" id="pwd" ng-model="signIn.newUserSignUpBoolean">
+                </label>
+                <br>
+            </div>
+            <div class="form-group" ng-show="signIn.newUserSignUpBoolean">
+                <label for="email">UNL Email address:</label>
+                <br>
+                <div class="col-sm-4"></div>
+                <input type="email" class="col-sm-4" id="email" ng-model="signIn.unlEmail">
+                <br>
+            </div>
+            <div class="form-group">
+                <label for="pwd">User Name:</label>
+                <br>
+                <div class="col-sm-4"></div>
+                <input type="string" class="col-sm-4" id="userName" ng-model="signIn.userName">
+                <br>
+            </div>
+            <div class="form-group">
+                <label for="pwd">Password:</label>
+                <br>
+                <div class="col-sm-4"></div>
+                <input type="password" class="col-sm-4" id="pwd" ng-model="signIn.password">
+                <br>
+            </div>
+            <div class="form-group" ng-show="signIn.newUserSignUpBoolean">
+                <label for="pwd">Optional Other Email:</label>
+                <br>
+                <div class="col-sm-4"></div>
+                <input type="email" class="col-sm-4" id="otherEmail" ng-model="signIn.otherEmail">
+                <br>
+            </div>
+            <div class="form-group" ng-show="signIn.newUserSignUpBoolean">
+                <label for="pwd">First Name:</label>
+                <br>
+                <div class="col-sm-4"></div>
+                <input type="string" class="col-sm-4" id="firstName" ng-model="signIn.firstName">
+                <br>
+            </div>
+            <div class="form-group" ng-show="signIn.newUserSignUpBoolean">
+                <label for="pwd">Last Name:</label>
+                <br>
+                <div class="col-sm-4"></div>
+                <input type="string" class="col-sm-4" id="lastName" ng-model="signIn.lastName">
+                <br>
+            </div>
+            <button type="submit" class="btn btn-default" ng-click="signIn.createOrSignInUser()">Submit</button>
+        </form>
+    </div>
 </div>
-<center>
-  <form>
-    <h2>Sign in/Sign up</h2>
-    <div class="form-group">
-      <label for="pwd">Please check if you are signing up for a new account: &nbsp 
-        <input type="checkbox" id="pwd" ng-model="signIn.newUserSignUpBoolean" >
-      </label>
-      <br>
-    </div>
-    <div class="form-group" ng-show="signIn.newUserSignUpBoolean">
-      <label for="email">UNL Email address:</label>
-      <br>
-      <div class="col-sm-4"></div>
-      <input type="email" class="col-sm-4" id="email" ng-model="signIn.unlEmail">
-      <br>
-    </div>
-    <div class="form-group">
-      <label for="pwd">User Name:</label>
-      <br>
-      <div class="col-sm-4"></div>
-      <input type="string" class="col-sm-4" id="userName" ng-model="signIn.userName">
-      <br>
-    </div>
-    <div class="form-group">
-      <label for="pwd">Password:</label>
-      <br>
-      <div class="col-sm-4"></div>
-      <input type="password" class="col-sm-4" id="pwd" ng-model="signIn.password">
-      <br>
-    </div>
-    <div class="form-group" ng-show="signIn.newUserSignUpBoolean">
-      <label for="pwd">Optional Other Email:</label>
-      <br>
-      <div class="col-sm-4"></div>
-      <input type="email" class="col-sm-4" id="otherEmail" ng-model="signIn.otherEmail">
-      <br>
-    </div>
-    <div class="form-group" ng-show="signIn.newUserSignUpBoolean">
-      <label for="pwd">First Name:</label>
-      <br>
-      <div class="col-sm-4"></div>
-      <input type="string" class="col-sm-4" id="firstName" ng-model="signIn.firstName">
-      <br>
-    </div>
-    <div class="form-group" ng-show="signIn.newUserSignUpBoolean">
-      <label for="pwd">Last Name:</label>
-      <br>
-      <div class="col-sm-4"></div>
-      <input type="string" class="col-sm-4" id="lastName" ng-model="signIn.lastName">
-      <br>
-    </div>
-    <button type="submit" class="btn btn-default" ng-click="signIn.createOrSignInUser()">Submit</button>
-  </form>
-</center>
