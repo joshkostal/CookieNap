@@ -18,7 +18,7 @@ namespace BackendTests
         public void InsertGetAndDeleteUserTest()
         {
             //Arrange
-            user = _dbc.InsertUser(user);
+            user.UserID = _dbc.InsertUser(user);
 
             //Act
             User returnedUser = _dbc.GetUser(user.UserID);
@@ -34,7 +34,7 @@ namespace BackendTests
         public void UpdateEmailsTest()
         {
             //Arrange
-            user = _dbc.InsertUser(user);
+            user.UserID = _dbc.InsertUser(user);
 
             //Act
             _dbc.UpdateEmails("abe.lincoln@huskers.unl.edu", "abeyLink@gmail.com", user.UserName);

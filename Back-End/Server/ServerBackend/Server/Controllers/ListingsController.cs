@@ -92,6 +92,7 @@ namespace Server.Controllers
         }
 
 
+
         // GET: Listings/Creator/5
         [HttpGet]
         public User Creator(int id)

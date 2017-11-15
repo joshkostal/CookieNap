@@ -1,5 +1,4 @@
-﻿using System;
-namespace Server.Controllers.HttpJson
+﻿namespace Server.Controllers.HttpJson
 {
     public class ListingJson
     {
