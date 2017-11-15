@@ -1,13 +1,19 @@
 <nav class="navbar navbar-static-top navbar-inverse">
-  <div class="container-fluid">
-    
-    <div class="" id="bs-example-navbar-collapse-6">
-      <ul class="nav navbar-nav">
-        <li class="active"><a ng-href="#">Home</a></li>
-        <li><a ng-href="#/createListing">Create Listing</a></li>
-        <li><a ng-href="#/signIn">Sign Up</a></li>
-      </ul>
-      <span ng-bind="vm.val" style="color: white"></span>
+    <div class="container-fluid"> 
+        <div class="" id="bs-example-navbar-collapse-6">
+            <ul class="nav navbar-nav">
+                <li class="active"><a ng-href="#">Home</a></li>
+                <li><a ng-href="#/createListing">Create Listing</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li ng-hide="vm.loggedIn"><a ng-href="#/signIn">Sign Up</a></li>
+                <li ng-show="vm.loggedIn" class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
     </div>
-  </div>
 </nav>

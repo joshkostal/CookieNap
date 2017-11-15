@@ -42,7 +42,7 @@ export class UserHttpService {
       }
       ).then(function successCallback(response) {
         if(response.data == "Success"){
-          self.signInUser(userName);
+          self.confirmUser(userName, unlEmail);
         }else if(response.data == "UsernameFail"){
           self.$window.alert('This Username is not valid');          
         }else if(response.data == "EmailFail"){
@@ -58,5 +58,9 @@ export class UserHttpService {
     signInUser(userName:string){
       this.mainAppService.currentUserName = userName;
       this.$location.path('/');
+    }
+    confirmUser(userName: string, unlEmail: string) {
+        this.mainAppService.currentUserName = userName;
+        this.$location.path('/Users/Confirm');
     }
   }

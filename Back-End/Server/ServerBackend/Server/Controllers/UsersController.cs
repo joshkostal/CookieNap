@@ -100,6 +100,15 @@ namespace Server.Controllers
             return user;
         }
 
+        // Get: Users/Confirm
+        [HttpGet]
+        public User Confirm(User user)
+        {
+            user.EmailCode = _email.ResetPasswordEmail(user);
+
+            return user;
+        }
+
         private bool UserExists(int id)
         {
             return _dbc.GetUser(id) == null ? false : true;

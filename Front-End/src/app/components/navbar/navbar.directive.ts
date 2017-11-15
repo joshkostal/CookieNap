@@ -24,12 +24,17 @@ export class NavbarController {
   public mainAppService: MainAppService;
   public $log: any;
   public val: string;
+  public loggedIn: boolean
 
   constructor($log: any, moment: moment.MomentStatic, mainAppService: MainAppService) {
     this.$log = $log;
     this.mainAppService = mainAppService;
     if(this.mainAppService.currentUserName != ''){
-      this.val = 'Welcome ' + this.mainAppService.currentUserName;
+        this.val = this.mainAppService.currentUserName;
+        this.loggedIn = true;
+    }
+    else {
+        this.loggedIn = false;
     }
   }
 }
