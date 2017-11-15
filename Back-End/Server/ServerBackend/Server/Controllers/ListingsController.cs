@@ -37,7 +37,7 @@ namespace Server.Controllers
         {
             if (ModelState.IsValid)
             {
-                User owner = _dbc.GetUserWithUsername(listing.ListingCreatorUserName);
+                User owner = _dbc.GetUser(listing.ListingCreatorUserName);
                 Listing newListing = new Listing(listing.Price,listing.Condition,listing.ISBN,listing.ListingType,owner.UserID);
                 _dbc.InsertListing(newListing);
                 return true;
@@ -66,7 +66,7 @@ namespace Server.Controllers
             {
                 try
                 {
-                    _dbc.UpdateBookPrice(listing);
+                    _dbc.UpdateListingPrice(listing);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -88,8 +88,9 @@ namespace Server.Controllers
         [HttpGet]
         public void Delete(int id)
         {
-             _dbc.DeleteListingByID(id); 
+             _dbc.DeleteListing(id); 
         }
+
 
 
         // GET: Listings/Creator/5

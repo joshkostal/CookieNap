@@ -33,8 +33,9 @@ namespace Server.Controllers
                 }
                 Password pwdInstance = new Password(user.Password);
                 User userInstance = new User(user.UserName, user.FirstName, user.LastName, user.HuskerEmail, user.CommunicationEmail, pwdInstance);
-                _dbc.InsertUser(userInstance);
-                return "Success";
+                userInstance.UserID = _dbc.InsertUser(userInstance);
+
+                return _email.SendRegistrationEmail(userInstance);
             }
             return "GeneralFail";
         }
@@ -72,19 +73,12 @@ namespace Server.Controllers
             return false;
         }
 
-        // GET: Users/Delete/5
-        [HttpGet]
-        public User Delete(int id)
-        {
-            return _dbc.GetUser(id);
-        }
-
         // POST: Users/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public bool DeleteConfirmed(int id)
         {
-            _dbc.DeleteUserById(id);
+            _dbc.DeleteUser(id);
             return true;
         }
 
@@ -92,9 +86,18 @@ namespace Server.Controllers
         [HttpPost]
         public string Login([FromBody] UserSignInJson info)
         {
-            User user = new User(info.UserName, "test", "test", "test", "test", new User.Password(info.Password));
-            string returnVal = user.UserPassword.VerifyPassword(info.UserName, info.Password) ? info.UserName : "fail";
-            return returnVal;
+            Password password = new Password(info.Password);
+            
+            return password.VerifyPassword(info.UserName, info.Password) ? info.UserName : "fail";
+        }
+
+        // Get: Users/Reset
+        [HttpGet]
+        public User Reset(User user)
+        {
+            user.EmailCode = _email.ResetPasswordEmail(user);
+
+            return user;
         }
 
         private bool UserExists(int id)

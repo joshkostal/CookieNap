@@ -1,0 +1,25 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/Back-End/Server/ServerBackend/.vs/ServerBackend/v15/Server/sqlite3/db.lock
+/Back-End/Server/ServerBackend/.vs/ServerBackend/v15/sqlite3/db.lock
+/Back-End/Server/ServerBackend/BackendTests/obj/BackendTests.csproj.nuget.cache
+/Back-End/Server/ServerBackend/BackendTests/obj/BackendTests.csproj.nuget.g.props
+/Back-End/Server/ServerBackend/BackendTests/obj/project.assets.json
+/Back-End/Server/ServerBackend/Server/bin/Debug/netcoreapp2.0/Server.dll
+/Back-End/Server/ServerBackend/Server/bin/Debug/netcoreapp2.0/Server.pdb
+/Back-End/Server/ServerBackend/Server/bin/Debug/netcoreapp2.0/Server.runtimeconfig.dev.json
+/Back-End/Server/ServerBackend/Server/obj/Debug/netcoreapp2.0/Server.csproj.CoreCompileInputs.cache
+/Back-End/Server/ServerBackend/Server/obj/Debug/netcoreapp2.0/Server.csproj.FileListAbsolute.txt
+/Back-End/Server/ServerBackend/Server/obj/Debug/netcoreapp2.0/Server.dll
+/Back-End/Server/ServerBackend/Server/obj/Debug/netcoreapp2.0/Server.pdb
+/Back-End/Server/ServerBackend/Server/obj/Server.csproj.nuget.cache
+/Back-End/Server/ServerBackend/Server/obj/Server.csproj.nuget.g.props
+/Back-End/Server/ServerBackend/Server/obj/project.assets.json
+/Back-End/Server/ServerBackend/ServerBackend.userprefs
+/Back-End/Server/ServerBackend/BackendTests/obj/BackendTests.csproj.nuget.g.targets
+/Back-End/Server/ServerBackend/Server/obj/Server.csproj.nuget.g.targets
+/Back-End/Server/ServerBackend/Server/obj/Debug/netcoreapp2.0/Server.AssemblyInfo.cs
+/Back-End/Server/ServerBackend/Server/obj/Debug/netcoreapp2.0/Server.AssemblyInfoInputs.cache
+/Front-End/.tmp/serve/app/index.module.js

@@ -54,6 +54,8 @@ namespace Server.Models
 
         public int UserID { get; set; }
 
+        public string EmailCode { get; set; }
+
         [Required]
         public Password UserPassword { get; set; }
 
