@@ -41,7 +41,15 @@ namespace Server.Models
 
         private bool OpenConnection()
         {
-            connection.Open();
+            try
+            {
+                connection.Open();
+            }
+            catch(InvalidOperationException e)
+            {
+
+            }
+            
             return true;
         }
 
@@ -441,7 +449,7 @@ namespace Server.Models
         #region Book
         public int InsertBook(string isbn)
         {
-            string query = string.Format("SELECT BookId FROM Book WHERE Book.ISBN='{0}')", isbn);
+            string query = string.Format("SELECT BookId FROM Book WHERE ISBN='{0}')", isbn);
             Book book = new Book(isbn);
 
             if (this.OpenConnection())
