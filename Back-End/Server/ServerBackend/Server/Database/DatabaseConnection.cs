@@ -186,7 +186,8 @@ namespace Server.Models
         public List<Listing> SetListingsForUser(User user)
         {
             List<Listing> listings = new List<Listing>();
-            string query = string.Format("SELECT Price, BookISBN, Listing.Condition, IsSelling FROM Listing WHERE Listing.User_UserID='{0}'", user.UserID);
+            //Note: check whether this still works
+            string query = string.Format("SELECT Listing.Price, Book.ISBN, Listing.Condition, LIsting.IsSelling FROM Listing JOIN Book ON Book.BookId = Listing.BookId WHERE Listing.User_UserID='{0}'", user.UserID);
 
             if (this.OpenConnection())
             {
@@ -289,8 +290,8 @@ namespace Server.Models
         public Listing GetListing(int listingID)
         {
             Listing listing = new Listing();
-
-            string query = string.Format("SELECT Price, Listing.Condition, IsSelling, BookISBN, ListingId, User_UserId FROM Listing WHERE Listing.ListingId={0}", listingID);
+            //check whether this works
+            string query = string.Format("SELECT Listing.Price, Listing.Condition, Listing.IsSelling, Book.ISBN, Listing.ListingId, Listing.User_UserId FROM Listing JOIN Book ON Listing.BookId = Book.BookId WHERE Listing.ListingId={0}", listingID);
 
             if (this.OpenConnection())
             {
@@ -337,7 +338,7 @@ namespace Server.Models
         {
             List<Listing> listings = new List<Listing>();
 
-            string query = string.Format("SELECT Price, Listing.Condition, IsSelling, BookISBN, ListingId, User_UserId FROM Listing");
+            string query = string.Format("SELECT Listing.Price, Listing.Condition, Listing.IsSelling, Book.ISBN, Listing.ListingId, Listing.User_UserId FROM Listing JOIN Book ON Book.BookId = Listing.BookId");
 
             if (this.OpenConnection())
             {
@@ -504,7 +505,7 @@ namespace Server.Models
         public List<Listing> SetListingsForBook(string isbn)
         {
             List<Listing> listings = new List<Listing>();
-            string query = string.Format("SELECT Price, Listing.Condition, IsSelling FROM Listing WHERE BookISBN='{0}'", isbn);
+            string query = string.Format("SELECT Price, Listing.Condition, IsSelling FROM Listing JOIN Book on Listing.BookId = Book.BookId WHERE Book.ISBN='{0}'", isbn);
 
             if (this.OpenConnection())
             {
