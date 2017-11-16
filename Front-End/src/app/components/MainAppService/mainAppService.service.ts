@@ -8,6 +8,7 @@ export class MainAppService {
     public selectedListingOwnersEmail: string = '';
     public currentUserName: string = '';
     public selectedListingId: number = null;
+    public currentPage: string = 'home';
   
     /** @ngInject */
     constructor(private $log: angular.ILogService, private $http: angular.IHttpService) {
