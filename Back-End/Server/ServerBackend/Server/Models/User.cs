@@ -54,8 +54,6 @@ namespace Server.Models
 
         public int UserID { get; set; }
 
-        public string EmailCode { get; set; }
-
         [Required]
         public Password UserPassword { get; set; }
 
@@ -69,8 +67,10 @@ namespace Server.Models
             }
             [Key]
             public string HashedPassword { get; set; }
+
+            public enum Verification { Success, PasswordFail, UsernameFail }
             
-            public bool VerifyPassword(string inputtedUsername, string inputtedPassword)
+            public Verification VerifyPassword(string inputtedUsername, string inputtedPassword)
             {
                 DatabaseConnection dbc = new DatabaseConnection();
                 dbc.Initialize();
@@ -85,19 +85,19 @@ namespace Server.Models
                     var hashedAndSaltedPassword = new Rfc2898DeriveBytes(inputtedPassword, salt, 10000);
                     byte[] hash = hashedAndSaltedPassword.GetBytes(20);
 
-                    bool valid = true;
+                    var valid = Verification.Success;
                     for(int i=0; i<20; i++)
                     {
                         if(hashBytes[i+16] != hash[i])
                         {
-                            valid = false;
+                            valid = Verification.PasswordFail;
                         }
                     }
                     return valid;
                 }
                 else
                 {
-                    return false;
+                    return Verification.UsernameFail;
                 }
             }
 

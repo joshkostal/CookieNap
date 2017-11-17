@@ -1,0 +1,14 @@
+<div class="container">
+    <div>
+        <acme-navbar creation-date="main.creationDate"></acme-navbar>
+    </div>
+    <div class="jumbotron text-center">
+        <div class="form-group">
+            <label for="ISBN">Enter Confirmation Code:</label>
+            <br>
+            <input type="string" id="ISBN" ng-model="confirmEmail.code">
+            <br>
+        </div>
+        <button type="post" class="btn btn-default" ng-click="confirmEmail.checkCode()">Check</button>
+    </div>
+</div>

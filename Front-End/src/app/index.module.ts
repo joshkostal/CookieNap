@@ -5,6 +5,7 @@ import { routerConfig } from './index.route';
 import { runBlock } from './index.run';
 import { MainController } from './main/main.controller';
 import { CreateListingController } from './createListing/createListing.controller';
+import { ConfirmEmailController } from './confirmEmail/confirmEmail.controller';
 import { SignInController } from './signin/signin.controller';
 import { IndividualListingPageController } from './individualListingPage/individualListingPage.controller';
 import { GithubContributor } from '../app/components/githubContributor/githubContributor.service';
@@ -33,6 +34,7 @@ module cookieNap {
     .service('userHttpService', UserHttpService)
     .service('mainAppService', MainAppService)
     .controller('MainController', MainController)
+    .controller('ConfirmEmailController', ConfirmEmailController)
     .controller('SignInController', SignInController)
     .controller('CreateListingController', CreateListingController)
     .controller('IndividualListingPageController', IndividualListingPageController)

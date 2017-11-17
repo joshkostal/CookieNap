@@ -1,3 +1,4 @@
+using Server.Controllers.HttpJson;
 using System;
 using System.Net;
 using System.Net.Mail;
@@ -8,9 +9,9 @@ namespace Server.Models
     {
         private string emailAccount = "CookieNapServices@gmail.com";
         private string password = "c00kienap";
-        private string smtpClient = "smtp.google.com";
+        private string smtpClient = "smtp.gmail.com";
 
-        public string SendRegistrationEmail(User recipient)
+        public string SendRegistrationEmail(UserJson recipient)
         {
             string code = Guid.NewGuid().ToString("n").Substring(0, 8);
 
@@ -57,7 +58,7 @@ namespace Server.Models
             return url;
         }
 
-        public string ResetPasswordEmail(User recipient)
+        public string ResetPasswordEmail(UserJson recipient)
         {
             string code = Guid.NewGuid().ToString("n").Substring(0, 8);
 

@@ -24,18 +24,10 @@ namespace Server.Controllers
         {
             if (ModelState.IsValid)
             {
-                bool uniqueUsername = _dbc.CheckUniqueUsername(user.UserName);
-                bool uniqueHuskerEmail = _dbc.CheckUniqueHuskerEmail(user.HuskerEmail);
-
-                if(!uniqueUsername || !uniqueHuskerEmail)
-                {
-                    return uniqueUsername ? "UsernameFail" : "EmailFail";
-                }
                 Password pwdInstance = new Password(user.Password);
                 User userInstance = new User(user.UserName, user.FirstName, user.LastName, user.HuskerEmail, user.CommunicationEmail, pwdInstance);
                 userInstance.UserID = _dbc.InsertUser(userInstance);
-
-                return _email.SendRegistrationEmail(userInstance);
+                return "Success";
             }
             return "GeneralFail";
         }
@@ -87,26 +79,48 @@ namespace Server.Controllers
         public string Login([FromBody] UserSignInJson info)
         {
             Password password = new Password(info.Password);
+            var result = password.VerifyPassword(info.UserName, info.Password);
             
-            return password.VerifyPassword(info.UserName, info.Password) ? info.UserName : "fail";
+            if(result == Password.Verification.PasswordFail)
+            {
+                return "PasswordFail";
+            }
+            else if(result == Password.Verification.UsernameFail)
+            {
+                return "UsernameFail";
+            }
+            else
+            {
+                return info.UserName;
+            }
         }
 
         // Get: Users/Reset
         [HttpGet]
-        public User Reset(User user)
+        public string Reset(UserJson user)
         {
-            user.EmailCode = _email.ResetPasswordEmail(user);
-
-            return user;
+            return _email.ResetPasswordEmail(user);
         }
 
-        // Get: Users/Confirm
-        [HttpGet]
-        public User Confirm(User user)
+        // Post: Users/Confirm
+        [HttpPost]
+        public string Confirm([FromBody] UserJson user)
         {
-            user.EmailCode = _email.ResetPasswordEmail(user);
+            return _email.SendRegistrationEmail(user);
+        }
 
-            return user;
+        // Post: Users/Validate
+        [HttpPost]
+        public string Validate([FromBody] UserJson user)
+        {
+            bool uniqueUsername = _dbc.CheckUniqueUsername(user.UserName);
+            bool uniqueHuskerEmail = _dbc.CheckUniqueHuskerEmail(user.HuskerEmail);
+
+            if (!uniqueUsername || !uniqueHuskerEmail)
+            {
+                return !uniqueUsername ? "UsernameFail" : "EmailFail";
+            }
+            return "Success";
         }
 
         private bool UserExists(int id)

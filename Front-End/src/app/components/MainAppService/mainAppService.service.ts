@@ -7,6 +7,8 @@ export class MainAppService {
     public selectedListingURL: string = '';
     public selectedListingOwnersEmail: string = '';
     public currentUserName: string = '';
+    public currentUnlEmail: string = '';
+    public currentPersonalEmail: string = '';
     public selectedListingId: number = null;
     public currentPage: string = 'home';
   

@@ -19,6 +19,12 @@ export function routerConfig($stateProvider: angular.ui.IStateProvider, $urlRout
       controller: 'CreateListingController',
       controllerAs: 'createListing'
     })
+     .state('confirmEmail', {
+      url: '/confirmEmail',
+      templateUrl: 'app/confirmEmail/confirmEmail.html',
+      controller: 'ConfirmEmailController',
+      controllerAs: 'confirmEmail'
+    })
     .state('individualListingPage', {
       url: '/individualListingPage',
       templateUrl: 'app/individualListingPage/individualListingPage.html',

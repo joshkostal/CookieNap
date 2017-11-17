@@ -9,7 +9,7 @@ namespace Server.Controllers.HttpJson
 		public string HuskerEmail { get; set; }
 		public string CommunicationEmail { get; set; }
 		public string Password { get; set; }
-
+        public string Code { get; set; }
 	}
 	public class UserSignInJson
 	{
