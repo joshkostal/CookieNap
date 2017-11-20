@@ -215,6 +215,8 @@ namespace Server.Models
         #region Listing
         public Listing InsertListing(Listing listing)
         {
+            int bookId = InsertBook(listing.BookListed.ISBN);
+
             //Convert listing type to boolean for the database
             int isSelling = 0;
             if (listing.ListingType == Listing.ListingTypes.Sell)
@@ -227,8 +229,6 @@ namespace Server.Models
             {
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = connection;
-
-                int bookId = InsertBook(listing.BookListed.ISBN);
 
                 cmd.CommandText = string.Format("INSERT INTO Listing (Price, BookId, Listing.Condition, IsSelling, LastEditedDate, User_UserId) VALUES (@Price, '{1}', @Condition, @isSelling, @LastDateEdited, (Select User.UserId from User where User.UserName = '{0}' group by User.UserName))", listing.ListingCreator.UserName, bookId);
 
@@ -456,23 +456,28 @@ namespace Server.Models
             if (this.OpenConnection())
             {
                 MySqlCommand cmd = new MySqlCommand(query, connection);
-
                 cmd.Prepare();
+
                 MySqlDataReader dr = cmd.ExecuteReader();
                 dr.Read();
 
                 if (dr.HasRows)
                 {
-                    return dr.GetInt32(0);
+                    book.BookId = dr.GetInt32(0);
+                    dr.Close();
                 }
                 else
                 {
+                    dr.Close();
                     book = book.QueryISBN();
 
-                    query = string.Format("INSERT INTO Book (Title, Author, ISBN, ThumbnailUrl) VALUES ('{0}', '{1}', '{2}', '{3}'", book.Title, book.Authors, book.ISBN, book.ThumbnailURL);
+                    query = string.Format("INSERT INTO Book (Title, Author, ISBN, ThumbnailUrl) VALUES ('{0}', '{1}', '{2}', '{3}')", book.Title, book.Authors, book.ISBN, book.ThumbnailURL);
+
+                    cmd.CommandText = query;
+                    cmd.Prepare();
+                    cmd.ExecuteNonQuery();
                     book.BookId = (int)cmd.LastInsertedId;
                 }
-                dr.Close();
                 this.CloseConnection();
             }
             return book.BookId;
