@@ -40,6 +40,13 @@ export class NavbarController {
     }
   }
 
+  logOut(){
+      this.mainAppService.currentUserName = '';
+      this.mainAppService.currentUnlEmail = '';
+      this.mainAppService.currentPersonalEmail = '';
+      this.loggedIn = false;
+  }
+
   setPage(page: string) {
       this.mainAppService.currentPage = page;
   }

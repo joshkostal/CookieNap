@@ -30,7 +30,7 @@ export class CreateListingController {
     createListing() {
       if(this.mainAppService.currentUserName != ''){
         this.listingHttpService.createListing(this.price, this.isbn, this.condition, this.mainAppService.currentUserName);
-        this.$window.alert('You have created a Listing');        
+        this.$window.alert('You have created a Listing');
       }else{
         this.$window.alert('Sign in to create Listing');
       }

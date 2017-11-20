@@ -7,7 +7,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li ng-click="vm.setPage('signin')" ng-class="vm.checkPage('signin')" ng-hide="vm.loggedIn" ><a ng-href="#/signIn">Sign Up</a></li>
-                <li ng-show="vm.loggedIn"><a ng-href="#/logOut">Log Out</a></li>
+                <li ng-show="vm.loggedIn" ng-click="vm.logOut()"><a ng-href="#/logOut">Log Out</a></li>
             </ul>
         </div>
     </div>
