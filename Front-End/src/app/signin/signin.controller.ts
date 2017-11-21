@@ -14,9 +14,8 @@ export class SignInController {
     public userName: string;
     public firstName: string;
     public lastName: string;
+    public warning: boolean;
     public $q: any;
-
-
   
     /* @ngInject */
     constructor ($q, $log, $location, userHttpService: UserHttpService, mainAppService: MainAppService) {
@@ -30,6 +29,7 @@ export class SignInController {
       this.userName = '';
       this.firstName = '';
       this.lastName = '';
+      this.warning = false;
       this.newUserSignUpBoolean = false;
       this.$q = $q;
     }
@@ -48,6 +48,14 @@ export class SignInController {
         }        
         //this.listingHttp.getListings();
     }
-  
+    resetPassword() {
+        if (this.userName == '') {
+            this.warning = true;
+        }
+        else {
+            this.userHttpService.sendResetEmail(this.userName);
+            this.$location.path('/resetPassword');
+        }
+    }  
   }
   

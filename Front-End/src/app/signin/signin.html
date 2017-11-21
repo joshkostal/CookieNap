@@ -56,6 +56,13 @@
                 <br>
             </div>
             <button type="submit" class="btn btn-default" ng-click="signIn.createOrSignInUser()">Submit</button>
+            <div class="form-group" ng-hide="signIn.newUserSignUpBoolean">
+                <br>
+                <button type="button" class="btn btn-link" ng-click="signIn.resetPassword()">Forget your password? Enter your username above and click here to reset it here!</button>
+            </div>
+            <div class="alert alert-danger" ng-show="signIn.warning">
+                Please enter your username in the box above.
+            </div>
         </form>
     </div>
 </div>

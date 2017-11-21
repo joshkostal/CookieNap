@@ -16,6 +16,7 @@ export class UserHttpService {
     public userName: string;
     public unlEmail: string;
     public personalEmail: string;
+    public userReset: string;
     
     /** @ngInject */
     constructor($window: any, $location: any, $q: any, $log: angular.ILogService, private $http: angular.IHttpService, mainAppService: MainAppService) {
@@ -118,7 +119,7 @@ export class UserHttpService {
         if (code == this.correctCode) {
             this.$http.post('http://localhost:5001/Users/Reset',
                 {
-                    'UserName': this.mainAppService.currentUserName,
+                    'UserName': this.userReset,
                     'Password': password
                 }
             )
@@ -136,6 +137,7 @@ export class UserHttpService {
             }
         ).then(function successCallback(response) {
             self.correctCode = response.data;
+            self.userReset = user;
         }, function errorCallback(response) {
             return this.responseVal;
         });
