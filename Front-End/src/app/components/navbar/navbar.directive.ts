@@ -1,4 +1,5 @@
 import { MainAppService } from '../MainAppService/mainAppService.service';
+import { UserHttpService } from "../UserHttpService/userHttpService.service";
 
 /** @ngInject */
 export function acmeNavbar(): angular.IDirective {
@@ -22,15 +23,19 @@ export class NavbarController {
   // "this.creationDate" is initialized by directive option "bindToController: true"
   public creationDate: number;
   public mainAppService: MainAppService;
+  public userHttpService: UserHttpService;
   public $log: any;
   public val: string;
   public loggedIn: boolean
   public currentPage: string
+  public $location: any
 
-  constructor($log: any, moment: moment.MomentStatic, mainAppService: MainAppService) {
+  constructor($log: any, moment: moment.MomentStatic, mainAppService: MainAppService, $location, userHttpService: UserHttpService) {
     this.$log = $log;
+    this.$location = $location;
     this.mainAppService = mainAppService;
     this.currentPage = mainAppService.currentPage;
+    this.userHttpService = userHttpService;
     if(this.mainAppService.currentUserName != ''){
         this.val = 'Welcome ' + this.mainAppService.currentUserName;
         this.loggedIn = true;
@@ -45,6 +50,11 @@ export class NavbarController {
       this.mainAppService.currentUnlEmail = '';
       this.mainAppService.currentPersonalEmail = '';
       this.loggedIn = false;
+  }
+
+  resetPassword() {
+      this.userHttpService.sendResetEmail(this.mainAppService.currentUserName);
+      this.$location.path('/resetPassword');
   }
 
   setPage(page: string) {

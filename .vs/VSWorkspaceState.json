@@ -1,7 +1,18 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Server"
+    "\\Back-End",
+    "\\Back-End\\Server",
+    "\\Back-End\\Server\\ServerBackend",
+    "\\Front-End",
+    "\\Front-End\\src",
+    "\\Front-End\\src\\app",
+    "\\Front-End\\src\\app\\components",
+    "\\Front-End\\src\\app\\components\\navbar",
+    "\\Front-End\\src\\app\\confirmEmail",
+    "\\Front-End\\src\\app\\resetPassword",
+    "\\Front-End\\src\\app\\signin"
   ],
+  "SelectedNode": "\\Back-End\\Server\\ServerBackend\\ServerBackend.sln",
   "PreviewInSolutionExplorer": false
 }

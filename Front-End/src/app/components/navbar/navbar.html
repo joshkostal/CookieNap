@@ -6,8 +6,9 @@
                 <li ng-click="vm.setPage('create')" ng-class="vm.checkPage('create')"><a ng-href="#/createListing">Create Listing</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li ng-click="vm.setPage('signin')" ng-class="vm.checkPage('signin')" ng-hide="vm.loggedIn" ><a ng-href="#/signIn">Sign Up</a></li>
+                <li ng-click="vm.setPage('signin')" ng-class="vm.checkPage('signin')" ng-hide="vm.loggedIn" ><a ng-href="#/signIn">Sign In</a></li>
                 <li ng-show="vm.loggedIn" ng-click="vm.logOut()"><a ng-href="#/logOut">Log Out</a></li>
+                <li ng-show="vm.loggedIn" ng-click="vm.resetPassword()"><a ng-href="#/resetPassword">Reset Password</a></li>
             </ul>
         </div>
     </div>

@@ -33,8 +33,11 @@ export class UserHttpService {
         if(response.data == userName){
           self.signInUser(userName);
         }
+        else {
+            self.$window.alert('Incorrect username or password');
+        }
       }, function errorCallback(response) {
-        self.$log.log("Incorrect username or password")
+        self.$log.log("Fail")
     });    
       return this.responseVal;
     }
@@ -107,6 +110,32 @@ export class UserHttpService {
             }
         ).then(function successCallback(response) {
             this.$location.path('/');
+        }, function errorCallback(response) {
+            return this.responseVal;
+        });
+    }
+    resetPassword(code: string, password: string) {
+        if (code == this.correctCode) {
+            this.$http.post('http://localhost:5001/Users/Reset',
+                {
+                    'UserName': this.mainAppService.currentUserName,
+                    'Password': password
+                }
+            )
+            return true;
+        }
+        else {
+            this.$window.alert('Incorrect code, please try again');
+        }
+    }
+    sendResetEmail(user: string) {
+        var self = this;
+        this.$http.post('http://localhost:5001/Users/SendResetEmail',
+            {
+                'Username': user
+            }
+        ).then(function successCallback(response) {
+            self.correctCode = response.data;
         }, function errorCallback(response) {
             return this.responseVal;
         });

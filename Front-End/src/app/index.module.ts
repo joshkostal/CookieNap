@@ -7,6 +7,7 @@ import { MainController } from './main/main.controller';
 import { CreateListingController } from './createListing/createListing.controller';
 import { ConfirmEmailController } from './confirmEmail/confirmEmail.controller';
 import { SignInController } from './signin/signin.controller';
+import { ResetPasswordController } from './resetPassword/resetPassword.controller';
 import { IndividualListingPageController } from './individualListingPage/individualListingPage.controller';
 import { GithubContributor } from '../app/components/githubContributor/githubContributor.service';
 import { WebDevTecService } from '../app/components/webDevTec/webDevTec.service';
@@ -36,6 +37,7 @@ module cookieNap {
     .controller('MainController', MainController)
     .controller('ConfirmEmailController', ConfirmEmailController)
     .controller('SignInController', SignInController)
+    .controller('ResetPasswordController', ResetPasswordController)
     .controller('CreateListingController', CreateListingController)
     .controller('IndividualListingPageController', IndividualListingPageController)
     .directive('acmeNavbar', acmeNavbar)

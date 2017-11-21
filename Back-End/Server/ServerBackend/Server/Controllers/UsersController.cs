@@ -95,11 +95,19 @@ namespace Server.Controllers
             }
         }
 
-        // Get: Users/Reset
-        [HttpGet]
-        public string Reset(UserJson user)
+        // Post: Users/SendResetEmail
+        [HttpPost]
+        public string SendResetEmail([FromBody] UserJson user)
         {
-            return _email.ResetPasswordEmail(user);
+            return _email.ResetPasswordEmail(user.UserName);
+        }
+
+        // Post: Users/Reset
+        [HttpPost]
+        public void Reset([FromBody] UserJson user)
+        {
+            Password password = new Password();
+            password.StorePassword(user.UserName, user.Password);
         }
 
         // Post: Users/Confirm

@@ -58,8 +58,11 @@ namespace Server.Models
             return url;
         }
 
-        public string ResetPasswordEmail(UserJson recipient)
+        public string ResetPasswordEmail(string recipient)
         {
+            DatabaseConnection dbc = new DatabaseConnection();
+            User user = dbc.GetUser(recipient);
+
             string code = Guid.NewGuid().ToString("n").Substring(0, 8);
 
             MailMessage mail = new MailMessage
@@ -69,7 +72,7 @@ namespace Server.Models
                 Body = string.Format("You have requested to have your password reset. Please enter this code to confirm the request: {0}", code),
                 IsBodyHtml = false
             };
-            mail.To.Add(recipient.CommunicationEmail);
+            mail.To.Add(user.CommunicationEmail);
 
             SmtpClient smtp = new SmtpClient(smtpClient, 587)
             {

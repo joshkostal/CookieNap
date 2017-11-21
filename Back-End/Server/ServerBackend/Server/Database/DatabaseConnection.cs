@@ -134,7 +134,7 @@ namespace Server.Models
                     return null;
                 }
                 String firstName = (string)dr[0];
-                user = new User(username, (string)dr[0], (string)dr[1], (string)dr[2], (string)dr[3], (int)dr[4]);
+                user = new User(username, (string)dr[0], (string)dr[1], (string)dr[3], (string)dr[2], (int)dr[4]);
 
                 dr.Close();
                 this.CloseConnection();

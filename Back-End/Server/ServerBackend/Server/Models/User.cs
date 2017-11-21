@@ -65,6 +65,9 @@ namespace Server.Models
             {
                 HashedPassword = hashedPassword;
             }
+
+            public Password(){}
+
             [Key]
             public string HashedPassword { get; set; }
 

@@ -24,6 +24,12 @@ export function routerConfig($stateProvider: angular.ui.IStateProvider, $urlRout
       templateUrl: 'app/confirmEmail/confirmEmail.html',
       controller: 'ConfirmEmailController',
       controllerAs: 'confirmEmail'
+      })
+     .state('resetPassword', {
+      url: '/resetPassword',
+      templateUrl: 'app/resetPassword/resetPassword.html',
+      controller: 'ResetPasswordController',
+      controllerAs: 'resetPassword'
     })
     .state('individualListingPage', {
       url: '/individualListingPage',
