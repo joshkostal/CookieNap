@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Server.Models;
+using Server.Helpers;
 using Server.Controllers.HttpJson;
 using static Server.Models.User;
 
@@ -78,16 +79,18 @@ namespace Server.Controllers
         [HttpPost]
         public string Login([FromBody] UserSignInJson info)
         {
+            JWTAuthentication auth = new JWTAuthentication();
+            JWTAuthentication.CreateSecretKey();
             Password password = new Password(info.Password);
             var result = password.VerifyPassword(info.UserName, info.Password);
             
             if(result == Password.Verification.PasswordFail)
             {
-                return "PasswordFail";
+                return "Login Failed";
             }
             else if(result == Password.Verification.UsernameFail)
             {
-                return "UsernameFail";
+                return "Login Failed";
             }
             else
             {
