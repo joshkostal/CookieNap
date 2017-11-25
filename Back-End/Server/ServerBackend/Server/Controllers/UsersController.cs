@@ -4,6 +4,7 @@ using Server.Models;
 using Server.Helpers;
 using Server.Controllers.HttpJson;
 using static Server.Models.User;
+using System.Text.RegularExpressions;
 
 namespace Server.Controllers
 {
@@ -25,10 +26,10 @@ namespace Server.Controllers
         {
             if (ModelState.IsValid)
             {
-                Password pwdInstance = new Password(user.Password);
-                User userInstance = new User(user.UserName, user.FirstName, user.LastName, user.HuskerEmail, user.CommunicationEmail, pwdInstance);
-                userInstance.UserID = _dbc.InsertUser(userInstance);
-                return "Success";
+                    Password pwdInstance = new Password(user.Password);
+                    User userInstance = new User(user.UserName, user.FirstName, user.LastName, user.HuskerEmail, user.CommunicationEmail, pwdInstance);
+                    userInstance.UserID = _dbc.InsertUser(userInstance);
+                    return JWTAuthentication.GenerateToken(user.UserName);
             }
             return "GeneralFail";
         }
@@ -79,8 +80,6 @@ namespace Server.Controllers
         [HttpPost]
         public string Login([FromBody] UserSignInJson info)
         {
-            JWTAuthentication auth = new JWTAuthentication();
-            JWTAuthentication.CreateSecretKey();
             Password password = new Password(info.Password);
             var result = password.VerifyPassword(info.UserName, info.Password);
             
@@ -94,7 +93,7 @@ namespace Server.Controllers
             }
             else
             {
-                return info.UserName;
+                return JWTAuthentication.GenerateToken(info.UserName);
             }
         }
 

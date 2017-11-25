@@ -15,13 +15,15 @@ export class ListingHttpService {
         this.$location = $location;
     }
     createListing(price: number, isbn:string, condition: string, userName: string) {
+      var self = this;
       this.$http.post(this.url + '/Listings/Create',
         {
             "Price": price,
             "Condition": condition,
             "ISBN": isbn,
             "ListingType": 'Selling',
-            "ListingCreatorUserName": userName
+            "ListingCreatorUserName": userName,
+            "JWT": self.mainAppService.currentJwtToken
         })
         .then((response: any): any => {
             this.$log.log(response);
@@ -41,14 +43,19 @@ export class ListingHttpService {
         return error;
       });
     }
-    getListingById(id: number){
-      // return this.$http.get(this.url +'/Listings/Details/' + id)
-      // .then((response: any): any => {
-      //   return response.data;
-      // });
-    }
     deleteListing(id: number){
-        this.$http.get('http://localhost:5001/Listings/Delete/' + id);
-        this.$location.path('/');
+      var self = this;
+      this.$http.post(this.url + '/Listings/Delete',
+        {
+            "ListingId": id,
+            "JWT": self.mainAppService.currentJwtToken
+        })
+        .then((response: any): any => {
+            this.$log.log(response);
+            this.$location.path('/');
+          })
+          .catch((error: any): any => {
+            this.$log.error('XHR Failed for getContributors.\n', error.data);
+          });
     }
   }

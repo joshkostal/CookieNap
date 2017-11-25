@@ -27,21 +27,25 @@ export class UserHttpService {
       this.$location = $location;
       this.$window = $window;
     }
+    
     signIn(userName:string, password:string){
       var self = this;      
       this.$http.post(this.url + '/Users/Login',{ "UserName": userName, "Password": password })
       .then(function successCallback(response) {
-        if(response.data == userName){
-          self.signInUser(userName);
+        if(response.data == 'Login Failed'){
+            self.$window.alert('Incorrect username or password');
         }
         else {
-            self.$window.alert('Incorrect username or password');
+            self.mainAppService.currentUserName = userName;
+            self.mainAppService.currentJwtToken = response.data;
+            self.$location.path('/');
         }
       }, function errorCallback(response) {
         self.$log.log("Fail")
     });    
       return this.responseVal;
     }
+
     validateUser(unlEmail:string, password:string, otherEmail:string, userName:string, firstName:string, lastName:string){
       var self = this;
       self.password = password;
@@ -68,10 +72,7 @@ export class UserHttpService {
         return this.responseVal;
     });
     }
-    signInUser(userName:string){
-      this.mainAppService.currentUserName = userName;
-      this.$location.path('/');
-    }
+
     confirmationPage(userName: string, unlEmail: string, personalEmail: string) {
         var self = this;
 

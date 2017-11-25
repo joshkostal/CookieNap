@@ -6,12 +6,15 @@ export class MainAppService {
     public selectedListingCondition: string = '';
     public selectedListingURL: string = '';
     public selectedListingOwnersEmail: string = '';
+    public selectedListingId: number = null;
+
+    public currentPage: string = 'home';
+    
     public currentUserName: string = '';
     public currentUnlEmail: string = '';
-    public currentPersonalEmail: string = '';
-    public selectedListingId: number = null;
-    public currentPage: string = 'home';
-  
+    public currentPersonalEmail: string = ''; 
+    public currentJwtToken: string = ''; 
+    
     /** @ngInject */
     constructor(private $log: angular.ILogService, private $http: angular.IHttpService) {
 
