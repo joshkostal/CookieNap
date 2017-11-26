@@ -36,6 +36,8 @@ export class UserHttpService {
             self.$window.alert('Incorrect username or password');
         }
         else {
+            self.$window.localStorage.setItem('UserJWT',response.data);
+            self.$window.localStorage.setItem('UserName',userName);
             self.mainAppService.currentUserName = userName;
             self.mainAppService.currentJwtToken = response.data;
             self.$location.path('/');
@@ -43,7 +45,6 @@ export class UserHttpService {
       }, function errorCallback(response) {
         self.$log.log("Fail")
     });    
-      return this.responseVal;
     }
 
     validateUser(unlEmail:string, password:string, otherEmail:string, userName:string, firstName:string, lastName:string){

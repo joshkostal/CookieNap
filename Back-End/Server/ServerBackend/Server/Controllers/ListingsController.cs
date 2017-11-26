@@ -15,6 +15,7 @@ namespace Server.Controllers
         [HttpGet]
         public List<Listing> Index()
         {
+            List<Listing> listingsWithoutDetails = _dbc.GetAllListings();
             return _dbc.GetAllListings();
         }
 
@@ -38,10 +39,14 @@ namespace Server.Controllers
         {
             if (ModelState.IsValid)
             {
-                User owner = _dbc.GetUser(listing.ListingCreatorUserName);
-                Listing newListing = new Listing(listing.Price,listing.Condition,listing.ISBN,listing.ListingType,owner.UserID);
-                _dbc.InsertListing(newListing);
-                return true;
+                if (JWTAuthentication.ValidateToken(listing.JWT, listing.ListingCreatorUserName)){
+                    User owner = _dbc.GetUser(listing.ListingCreatorUserName);
+                    Listing newListing = new Listing(listing.Price, listing.Condition, listing.ISBN, listing.ListingType, owner.UserID);
+                    _dbc.InsertListing(newListing);
+                    return true;
+                }else{
+                    return false;
+                }
             }
             return false;
         }
@@ -97,14 +102,6 @@ namespace Server.Controllers
             }
         }
 
-
-
-        // GET: Listings/Creator/5
-        [HttpGet]
-        public User Creator(int id)
-        {
-            return _dbc.GetUser(id);
-        }
 
         private bool ListingExists(int id)
         {
