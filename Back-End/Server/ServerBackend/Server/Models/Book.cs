@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
@@ -51,12 +52,37 @@ namespace Server.Models
             {
                 var result = streamReader.ReadToEnd();
                 JObject data = JObject.Parse(result);
-                var authors = data["items"][0]["volumeInfo"]["authors"].ToString();
-                var author = authors.Remove(0, 8);
-                var a = author.Remove(author.Length - 4, 4);
-                var thumbnailURL = data["items"][0]["volumeInfo"]["imageLinks"]["thumbnail"];
-                var title = data["items"][0]["volumeInfo"]["title"].ToString();
-                book = new Book(ISBN, a, title, thumbnailURL==null? "http://res.freestockphotos.biz/pictures/14/14342-illustration-of-a-book-pv.png" : thumbnailURL.ToString()); //replace "" with book not found
+
+                var authors = "";
+                var thumbnailURL = "";
+                var title = "";
+                try
+                {
+                    var a = data["items"][0]["volumeInfo"]["authors"].ToString();
+                    var author = a.Remove(0, 8);
+                    authors = author.Remove(author.Length - 4, 4);
+                }
+                catch(NullReferenceException n)
+                {
+                    authors = "Authors not listed";
+                }
+                try
+                {
+                    thumbnailURL = data["items"][0]["volumeInfo"]["imageLinks"]["thumbnail"].ToString();
+                }
+                catch(NullReferenceException n)
+                {
+                    thumbnailURL = "http://res.freestockphotos.biz/pictures/14/14342-illustration-of-a-book-pv.png";
+                }
+                try
+                {
+                    title = data["items"][0]["volumeInfo"]["title"].ToString();
+                }
+                catch(NullReferenceException n)
+                {
+                    title = "No title listed";
+                }
+                book = new Book(ISBN, authors, title, thumbnailURL);
             }
             return book;
         }

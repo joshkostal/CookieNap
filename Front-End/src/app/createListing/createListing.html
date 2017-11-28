@@ -3,6 +3,8 @@
         <acme-navbar creation-date="main.creationDate"></acme-navbar>
     </div>
     <div class="jumbotron text-center">
+        <h2>Create Listing</h2>
+        <br>
         <div class="form-group">
             <label for="ISBN">ISBN:</label>
             <br>
@@ -24,8 +26,11 @@
             <br>
             <input type="radio" id="condition" ng-model="createListing.condition" value="Usable"> Usable
             <br>
+            <br>
             Please do not post a book that you do not think is usable.
+            <br>
+            <br>
         </div>
-        <button type="post" class="btn btn-default" ng-click="createListing.createListing()">Post</button>
+        <button type="post" class="btn btn-success" ng-click="createListing.createListing()">Post</button>
     </div>
 </div>

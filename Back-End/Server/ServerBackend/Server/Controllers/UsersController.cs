@@ -26,6 +26,7 @@ namespace Server.Controllers
             {
                 Password pwdInstance = new Password(user.Password);
                 User userInstance = new User(user.UserName, user.FirstName, user.LastName, user.HuskerEmail, user.CommunicationEmail, pwdInstance);
+                userInstance.CommunicationEmail = user.CommunicationEmail ?? user.HuskerEmail;      //If comm email is null, use husker email
                 userInstance.UserID = _dbc.InsertUser(userInstance);
                 return "Success";
             }

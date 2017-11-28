@@ -471,7 +471,7 @@ namespace Server.Models
                     dr.Close();
                     book = book.QueryISBN();
 
-                    query = string.Format("INSERT INTO Book (Title, Author, ISBN, ThumbnailUrl) VALUES ('{0}', '{1}', '{2}', '{3}')", book.Title, book.Authors, book.ISBN, book.ThumbnailURL);
+                    query = string.Format("INSERT INTO Book (Title, Author, ISBN, ThumbnailUrl) VALUES (\"{0}\", \"{1}\", '{2}', '{3}')", book.Title, book.Authors, book.ISBN, book.ThumbnailURL);
 
                     cmd.CommandText = query;
                     cmd.Prepare();
@@ -481,6 +481,36 @@ namespace Server.Models
                 this.CloseConnection();
             }
             return book.BookId;
+        }
+
+        public Book GetBook(string isbn)
+        {
+            string query = string.Format("SELECT BookId, Title, Author, ThumbnailUrl FROM Book WHERE ISBN='{0}'", isbn);
+            Book book = new Book(isbn);
+
+            if (this.OpenConnection())
+            {
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+                cmd.Prepare();
+
+                MySqlDataReader dr = cmd.ExecuteReader();
+                dr.Read();
+
+                if (!dr.HasRows)
+                {
+                    this.CloseConnection();
+                    dr.Close();
+                    return null;
+                }
+                book.BookId = dr.GetInt32(0);
+                book.Title = (string)dr[1];
+                book.Authors = (string)dr[2];
+                book.ThumbnailURL = (string)dr[3];
+
+                dr.Close();
+                this.CloseConnection();
+            }
+            return book;
         }
 
         public List<Book> FindBooksListed()
