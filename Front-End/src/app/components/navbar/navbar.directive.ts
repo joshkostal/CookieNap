@@ -40,7 +40,6 @@ export class NavbarController {
     this.mainAppService.currentUserName = $window.localStorage.getItem('UserName');
     this.mainAppService.currentJwtToken = $window.localStorage.getItem('UserJWT');
     if(this.mainAppService.currentUserName){
-        this.val = 'Welcome ' + this.mainAppService.currentUserName;
         this.loggedIn = true;
     }
     else {
