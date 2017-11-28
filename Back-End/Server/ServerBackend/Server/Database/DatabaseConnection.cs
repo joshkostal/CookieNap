@@ -198,8 +198,7 @@ namespace Server.Models
 
                 while (rdr.Read())
                 {
-                    Book book = new Book((string)rdr[1]);
-                    book = book.QueryISBN();
+                    Book book = GetBook((string)rdr[1]);
 
                     Listing listing = new Listing();
                     listing = new Listing(rdr.GetInt32(0), listing.ConvertStringToConditionType((string)rdr[2]), book, rdr.GetInt32(3) == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, user);
@@ -322,8 +321,7 @@ namespace Server.Models
 
                 User user = new User((string)rdr[2], (string)rdr[0], (string)rdr[1], (string)rdr[3], (string)rdr[4]);
 
-                Book book = new Book(data4);
-                book.QueryISBN();
+                Book book = GetBook(data4);
 
                 listing = new Listing(data1, listing.ConvertStringToConditionType(data2), book, data3 == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, user);
                 listing.ListingID = data5;
@@ -352,8 +350,7 @@ namespace Server.Models
                 {
                     tempUser = new User();
                     tempUser.UserID = dr.GetInt32(5);
-                    Book book = new Book((string)dr[3]);
-                    book = book.QueryISBN();
+                    Book book = GetBook((string)dr[3]);
                     Listing listing = new Listing();
                     listing = new Listing(dr.GetInt32(0), listing.ConvertStringToConditionType((string)dr[1]), book, dr.GetInt32(2) == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, tempUser);
                     listing.ListingID = dr.GetInt32(4);
@@ -527,8 +524,7 @@ namespace Server.Models
 
                 while (dr.Read())
                 {
-                    Book book = new Book((string)dr[0]);
-                    book = book.QueryISBN();
+                    Book book = GetBook((string)dr[0]);
                     booksListed.Add(book);
                 }
                 dr.Close();
@@ -570,7 +566,7 @@ namespace Server.Models
                     User user = new User((string)rdr[2], (string)rdr[0], (string)rdr[1], (string)rdr[3], (string)rdr[4]);
 
                     Book book = new Book(isbn);
-                    book = book.QueryISBN();
+                    book = GetBook(isbn);
 
                     Listing listing = new Listing();
                     listing = new Listing(data0[i], listing.ConvertStringToConditionType(data1[i]), book, data2[2] == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, user);
