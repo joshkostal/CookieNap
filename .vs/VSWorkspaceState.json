@@ -1,22 +1,16 @@
 {
   "ExpandedNodes": [
     "",
+    "\\.tmp\\serve",
+    "\\.tmp\\serve\\app",
     "\\Back-End",
+    "\\Back-End\\Server",
+    "\\Back-End\\Server\\ServerBackend",
     "\\Front-End",
-    "\\Front-End\\bower_components\\bootstrap-sass",
-    "\\Front-End\\bower_components\\bootstrap-sass\\assets",
-    "\\Front-End\\bower_components\\bootstrap-sass\\assets\\javascripts",
-    "\\Front-End\\bower_components\\bootstrap-sass\\assets\\javascripts\\bootstrap",
-    "\\Front-End\\bower_components\\jquery",
-    "\\Front-End\\bower_components\\jquery\\dist",
-    "\\Front-End\\bower_components\\jquery\\src",
-    "\\Front-End\\bower_components\\jquery\\src\\var",
-    "\\Front-End\\bower_components\\malarkey",
-    "\\Front-End\\bower_components\\malarkey\\test",
+    "\\Front-End\\.tmp",
     "\\Front-End\\src",
-    "\\Front-End\\src\\app",
-    "\\Front-End\\src\\app\\signin"
+    "\\Front-End\\src\\app"
   ],
-  "SelectedNode": "\\Back-End\\Server\\ServerBackend\\Server\\Controllers\\UsersController.cs",
+  "SelectedNode": "\\Back-End\\Server\\ServerBackend\\ServerBackend.sln",
   "PreviewInSolutionExplorer": false
 }

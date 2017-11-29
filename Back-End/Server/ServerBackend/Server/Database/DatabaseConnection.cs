@@ -104,6 +104,7 @@ namespace Server.Models
                 dr.Read();
                 if (!dr.HasRows)
                 {
+                    dr.Close();
                     return null;
                 }
 
@@ -131,6 +132,7 @@ namespace Server.Models
                 dr.Read();
                 if (!dr.HasRows)
                 {
+                    dr.Close();
                     return null;
                 }
                 String firstName = (string)dr[0];
@@ -301,6 +303,7 @@ namespace Server.Models
                 dr.Read();
                 if (!dr.HasRows)
                 {
+                    dr.Close();
                     return null;
                 }
                 double data1 = (double)dr[0];
@@ -326,6 +329,7 @@ namespace Server.Models
                 listing = new Listing(data1, listing.ConvertStringToConditionType(data2), book, data3 == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, user);
                 listing.ListingID = data5;
 
+                rdr.Close();
                 this.CloseConnection();
             }
 
@@ -345,14 +349,10 @@ namespace Server.Models
                 cmd.Prepare();
                 MySqlDataReader dr = cmd.ExecuteReader();
 
-                User tempUser;
                 while (dr.Read())
                 {
-                    tempUser = new User();
-                    tempUser.UserID = dr.GetInt32(5);
-                    Book book = GetBook((string)dr[3]);
                     Listing listing = new Listing();
-                    listing = new Listing(dr.GetInt32(0), listing.ConvertStringToConditionType((string)dr[1]), book, dr.GetInt32(2) == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, tempUser);
+                    listing = new Listing(dr.GetInt32(0), (string)dr[1], (string)dr[3], dr.GetInt32(2) == 1 ? "Sell" : "Buy", dr.GetInt32(5));
                     listing.ListingID = dr.GetInt32(4);
                     listings.Add(listing);
                 }
@@ -365,13 +365,15 @@ namespace Server.Models
                     cmd.Prepare();
                     MySqlDataReader rdr = cmd.ExecuteReader();
                     rdr.Read();
-                    User user = new User((string)rdr[2], (string)rdr[0], (string)rdr[1], (string)rdr[3], (string)rdr[4]);
-                    listing.ListingCreator = user;
+                    if (rdr.HasRows)
+                    {
+                        User user = new User((string)rdr[2], (string)rdr[0], (string)rdr[1], (string)rdr[3], (string)rdr[4]);
+                        listing.ListingCreator = user;
+                    }
                     rdr.Close();
                 }
                 this.CloseConnection();
             }
-
             return listings;
         }
 
@@ -593,6 +595,7 @@ namespace Server.Models
                 dr.Read();
                 if (!dr.HasRows)
                 {
+                    dr.Close();
                     return null;
                 }
                 passwordInstance = (string)dr[0];

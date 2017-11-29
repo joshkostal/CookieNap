@@ -12,7 +12,7 @@ namespace Server.Models
 
             Price = price;
             Condition = ConvertStringToConditionType(condition);
-            BookListed = new Book(isbn);
+            BookListed = dbc.GetBook(isbn);
             ListingType = ConvertStringToListingType(listingType);
             ListingCreator = dbc.GetUser(id);
         }

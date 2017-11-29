@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Net;
+using System.Text.RegularExpressions;
 
 namespace Server.Models
 {
@@ -59,7 +60,8 @@ namespace Server.Models
                 try
                 {
                     var a = data["items"][0]["volumeInfo"]["authors"].ToString();
-                    var author = a.Remove(0, 8);
+                    var b = Regex.Unescape(a);
+                    var author = @a.Replace("[", "").Replace("\\n", "").Replace("\\r", "").Replace(" ", "").Replace("]", "").Replace("\"", "");
                     authors = author.Remove(author.Length - 4, 4);
                 }
                 catch(NullReferenceException n)
