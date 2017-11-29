@@ -200,7 +200,8 @@ namespace Server.Models
 
                 while (rdr.Read())
                 {
-                    Book book = GetBook((string)rdr[1]);
+                    Book book = new Book((string)rdr[1]);
+                    book = book.QueryISBN();
 
                     Listing listing = new Listing();
                     listing = new Listing(rdr.GetInt32(0), listing.ConvertStringToConditionType((string)rdr[2]), book, rdr.GetInt32(3) == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, user);
@@ -324,7 +325,8 @@ namespace Server.Models
 
                 User user = new User((string)rdr[2], (string)rdr[0], (string)rdr[1], (string)rdr[3], (string)rdr[4]);
 
-                Book book = GetBook(data4);
+                Book book = new Book(data4);
+                book.QueryISBN();
 
                 listing = new Listing(data1, listing.ConvertStringToConditionType(data2), book, data3 == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, user);
                 listing.ListingID = data5;
@@ -470,7 +472,7 @@ namespace Server.Models
                     dr.Close();
                     book = book.QueryISBN();
 
-                    query = string.Format("INSERT INTO Book (Title, Author, ISBN, ThumbnailUrl) VALUES (\"{0}\", \"{1}\", '{2}', '{3}')", book.Title, book.Authors, book.ISBN, book.ThumbnailURL);
+                    query = string.Format("INSERT INTO Book (Title, Author, ISBN, ThumbnailUrl) VALUES ('{0}', '{1}', '{2}', '{3}')", book.Title, book.Authors, book.ISBN, book.ThumbnailURL);
 
                     cmd.CommandText = query;
                     cmd.Prepare();
@@ -480,36 +482,6 @@ namespace Server.Models
                 this.CloseConnection();
             }
             return book.BookId;
-        }
-
-        public Book GetBook(string isbn)
-        {
-            string query = string.Format("SELECT BookId, Title, Author, ThumbnailUrl FROM Book WHERE ISBN='{0}'", isbn);
-            Book book = new Book(isbn);
-
-            if (this.OpenConnection())
-            {
-                MySqlCommand cmd = new MySqlCommand(query, connection);
-                cmd.Prepare();
-
-                MySqlDataReader dr = cmd.ExecuteReader();
-                dr.Read();
-
-                if (!dr.HasRows)
-                {
-                    this.CloseConnection();
-                    dr.Close();
-                    return null;
-                }
-                book.BookId = dr.GetInt32(0);
-                book.Title = (string)dr[1];
-                book.Authors = (string)dr[2];
-                book.ThumbnailURL = (string)dr[3];
-
-                dr.Close();
-                this.CloseConnection();
-            }
-            return book;
         }
 
         public List<Book> FindBooksListed()
@@ -526,7 +498,8 @@ namespace Server.Models
 
                 while (dr.Read())
                 {
-                    Book book = GetBook((string)dr[0]);
+                    Book book = new Book((string)dr[0]);
+                    book = book.QueryISBN();
                     booksListed.Add(book);
                 }
                 dr.Close();
@@ -568,7 +541,7 @@ namespace Server.Models
                     User user = new User((string)rdr[2], (string)rdr[0], (string)rdr[1], (string)rdr[3], (string)rdr[4]);
 
                     Book book = new Book(isbn);
-                    book = GetBook(isbn);
+                    book = book.QueryISBN();
 
                     Listing listing = new Listing();
                     listing = new Listing(data0[i], listing.ConvertStringToConditionType(data1[i]), book, data2[2] == 1 ? Listing.ListingTypes.Sell : Listing.ListingTypes.Buy, user);

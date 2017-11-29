@@ -14,28 +14,28 @@
                 <br>
             </div>
             <div class="form-group" ng-show="signIn.newUserSignUpBoolean">
-                <label for="email">UNL Email address:*</label>
+                <label for="email">UNL Email address:</label>
                 <br>
                 <div class="col-sm-4"></div>
                 <input type="email" class="col-sm-4" id="email" ng-model="signIn.unlEmail">
                 <br>
             </div>
             <div class="form-group">
-                <label for="pwd">User Name:*</label>
+                <label for="pwd">User Name:</label>
                 <br>
                 <div class="col-sm-4"></div>
                 <input type="string" class="col-sm-4" id="userName" ng-model="signIn.userName">
                 <br>
             </div>
             <div class="form-group">
-                <label for="pwd">Password:*</label>
+                <label for="pwd">Password:</label>
                 <br>
                 <div class="col-sm-4"></div>
                 <input type="password" class="col-sm-4" id="pwd" ng-model="signIn.password">
                 <br>
             </div>
             <div class="form-group" ng-show="signIn.newUserSignUpBoolean">
-                <label for="pwd">Personal Email:</label>
+                <label for="pwd">Optional Other Email:</label>
                 <br>
                 <div class="col-sm-4"></div>
                 <input type="email" class="col-sm-4" id="otherEmail" ng-model="signIn.otherEmail">
@@ -55,7 +55,7 @@
                 <input type="string" class="col-sm-4" id="lastName" ng-model="signIn.lastName">
                 <br>
             </div>
-            <button type="submit" class="btn btn-success" ng-click="signIn.createOrSignInUser()">Submit</button>
+            <button type="submit" class="btn btn-default" ng-click="signIn.createOrSignInUser()">Submit</button>
             <div class="form-group" ng-hide="signIn.newUserSignUpBoolean">
                 <br>
                 <button type="button" class="btn btn-link" ng-click="signIn.resetPassword()">Forget your password? Enter your username above and click here to reset it here!</button>
