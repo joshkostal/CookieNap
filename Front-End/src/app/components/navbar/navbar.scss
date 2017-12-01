@@ -18,13 +18,16 @@ a:hover, a:focus {
 }
 
 .dropbtn {
-  
-  background-color: rgba(114, 11, 11, 0);
-  color: white;
-  padding: 16px;
-  font-size: 16px;
-  border: none;
-  cursor: pointer;
+    background-color: rgba(114, 11, 11, 0);
+    color: #5AADBB;
+    padding: 16px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropbtn:hover {
+    color: white;
 }
 
 .dropdown {

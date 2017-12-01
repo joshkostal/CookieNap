@@ -16,6 +16,14 @@ namespace Server.Models
             ListingType = ConvertStringToListingType(listingType);
             ListingCreator = dbc.GetUser(id);
         }
+        public Listing(double price, string condition, Book book, string listingType, User owner)
+        {
+            Price = price;
+            Condition = ConvertStringToConditionType(condition);
+            BookListed = book;
+            ListingType = ConvertStringToListingType(listingType);
+            ListingCreator = owner;
+        }
         public Listing(double price, ConditionTypes condition, Book bookListed, ListingTypes listingType, User listingCreator)
         {
             Price = price;

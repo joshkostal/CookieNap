@@ -15,11 +15,10 @@
                     <a ng-href="#/signIn">Sign In</a>
                 </li>
                 <div class="dropdown">
-                    <button ng-show="vm.loggedIn" class="dropbtn">Logged In
-                    </button>
+                    <button ng-show="vm.loggedIn" class="dropbtn">Manage Account</button>
                     <div class="dropdown-content">
-                        <a ng-click="vm.logOut()" ng-href="#/logOut">Log Out</a>
                         <a ng-click="vm.resetPassword()" ng-href="#/resetPassword">Reset Password</a>
+                        <a ng-click="vm.logOut()" ng-href="#/logOut">Log Out</a>
                     </div>
                 </div>
             </ul>

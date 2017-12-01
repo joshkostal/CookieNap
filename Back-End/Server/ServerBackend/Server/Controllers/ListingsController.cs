@@ -38,7 +38,8 @@ namespace Server.Controllers
             if (ModelState.IsValid)
             {
                 User owner = _dbc.GetUser(listing.ListingCreatorUserName);
-                Listing newListing = new Listing(listing.Price,listing.Condition,listing.ISBN,listing.ListingType,owner.UserID);
+                Book book = new Book(listing.ISBN);
+                Listing newListing = new Listing(listing.Price, listing.Condition, book, listing.ListingType, owner);
                 _dbc.InsertListing(newListing);
                 return true;
             }
