@@ -112,17 +112,31 @@ namespace Server.Controllers
             password.StorePassword(user.UserName, user.Password);
         }
 
-        // Post: Users/Confirm
-        [HttpPost]
-        public string Confirm([FromBody] UserJson user)
-        {
-            return _email.SendRegistrationEmail(user);
-        }
-
         // Post: Users/Validate
         [HttpPost]
         public string Validate([FromBody] UserJson user)
         {
+            Regex huskerEmailCheck = new Regex(@".@huskers\.unl\.edu$");
+            if (user.Password.Length < 7)
+            {
+                return "PasswordFail";
+            }
+            else if (user.LastName.Length == 0)
+            {
+                return "LastNameFail";
+            }
+            else if (user.FirstName.Length == 0)
+            {
+                return "FirstNameFail";
+            }
+            else if (!huskerEmailCheck.IsMatch(user.HuskerEmail))
+            {
+                return "EmailFail";
+            }
+            else if (user.UserName.Length == 0)
+            {
+                return "UsernameFail";
+            }
             bool uniqueUsername = _dbc.CheckUniqueUsername(user.UserName);
             bool uniqueHuskerEmail = _dbc.CheckUniqueHuskerEmail(user.HuskerEmail);
 
@@ -130,7 +144,7 @@ namespace Server.Controllers
             {
                 return !uniqueUsername ? "UsernameFail" : "EmailFail";
             }
-            return "Success";
+            return _email.SendRegistrationEmail(user);
         }
 
         private bool UserExists(int id)

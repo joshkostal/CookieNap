@@ -11,11 +11,11 @@
       Welcome to CookieNap!
     </p>
     <p class="animated infinite" ng-class="main.classAnimation">
-      <button ng-show="mainAppService.currentUserName" type="button" class="btn btn-lg btn-success" ng-click="main.signIn()">Get Started</button>
-      <input ng-hide="mainAppService.currentUserName" type="search" ng-model="main.searchVal">
+      <button ng-hide="main.mainAppService.currentUserName" type="button" class="btn btn-lg btn-success" ng-click="main.signIn()">Get Started</button>
+      <input ng-show="main.mainAppService.currentUserName" type="search" ng-model="main.searchVal">
     </p>
     <p>
-      Produced by <acme-malarkey extra-values="['Bethany', 'Josh', 'Kevin','Michael']"></acme-malarkey>
+      Produced by<acme-malarkey extra-values="['Bethany', 'Josh', 'Kevin','Michael']"></acme-malarkey>
     </p>
   </div>
 

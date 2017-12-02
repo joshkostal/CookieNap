@@ -16,33 +16,34 @@ export class SignInController {
     public lastName: string;
     public warning: boolean;
     public $q: any;
-  
+
     /* @ngInject */
-    constructor ($q, $log, $location, userHttpService: UserHttpService, mainAppService: MainAppService) {
-      this.$location = $location;
-      this.userHttpService = userHttpService;
-      this.mainAppService = mainAppService;
-      this.$log = $log;
-      this.unlEmail = '';
-      this.password = '';
-      this.otherEmail = '';
-      this.userName = '';
-      this.firstName = '';
-      this.lastName = '';
-      this.warning = false;
-      this.newUserSignUpBoolean = false;
-      this.$q = $q;
+    constructor($q, $log, $location, userHttpService: UserHttpService, mainAppService: MainAppService) {
+        this.$location = $location;
+        this.userHttpService = userHttpService;
+        this.mainAppService = mainAppService;
+        this.$log = $log;
+        this.unlEmail = '';
+        this.password = '';
+        this.otherEmail = '';
+        this.userName = '';
+        this.firstName = '';
+        this.lastName = '';
+        this.warning = false;
+        this.newUserSignUpBoolean = false;
+        this.$q = $q;
     }
-  
+
     /** @ngInject */
-  
+
     createOrSignInUser() {
-        if(this.newUserSignUpBoolean){
-          this.userHttpService.validateUser(this.unlEmail, this.password, this.otherEmail, this.userName, this.firstName, this.lastName);
-        }else{
-          this.userHttpService.signIn(this.userName, this.password);  
-        }        
+        if (this.newUserSignUpBoolean) {
+            this.userHttpService.validateUser(this.unlEmail, this.password, this.otherEmail, this.userName, this.firstName, this.lastName);
+        } else {
+            this.userHttpService.signIn(this.userName, this.password);
+        }
     }
+
     resetPassword() {
         if (this.userName == '') {
             this.warning = true;
@@ -51,6 +52,5 @@ export class SignInController {
             this.userHttpService.sendResetEmail(this.userName);
             this.$location.path('/resetPassword');
         }
-    }  
-  }
-  
+    }
+}
