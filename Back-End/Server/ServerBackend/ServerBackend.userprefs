@@ -1,14 +1,11 @@
 ﻿<Properties StartupConfiguration="{5B0C48A8-2438-4542-8F4C-1BA5C1528D3D}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Server/Controllers/UsersController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Server/Controllers/ListingsController.cs">
     <Files>
       <File FileName="Server/Database/DatabaseConnection.cs" Line="49" Column="14" />
-      <File FileName="Server/Controllers/HttpJson/ListingJson.cs" Line="21" Column="1" />
       <File FileName="Server/Controllers/ListingsController.cs" Line="42" Column="1" />
-      <File FileName="Server/Models/Listing.cs" Line="15" Column="1" />
       <File FileName="Server/Helpers/JWTAuthentication.cs" Line="43" Column="1" />
       <File FileName="Server/Models/Book.cs" Line="68" Column="28" />
       <File FileName="Server/Models/User.cs" Line="77" Column="1" />
-      <File FileName="Server/Controllers/UsersController.cs" Line="98" Column="9" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

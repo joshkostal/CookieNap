@@ -77,7 +77,7 @@ export class UserHttpService {
                 self.$window.alert('This Password is not valid');                                                
             }else{
                 self.correctCode = response.data;
-                this.$location.path('/confirmEmail');                
+                self.$location.path('/confirmEmail');                
             } 
         }, function errorCallback(response) {
             return this.responseVal;
@@ -109,9 +109,9 @@ export class UserHttpService {
             self.$window.localStorage.setItem('UserName', self.userName);
             self.mainAppService.currentUserName = self.userName;
             self.mainAppService.currentJwtToken = response.data;
-            this.$location.path('/');
+            self.$location.path('/');
         }, function errorCallback(response) {
-            return this.responseVal;
+            return response;
         });
     }
     resetPassword(code: string, password: string) {
@@ -138,7 +138,7 @@ export class UserHttpService {
             self.correctCode = response.data;
             self.userReset = user;
         }, function errorCallback(response) {
-            return this.responseVal;
+            return response;
         });
     }
 }
