@@ -18,12 +18,14 @@ export class MainController {
   public $q: any;
   public promises: object[];
   
+
   /* @ngInject */
   constructor ($q, $http, $log, $location ,$timeout: angular.ITimeoutService, webDevTec: WebDevTecService, toastr: any, mainAppService: MainAppService, listingHttpService: ListingHttpService) {
     this.listingHttpService = listingHttpService;
     this.$location = $location;
     this.$http = $http;
     this.$log = $log;
+    this.$log.log('1');    
     this.awesomeThings = new Array();
     this.webDevTec = webDevTec;
     this.mainAppService = mainAppService;    
@@ -63,6 +65,7 @@ export class MainController {
     this.$http.get('http://localhost:5001/Listings')
     .then((response: any): any => {
       self.allBooks = response.data;
+      self.$log.log(self.allBooks);
       for(let i = 0;i<self.allBooks.length;i++){
         if(self.allBooks[i].condition == 0){
           self.allBooks[i].condition = 'Like-new';

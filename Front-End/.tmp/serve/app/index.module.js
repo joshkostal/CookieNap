@@ -159,8 +159,8 @@
 /***/ (function(module, exports) {
 
 	/** @ngInject */
-	runBlock.$inject = ["$log"];
-	function runBlock($log) {
+	runBlock.$inject = ["$log", "$window"];
+	function runBlock($log, $window) {
 	    $log.debug('runBlock end');
 	}
 	exports.runBlock = runBlock;
@@ -178,6 +178,7 @@
 	        this.$location = $location;
 	        this.$http = $http;
 	        this.$log = $log;
+	        this.$log.log('1');
 	        this.awesomeThings = new Array();
 	        this.webDevTec = webDevTec;
 	        this.mainAppService = mainAppService;
@@ -213,6 +214,7 @@
 	        this.$http.get('http://localhost:5001/Listings')
 	            .then(function (response) {
 	            self.allBooks = response.data;
+	            self.$log.log(self.allBooks);
 	            for (var i = 0; i < self.allBooks.length; i++) {
 	                if (self.allBooks[i].condition == 0) {
 	                    self.allBooks[i].condition = 'Like-new';
@@ -322,13 +324,8 @@
 	            this.userHttpService.validateUser(this.unlEmail, this.password, this.otherEmail, this.userName, this.firstName, this.lastName);
 	        }
 	        else {
-	            var val = this.userHttpService.signIn(this.userName, this.password);
-	            if (val == 'Success') {
-	                this.mainAppService.currentUserName = this.userName;
-	                this.$location.path('/');
-	            }
+	            this.userHttpService.signIn(this.userName, this.password);
 	        }
-	        //this.listingHttp.getListings();
 	    };
 	    SignInController.prototype.resetPassword = function () {
 	        if (this.userName == '') {
@@ -547,15 +544,16 @@
 	exports.acmeNavbar = acmeNavbar;
 	/** @ngInject */
 	var NavbarController = (function () {
-	    NavbarController.$inject = ["$log", "moment", "mainAppService", "$location", "userHttpService"];
-	    function NavbarController($log, moment, mainAppService, $location, userHttpService) {
+	    NavbarController.$inject = ["$log", "$window", "moment", "mainAppService", "$location", "userHttpService"];
+	    function NavbarController($log, $window, moment, mainAppService, $location, userHttpService) {
 	        this.$log = $log;
 	        this.$location = $location;
 	        this.mainAppService = mainAppService;
 	        this.currentPage = mainAppService.currentPage;
 	        this.userHttpService = userHttpService;
-	        if (this.mainAppService.currentUserName != '') {
-	            this.val = 'Welcome ' + this.mainAppService.currentUserName;
+	        this.mainAppService.currentUserName = $window.localStorage.getItem('UserName');
+	        this.mainAppService.currentJwtToken = $window.localStorage.getItem('UserJWT');
+	        if (this.mainAppService.currentUserName) {
 	            this.loggedIn = true;
 	        }
 	        else {
@@ -672,12 +670,14 @@
 	    }
 	    ListingHttpService.prototype.createListing = function (price, isbn, condition, userName) {
 	        var _this = this;
+	        var self = this;
 	        this.$http.post(this.url + '/Listings/Create', {
 	            "Price": price,
 	            "Condition": condition,
 	            "ISBN": isbn,
 	            "ListingType": 'Selling',
-	            "ListingCreatorUserName": userName
+	            "ListingCreatorUserName": userName,
+	            "JWT": self.mainAppService.currentJwtToken
 	        })
 	            .then(function (response) {
 	            _this.$log.log(response);
@@ -698,15 +698,20 @@
 	            return error;
 	        });
 	    };
-	    ListingHttpService.prototype.getListingById = function (id) {
-	        // return this.$http.get(this.url +'/Listings/Details/' + id)
-	        // .then((response: any): any => {
-	        //   return response.data;
-	        // });
-	    };
 	    ListingHttpService.prototype.deleteListing = function (id) {
-	        this.$http.get('http://localhost:5001/Listings/Delete/' + id);
-	        this.$location.path('/');
+	        var _this = this;
+	        var self = this;
+	        this.$http.post(this.url + '/Listings/Delete', {
+	            "ListingId": id,
+	            "JWT": self.mainAppService.currentJwtToken
+	        })
+	            .then(function (response) {
+	            _this.$log.log(response);
+	            _this.$location.path('/');
+	        })
+	            .catch(function (error) {
+	            _this.$log.error('XHR Failed for getContributors.\n', error.data);
+	        });
 	    };
 	    return ListingHttpService;
 	})();
@@ -734,16 +739,19 @@
 	        var self = this;
 	        this.$http.post(this.url + '/Users/Login', { "UserName": userName, "Password": password })
 	            .then(function successCallback(response) {
-	            if (response.data == userName) {
-	                self.signInUser(userName);
+	            if (response.data == 'Login Failed') {
+	                self.$window.alert('Incorrect username or password');
 	            }
 	            else {
-	                self.$window.alert('Incorrect username or password');
+	                self.$window.localStorage.setItem('UserJWT', response.data);
+	                self.$window.localStorage.setItem('UserName', userName);
+	                self.mainAppService.currentUserName = userName;
+	                self.mainAppService.currentJwtToken = response.data;
+	                self.$location.path('/');
 	            }
 	        }, function errorCallback(response) {
 	            self.$log.log("Fail");
 	        });
-	        return this.responseVal;
 	    };
 	    UserHttpService.prototype.validateUser = function (unlEmail, password, otherEmail, userName, firstName, lastName) {
 	        var self = this;
@@ -769,10 +777,6 @@
 	        }, function errorCallback(response) {
 	            return this.responseVal;
 	        });
-	    };
-	    UserHttpService.prototype.signInUser = function (userName) {
-	        this.mainAppService.currentUserName = userName;
-	        this.$location.path('/');
 	    };
 	    UserHttpService.prototype.confirmationPage = function (userName, unlEmail, personalEmail) {
 	        var self = this;
@@ -856,11 +860,12 @@
 	        this.selectedListingCondition = '';
 	        this.selectedListingURL = '';
 	        this.selectedListingOwnersEmail = '';
+	        this.selectedListingId = null;
+	        this.currentPage = 'home';
 	        this.currentUserName = '';
 	        this.currentUnlEmail = '';
 	        this.currentPersonalEmail = '';
-	        this.selectedListingId = null;
-	        this.currentPage = 'home';
+	        this.currentJwtToken = '';
 	    }
 	    return MainAppService;
 	})();

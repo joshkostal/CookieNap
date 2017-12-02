@@ -13,6 +13,7 @@
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.4.0" />
     <PackageReference Include="System.Security.Permissions" Version="4.4.0" />
 	<PackageReference Include="System.Collections" Version="4.3.0" />
+	<PackageReference Include="JWT" Version="3.1.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,6 +23,10 @@
   <ItemGroup>
     <Folder Include="Models\" />
     <Folder Include="Controllers\HttpJson\" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Helpers\EmptyClass.cs" />
+  </ItemGroup>
 </Project>

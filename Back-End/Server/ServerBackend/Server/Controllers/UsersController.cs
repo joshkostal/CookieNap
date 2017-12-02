@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Server.Models;
+using Server.Helpers;
 using Server.Controllers.HttpJson;
 using static Server.Models.User;
+using System.Text.RegularExpressions;
 
 namespace Server.Controllers
 {
@@ -24,10 +26,10 @@ namespace Server.Controllers
         {
             if (ModelState.IsValid)
             {
-                Password pwdInstance = new Password(user.Password);
-                User userInstance = new User(user.UserName, user.FirstName, user.LastName, user.HuskerEmail, user.CommunicationEmail, pwdInstance);
-                userInstance.UserID = _dbc.InsertUser(userInstance);
-                return "Success";
+                    Password pwdInstance = new Password(user.Password);
+                    User userInstance = new User(user.UserName, user.FirstName, user.LastName, user.HuskerEmail, user.CommunicationEmail, pwdInstance);
+                    userInstance.UserID = _dbc.InsertUser(userInstance);
+                    return JWTAuthentication.GenerateToken(user.UserName);
             }
             return "GeneralFail";
         }
@@ -83,15 +85,15 @@ namespace Server.Controllers
             
             if(result == Password.Verification.PasswordFail)
             {
-                return "PasswordFail";
+                return "Login Failed";
             }
             else if(result == Password.Verification.UsernameFail)
             {
-                return "UsernameFail";
+                return "Login Failed";
             }
             else
             {
-                return info.UserName;
+                return JWTAuthentication.GenerateToken(info.UserName);
             }
         }
 

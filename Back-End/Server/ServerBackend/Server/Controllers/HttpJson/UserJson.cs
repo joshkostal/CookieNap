@@ -15,6 +15,10 @@ namespace Server.Controllers.HttpJson
 	{
 		public string UserName { get; set; }
 		public string Password { get; set; }
-
 	}
+    public class UserNameWithJWT
+    {
+        public string UserName { get; set; }
+        public string JWT { get; set; }
+    }
 }

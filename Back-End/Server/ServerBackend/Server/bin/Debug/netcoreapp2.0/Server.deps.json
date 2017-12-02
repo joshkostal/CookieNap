@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.0",
-    "signature": "0de9484bc36eacd8470454ca0744fb1be119275a"
+    "signature": "f32175ec2a558e1a0ebfeb2131044f42c3d2b6be"
   },
   "compilationOptions": {
     "defines": [
@@ -24,6 +24,7 @@
       "Server/1.0.0": {
         "dependencies": {
           "Google.Apis.Books.v1": "1.30.0.802",
+          "JWT": "3.1.1",
           "Microsoft.AspNetCore.All": "2.0.0",
           "Microsoft.NETCore.App": "2.0.0",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "2.0.0",
@@ -97,6 +98,19 @@
         },
         "compile": {
           "lib/netstandard1.3/Google.Apis.Core.dll": {}
+        }
+      },
+      "JWT/3.1.1": {
+        "dependencies": {
+          "NETStandard.Library": "2.0.0",
+          "Newtonsoft.Json": "10.0.3",
+          "System.Security.Cryptography.Csp": "4.3.0"
+        },
+        "runtime": {
+          "lib/netstandard1.3/JWT.dll": {}
+        },
+        "compile": {
+          "lib/netstandard1.3/JWT.dll": {}
         }
       },
       "Libuv/1.10.0": {
@@ -4595,6 +4609,13 @@
       "sha512": "sha512-RfIzNCT7ZRyFlvMzyXC/2IdaPlJdPQgdBXCBlK3FF8Het4wnW7Zgu+ClBk2gMpBO6p6rW2UkDkZxTn17Z5Ws+w==",
       "path": "google.apis.core/1.30.0",
       "hashPath": "google.apis.core.1.30.0.nupkg.sha512"
+    },
+    "JWT/3.1.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-be77vY96lqvA0IO12fDJq6kMgjkSKPZ1NOa+e4jZHzKtUQcDkWEYiHVzqStju9/U+xo8QuzG4noFg8Q1KY52ww==",
+      "path": "jwt/3.1.1",
+      "hashPath": "jwt.3.1.1.nupkg.sha512"
     },
     "Libuv/1.10.0": {
       "type": "package",

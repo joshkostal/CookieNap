@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Server.Models;
+using Server.Helpers;
 using System.Collections.Generic;
 using Server.Controllers.HttpJson;
 
@@ -14,6 +15,7 @@ namespace Server.Controllers
         [HttpGet]
         public List<Listing> Index()
         {
+            List<Listing> listingsWithoutDetails = _dbc.GetAllListings();
             return _dbc.GetAllListings();
         }
 
@@ -33,15 +35,19 @@ namespace Server.Controllers
 
         // POST: Listings/Create
         [HttpPost]
-        public bool Create([FromBody] ListingJson listing)
+        public bool Create([FromBody] ListingJsonWithJWT listing)
         {
             if (ModelState.IsValid)
             {
-                User owner = _dbc.GetUser(listing.ListingCreatorUserName);
-                Book book = new Book(listing.ISBN);
-                Listing newListing = new Listing(listing.Price, listing.Condition, book, listing.ListingType, owner);
-                _dbc.InsertListing(newListing);
-                return true;
+                if (JWTAuthentication.ValidateToken(listing.JWT, listing.ListingCreatorUserName)){
+                    User owner = _dbc.GetUser(listing.ListingCreatorUserName);
+                    Book book = new Book(listing.ISBN);
+                    Listing newListing = new Listing(listing.Price, listing.Condition, book, listing.ListingType, owner);
+                    _dbc.InsertListing(newListing);
+                    return true;
+                }else{
+                    return false;
+                }
             }
             return false;
         }
@@ -86,20 +92,17 @@ namespace Server.Controllers
         }
 
         // GET: Listings/Delete/5
-        [HttpGet]
-        public void Delete(int id)
+        [HttpPost]
+        public string Delete([FromBody] DeleteListingJson listing)
         {
-             _dbc.DeleteListing(id); 
+            if (JWTAuthentication.ValidateToken(listing.JWT, _dbc.GetListing(listing.ListingId).ListingCreator.UserName)){
+                _dbc.DeleteListing(listing.ListingId);
+                return "Success";
+            } else {
+                return "Not Valid Owner";
+            }
         }
 
-
-
-        // GET: Listings/Creator/5
-        [HttpGet]
-        public User Creator(int id)
-        {
-            return _dbc.GetUser(id);
-        }
 
         private bool ListingExists(int id)
         {

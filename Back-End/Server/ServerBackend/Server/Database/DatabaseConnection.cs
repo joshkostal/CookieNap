@@ -47,7 +47,7 @@ namespace Server.Models
             }
             catch(InvalidOperationException e)
             {
-
+                return false;
             }
             
             return true;

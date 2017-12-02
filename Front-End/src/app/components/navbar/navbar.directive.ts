@@ -26,18 +26,20 @@ export class NavbarController {
   public userHttpService: UserHttpService;
   public $log: any;
   public val: string;
-  public loggedIn: boolean
-  public currentPage: string
-  public $location: any
+  public loggedIn: boolean;
+  public currentPage: string;
+  public $location: any;
+  public $window: any;
 
-  constructor($log: any, moment: moment.MomentStatic, mainAppService: MainAppService, $location, userHttpService: UserHttpService) {
+  constructor($log: any, $window: any, moment: moment.MomentStatic, mainAppService: MainAppService, $location: any, userHttpService: UserHttpService) {
     this.$log = $log;
     this.$location = $location;
     this.mainAppService = mainAppService;
     this.currentPage = mainAppService.currentPage;
     this.userHttpService = userHttpService;
-    if(this.mainAppService.currentUserName != ''){
-        this.val = 'Welcome ' + this.mainAppService.currentUserName;
+    this.mainAppService.currentUserName = $window.localStorage.getItem('UserName');
+    this.mainAppService.currentJwtToken = $window.localStorage.getItem('UserJWT');
+    if(this.mainAppService.currentUserName){
         this.loggedIn = true;
     }
     else {

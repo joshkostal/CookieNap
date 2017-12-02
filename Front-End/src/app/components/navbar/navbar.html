@@ -5,7 +5,7 @@
                 <li ng-click="vm.setPage('home')" ng-class="vm.checkPage('home')">
                     <a ng-href="#">Home</a>
                 </li>
-                <li ng-click="vm.setPage('create')" ng-class="vm.checkPage('create')">
+                <li ng-show="vm.loggedIn" ng-click="vm.setPage('create')" ng-class="vm.checkPage('create')">
                     <a ng-href="#/createListing">Create Listing</a>
                 </li>
             </ul>
@@ -18,7 +18,7 @@
                     <button ng-show="vm.loggedIn" class="dropbtn">Manage Account</button>
                     <div class="dropdown-content">
                         <a ng-click="vm.resetPassword()" ng-href="#/resetPassword">Reset Password</a>
-                        <a ng-click="vm.logOut()" ng-href="#/logOut">Log Out</a>
+                        <a ng-click="vm.logOut()" ng-href="#/logOut">Log Out, {{ vm.mainAppService.currentUserName }}</a>
                     </div>
                 </div>
             </ul>

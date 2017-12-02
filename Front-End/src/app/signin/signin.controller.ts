@@ -40,13 +40,8 @@ export class SignInController {
         if(this.newUserSignUpBoolean){
           this.userHttpService.validateUser(this.unlEmail, this.password, this.otherEmail, this.userName, this.firstName, this.lastName);
         }else{
-          let val = this.userHttpService.signIn(this.userName, this.password);
-          if(val == 'Success'){
-            this.mainAppService.currentUserName = this.userName;
-            this.$location.path('/');      
-          }      
+          this.userHttpService.signIn(this.userName, this.password);  
         }        
-        //this.listingHttp.getListings();
     }
     resetPassword() {
         if (this.userName == '') {
