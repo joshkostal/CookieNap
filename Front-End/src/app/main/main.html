@@ -11,7 +11,8 @@
       Welcome to CookieNap!
     </p>
     <p class="animated infinite" ng-class="main.classAnimation">
-      <button type="button" class="btn btn-lg btn-success" ng-click="main.signIn()">Get Started</button>
+      <button ng-show="mainAppService.currentUserName" type="button" class="btn btn-lg btn-success" ng-click="main.signIn()">Get Started</button>
+      <input ng-hide="mainAppService.currentUserName" type="search" ng-model="main.searchVal">
     </p>
     <p>
       Produced by <acme-malarkey extra-values="['Bethany', 'Josh', 'Kevin','Michael']"></acme-malarkey>
@@ -19,7 +20,7 @@
   </div>
 
   <div class="row">
-    <div class="col-sm-6 col-md-4" ng-repeat="awesomeThing in main.allBooks">
+    <div class="col-sm-6 col-md-4" ng-repeat="awesomeThing in main.allBooks | filter:main.searchVal">
       <div class="thumbnail" ng-click="main.openListing(awesomeThing)">
           <img class="pull-right" ng-src="{{ awesomeThing.bookListed.thumbnailURL }}" alt="{{ awesomeThing.title }}">
           <div class="caption">

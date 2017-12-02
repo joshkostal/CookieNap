@@ -17,6 +17,7 @@ export class MainController {
   public $http: any;
   public $q: any;
   public promises: object[];
+  public searchVal: any;
   
 
   /* @ngInject */
@@ -25,7 +26,6 @@ export class MainController {
     this.$location = $location;
     this.$http = $http;
     this.$log = $log;
-    this.$log.log('1');    
     this.awesomeThings = new Array();
     this.webDevTec = webDevTec;
     this.mainAppService = mainAppService;    
@@ -34,6 +34,7 @@ export class MainController {
     this.toastr = toastr;
     this.activate($timeout);
     this.promises = [];
+    this.searchVal = "";
   }
 
   /** @ngInject */
