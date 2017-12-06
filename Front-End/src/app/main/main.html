@@ -24,7 +24,7 @@
       <div class="thumbnail" ng-click="main.openListing(awesomeThing)">
           <img class="pull-right" ng-src="{{ awesomeThing.bookListed.thumbnailURL }}" alt="{{ awesomeThing.title }}">
           <div class="caption">
-            <h4>Title: {{ awesomeThing.bookListed.title }}</h4>
+            <h4>{{ awesomeThing.bookListed.title }}</h4>
             <div>Condition: {{ awesomeThing.condition }}</div>
             <div>Author(s): {{ awesomeThing.bookListed.authors }}</div>
             <div>ISBN: {{ awesomeThing.bookListed.isbn }}</div>
