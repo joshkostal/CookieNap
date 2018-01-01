@@ -14,7 +14,7 @@ namespace Server.Helpers
         }
         private const string SecretKey = "7fpjm8pneKs3+KT/7aeuRs6+wMGnEy0sLMN1fTlRNFacNQKkxHIMtIuDSnpWhyDrnizO5t+d5hBL6PCX+hj9/A==";
 
-        public static string GenerateToken(string username)
+        public static string GenerateToken(string data)
         {
             int expireTime = 60;
 
@@ -27,7 +27,7 @@ namespace Server.Helpers
 
                 Subject = new ClaimsIdentity(new[]
                         {
-                            new Claim(ClaimTypes.Name, username)
+                            new Claim(ClaimTypes.Name, data)
                         }),
 
                 Expires = now.AddMinutes(Convert.ToInt32(expireTime)),
@@ -40,7 +40,7 @@ namespace Server.Helpers
 
             return token;
         }
-        public static bool ValidateToken(string token, string username){
+        public static bool ValidateToken(string token, string data){
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var jwtToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
@@ -61,7 +61,7 @@ namespace Server.Helpers
                 return false;
             }
 
-            if(identity.Name == username){
+            if(identity.Name == data){
                 return true;
             }else{
                 return false;

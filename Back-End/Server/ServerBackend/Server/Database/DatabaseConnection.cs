@@ -45,11 +45,11 @@ namespace Server.Models
             {
                 connection.Open();
             }
-            catch(InvalidOperationException e)
+            catch (InvalidOperationException e)
             {
                 return false;
             }
-            
+
             return true;
         }
 
@@ -512,7 +512,7 @@ namespace Server.Models
                 this.CloseConnection();
             }
             return book;
-        }        
+        }
 
         public List<Book> FindBooksListed()
         {
@@ -688,6 +688,69 @@ namespace Server.Models
             }
             return !emailFound;
         }
+
+        #endregion
+
+        #region ConfirmationCode
+        public void InsertConfirmationCode(NewUserConfirmation confirmation)
+        {
+
+            if (this.OpenConnection())
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandText = "INSERT INTO ConfirmationCode (ConfirmationJwt, UserName) values(@JWT, @UserName)";
+                cmd.Connection = connection;
+                cmd.Prepare();
+
+                cmd.Parameters.AddWithValue("@JWT", confirmation.ConfirmationJwt);
+                cmd.Parameters.AddWithValue("@UserName", confirmation.UserName);
+
+                cmd.ExecuteNonQuery();
+                confirmation.NewUserConfirmationId = (int)cmd.LastInsertedId;
+
+                this.CloseConnection();
+            }
+        }
+
+        public void DeleteConfirmationCode(string userName)
+        {
+            if (this.OpenConnection())
+            {
+                string query1 = string.Format("Delete from ConfirmationCode where ConfirmationCode.UserName='{0}'", userName);
+                MySqlCommand cmd = new MySqlCommand(query1, connection);
+
+                cmd.Prepare();
+                cmd.ExecuteNonQuery();
+
+                this.CloseConnection();
+            }
+        }
+
+        public string GetConfirmationCode(string userName)
+        {
+            string jwt = "";
+            string query = string.Format("Select ConfirmationJwt from bhage.ConfirmationCode where UserName='{0}'", userName);
+
+            if (this.OpenConnection())
+            {
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+
+                cmd.Prepare();
+                MySqlDataReader dr = cmd.ExecuteReader();
+                dr.Read();
+                if (!dr.HasRows)
+                {
+                    dr.Close();
+                    return null;
+                }
+                jwt = (string)dr[0];
+
+                dr.Close();
+                this.CloseConnection();
+            }
+
+            return jwt;
+        }
+        #endregion
     }
-    #endregion
 }

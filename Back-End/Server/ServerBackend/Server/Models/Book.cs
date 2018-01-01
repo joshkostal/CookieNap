@@ -11,19 +11,6 @@ namespace Server.Models
 {
     public class Book
     {
-        public Book(string isbn)
-        {
-            ISBN = isbn;
-        }
-
-        public Book(string isbn, string authors, string title, string thumbNailURL)
-        {
-            ISBN = isbn;
-            Authors = authors;
-            Title = title;
-            ThumbnailURL = thumbNailURL;
-        }
-
         [Key]
         [Required]
         [RegularExpression("^[0-9]{10,13}$", ErrorMessage = "This is not a valid ISBN format")]
@@ -38,6 +25,19 @@ namespace Server.Models
         public int BookId { get; set; }
 
         public List<Listing> ListingsWithBook { get; set; }
+
+        public Book(string isbn)
+        {
+            ISBN = isbn;
+        }
+
+        public Book(string isbn, string authors, string title, string thumbNailURL)
+        {
+            ISBN = isbn;
+            Authors = authors;
+            Title = title;
+            ThumbnailURL = thumbNailURL;
+        }
 
         public Book QueryISBN()
         {

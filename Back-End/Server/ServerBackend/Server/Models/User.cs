@@ -43,8 +43,9 @@ namespace Server.Models
 
         public string LastName { get; set; }
 
+        public DateTime DateConfirmed { get; set; }
+
         [Required]
-        [RegularExpression("@huskers.unl.edu$", ErrorMessage = "This is not a Husker email")]
         public string HuskerEmail { get; set; }
 
         [Required]

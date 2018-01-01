@@ -26,10 +26,14 @@ namespace Server.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (JWTAuthentication.ValidateToken(_dbc.GetConfirmationCode(user.UserName), user.Code))
+                {
                     Password pwdInstance = new Password(user.Password);
                     User userInstance = new User(user.UserName, user.FirstName, user.LastName, user.HuskerEmail, user.CommunicationEmail, pwdInstance);
                     userInstance.UserID = _dbc.InsertUser(userInstance);
+                    _dbc.DeleteConfirmationCode(user.UserName);
                     return JWTAuthentication.GenerateToken(user.UserName);
+                }
             }
             return "GeneralFail";
         }

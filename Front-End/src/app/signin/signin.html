@@ -9,9 +9,11 @@
             <div class="form-group">
                 <label for="pwd">
                     Please check if you are signing up for a new account: &nbsp
-                    <input type="checkbox" id="pwd" ng-model="signIn.newUserSignUpBoolean">
+                    <input type="checkbox" id="pwd2" ng-model="signIn.newUserSignUpBoolean">
                 </label>
                 <br>
+                <div ng-show="signIn.newUserSignUpBoolean">If you don't have a Husker Email go</div>
+                <a ng-show="signIn.newUserSignUpBoolean" href="http://huskers.unl.edu/liveedu/" style="margin: 0 auto; display:block; text-align: center;float:none">here</a>
             </div>
             <div class="form-group" ng-show="signIn.newUserSignUpBoolean">
                 <label for="email">UNL Email address:</label>
@@ -24,7 +26,7 @@
                 <label for="pwd">User Name:</label>
                 <br>
                 <div class="col-sm-4"></div>
-                <input type="string" class="col-sm-4" id="userName" ng-model="signIn.userName">
+                <input type="string" class="col-sm-4" id="userName" ng-model="signIn.userName" ng-minlength="5" ng-maxlength="10">
                 <br>
             </div>
             <div class="form-group">
@@ -45,20 +47,20 @@
                 <label for="pwd">First Name:</label>
                 <br>
                 <div class="col-sm-4"></div>
-                <input type="string" class="col-sm-4" id="firstName" ng-model="signIn.firstName">
+                <input type="string" class="col-sm-4" id="firstName" ng-model="signIn.firstName" ng-minlength="1">
                 <br>
             </div>
             <div class="form-group" ng-show="signIn.newUserSignUpBoolean">
                 <label for="pwd">Last Name:</label>
                 <br>
                 <div class="col-sm-4"></div>
-                <input type="string" class="col-sm-4" id="lastName" ng-model="signIn.lastName">
+                <input type="string" class="col-sm-4" id="lastName" ng-model="signIn.lastName" ng-minlength="1">
                 <br>
             </div>
             <button type="submit" class="btn btn-default" ng-click="signIn.createOrSignInUser()">Submit</button>
             <div class="form-group" ng-hide="signIn.newUserSignUpBoolean">
                 <br>
-                <button type="button" class="btn btn-link" ng-click="signIn.resetPassword()">Forget your password? Enter your username above and click here to reset it here!</button>
+                <div type="button" class="btn btn-link" ng-click="signIn.resetPassword()">Forget your password?</div>
             </div>
             <div class="alert alert-danger" ng-show="signIn.warning">
                 Please enter your username in the box above.

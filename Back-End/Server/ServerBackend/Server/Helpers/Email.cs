@@ -2,6 +2,7 @@ using Server.Controllers.HttpJson;
 using System;
 using System.Net;
 using System.Net.Mail;
+using Server.Helpers;
 
 namespace Server.Models
 {
@@ -14,6 +15,7 @@ namespace Server.Models
         public string SendRegistrationEmail(UserJson recipient)
         {
             string code = Guid.NewGuid().ToString("n").Substring(0, 8);
+            ConfirmationCodeDatabase.StoreConfirmationCode(code, recipient.UserName);
 
             MailMessage mail = new MailMessage
             {

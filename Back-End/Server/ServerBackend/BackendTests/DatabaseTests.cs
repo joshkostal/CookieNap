@@ -13,6 +13,7 @@ namespace BackendTests
         private static User.Password pswd = new User.Password("1234");
         private static User user = new User("gwashington", "george", "washington", "george.washington@huskers.unl.edu", "gwash@gmail.com", pswd); //Create local versions where needed
         private Listing listing = new Listing(5, Listing.ConditionTypes.Good, book, Listing.ListingTypes.Sell, user);   //Create local versions where needed- anywhere listing is altered
+        private static NewUserConfirmation testConfirmation = new NewUserConfirmation("Jwt", "UserName");
 
         [TestMethod]
         public void InsertGetAndDeleteUserTest()
@@ -358,8 +359,22 @@ namespace BackendTests
 
             //Assert
             Assert.IsTrue(isUnique);
+        }
 
+        [TestMethod]
+        public void InsertGetAndDeleteConfirmationCodeTest()
+        {
+            //Arrange
+            _dbc.InsertConfirmationCode(testConfirmation);
 
+            //Act
+            string jwt = _dbc.GetConfirmationCode(testConfirmation.UserName);
+            _dbc.DeleteConfirmationCode(testConfirmation.UserName);
+            string deletedJwt = _dbc.GetConfirmationCode(testConfirmation.UserName);
+
+            //Assert
+            Assert.AreEqual(testConfirmation.ConfirmationJwt, jwt);
+            Assert.IsNull(deletedJwt);
         }
     }
 }
